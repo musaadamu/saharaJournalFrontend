@@ -1,0 +1,102 @@
+/* Main Navigation Styles */
+.main-navigation {
+    display: flex;
+    justify-content: space-between; /* This ensures items are spread out */
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #1e3a8a;
+    color: #ffffff;
+}
+
+/* Modify the navigation links container to align to the right */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    margin-left: auto; /* This pushes the links to the right */
+    padding: 0;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-links a:hover {
+    background-color: #2563eb;
+}
+
+.nav-links a.active {
+    background-color: #2563eb;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-navigation {
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+    }
+
+    .hamburger {
+        display: block;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #1e3a8a;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        padding: 1rem;
+        gap: 0.5rem;
+        margin-left: 0; /* Reset margin for mobile view */
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+    }
+}
+
+/* Larger Screen Adjustments */
+@media (min-width: 769px) {
+    .nav-links {
+        flex-direction: row;
+    }
+
+    .nav-cta {
+        margin-left: 1rem;
+    }
+}

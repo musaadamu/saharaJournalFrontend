@@ -1,0 +1,116 @@
+/* Journal Upload Styles */
+.max-w-lg {
+    max-width: 600px; /* Limit the width of the form for better readability */
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto; /* Center the form on the page */
+}
+
+.bg-white {
+    background-color: #ffffff; /* White background for the form */
+}
+
+.p-6 {
+    padding: 1.5rem; /* Padding around the form */
+}
+
+.shadow-md {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+}
+
+.rounded-lg {
+    border-radius: 0.5rem; /* Rounded corners for a smooth look */
+}
+
+.text-xl {
+    font-size: 1.5rem; /* Large heading size */
+}
+
+.font-bold {
+    font-weight: 700; /* Bold font weight for emphasis */
+}
+
+.mb-4 {
+    margin-bottom: 1rem; /* Spacing between elements */
+}
+
+.bg-red-100 {
+    background-color: #fee2e2; /* Light red for error message */
+}
+
+.text-red-700 {
+    color: #b91c1c; /* Darker red for text in error message */
+}
+
+.bg-green-100 {
+    background-color: #dcfce7; /* Light green for success message */
+}
+
+.text-green-700 {
+    color: #165e27; /* Darker green for text in success message */
+}
+
+.space-y-4 > :not(template) ~ :not(template) {
+    margin-top: 1rem; /* Spacing between form fields */
+}
+
+.block {
+    display: block; /* Display label elements as block for full-width */
+}
+
+.font-medium {
+    font-weight: 500; /* Medium font weight for labels */
+}
+
+.capitalize {
+    text-transform: capitalize; /* Capitalize first letter for labels */
+}
+
+.w-full {
+    width: 100%; /* Full width for inputs */
+}
+
+.p-2 {
+    padding: 0.5rem; /* Padding inside inputs */
+}
+
+.border {
+    border: 1px solid #d1d5db; /* Light gray border for inputs */
+}
+
+.rounded {
+    border-radius: 0.25rem; /* Rounded corners for inputs */
+}
+
+button {
+    transition: background-color 0.3s ease; /* Smooth transition for button background */
+}
+
+.bg-blue-500 {
+    background-color: #3b82f6; /* Primary blue color for the button */
+}
+
+.bg-blue-600 {
+    background-color: #2563eb; /* Darker blue for button hover */
+}
+
+.hover\:bg-blue-600:hover {
+    background-color: #2563eb; /* Darker blue on hover */
+}
+
+.bg-gray-400 {
+    background-color: #d1d5db; /* Gray color for disabled button */
+}
+
+.text-white {
+    color: #ffffff; /* White text color for the button */
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .max-w-lg {
+        width: 90%; /* Ensure form takes more space on smaller screens */
+    }
+}

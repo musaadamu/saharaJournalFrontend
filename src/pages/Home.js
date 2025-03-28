@@ -1,0 +1,87 @@
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import JournalList from "../components/JournalList";
+import JournalHero from "../components/JournalHero";
+import Navigation from "../components/Navigation";
+import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
+import './Home.css';
+import Carousol from "../components/Carousol";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+export default function HomePage() {
+    const [stats, setStats] = useState([]);
+
+    useEffect(() => {
+        async function fetchStats() {
+            try {
+                const response = await fetch("/api/stats");
+                const data = await response.json();
+                setStats([
+                    { label: "Published Papers", value: `${data.publishedPapers || 0}+` },
+                    { label: "Registered Authors", value: `${data.registeredAuthors || 0}+` },
+                    { label: "Global Readers", value: `${data.globalReaders || 0}+` },
+                ]);
+            } catch (error) {
+                console.error("Error fetching stats:", error);
+            }
+        }
+
+        fetchStats();
+    }, []);
+
+    return (
+        <div className="min-h-screen bg-gray-50 text-gray-900">
+            <Navigation />
+
+            <div className="main-container flex flex-col lg:flex-row">
+                <Sidebar className="site-sidebar" />
+                
+                <main className="main-content flex-1 p-4 sm:p-6 lg:p-8 lg:pl-[280px]">
+                    {/* Hero Section */}
+                    <Carousol />
+                    <JournalHero />
+
+                    {/* Welcome Section */}
+                    <header className="relative bg-blue-900 text-white py-10 md:py-20 text-center">
+                        <motion.h1
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="text-3xl md:text-5xl lg:text-6xl font-bold"
+                        >
+                            Welcome to the Sahara International Journal Hub
+                        </motion.h1>
+                        <p className="mt-4 text-base md:text-lg lg:text-xl max-w-xl md:max-w-3xl mx-auto">
+                            A global platform for scholars, researchers, and academics to publish and discover cutting-edge research.
+                        </p>
+                        <Link
+                            to="/upload"
+                            className="mt-6 inline-block bg-white text-blue-900 font-semibold px-4 md:px-6 py-2 md:py-3 rounded-lg shadow-lg hover:bg-gray-200 transition"
+                        >
+                            Submit Your Manuscript
+                        </Link>
+                    </header>
+
+                    {/* Featured Journals Section */}
+                    <section className="py-10 md:py-16 px-4 md:px-20 text-center">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8">Featured Publications</h2>
+                        <JournalList />
+                        <div className="mt-4 md:mt-6">
+                            <Link
+                                to="/journals"
+                                className="text-blue-600 font-medium hover:underline"
+                            >
+                                View All Journals →
+                            </Link>
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+            {/* Footer */}
+            <Footer />
+        </div>
+    );
+}

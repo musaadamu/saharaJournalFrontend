@@ -1,0 +1,168 @@
+/* Journal List Container */
+.max-w-full {
+    max-width: 80%; /* Set max width to 80% of the viewport */
+    margin: 0 auto; /* Center the container */
+    background-color: #ffffff; /* White background */
+    padding: 1.5rem; /* Padding for the container */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    border-radius: 0.5rem; /* Rounded corners */
+}
+
+.flex {
+    display: flex; /* Flexbox layout */
+}
+
+.justify-center {
+    justify-content: center; /* Center flex items */
+}
+
+.items-center {
+    align-items: center; /* Vertically centered items */
+}
+
+.mb-6 {
+    margin-bottom: 1.5rem; /* Spacing below headings */
+}
+
+.text-2xl {
+    font-size: 1.5rem; /* Larger font size for titles */
+    font-weight: bold; /* Bold font weight for emphasis */
+    color: #2563eb; /* Blue text color */
+    text-decoration: none; /* Remove underline from links */
+}
+
+.text-2xl a {
+    color: #2563eb; /* Blue text for links */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.text-2xl a:hover {
+    color: #1e40af; /* Darker blue on hover */
+    text-decoration: underline; /* Underline on hover */
+}
+
+.bg-blue-500 {
+    background-color: #3b82f6 !important; /* Blue background */
+    color: #ffffff !important; /* White text color */
+    padding: 0.625rem 1.5rem; /* Padding */
+    border-radius: 0.375rem; /* Rounded corners */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.bg-blue-500:hover {
+    background-color: #2563eb !important; /* Darker blue on hover */
+}
+
+.text-red-500 {
+    color: #f56565; /* Red color for delete actions */
+}
+
+/* Error Alert */
+.bg-red-100 {
+    background-color: #fed7d7; /* Light red background for errors */
+    margin-bottom: 1rem; /* Space below the alert */
+}
+
+.border {
+    border: 1px solid #e2e8f0; /* Light border for sections */
+}
+
+/* Abstract Styling */
+.text-gray-600 {
+    color: #718096; /* Medium gray text */
+    white-space: normal; /* Allow text wrapping */
+    overflow: visible; /* Ensure full text is displayed */
+    display: block; /* Ensure block layout for abstract */
+}
+
+.line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Limit lines for text overflow */
+}
+
+.space-y-4 > * + * {
+    margin-top: 1rem; /* Margin between journal items */
+}
+
+.hover\:shadow-md:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+}
+
+/* Journal Item Styles */
+.border {
+    border: 1px solid #e2e8f0; /* Border for journal items */
+}
+
+.p-4 {
+    padding: 1.5rem; /* Padding for journal items */
+    min-height: 150px; /* Minimum height for accommodating abstract text */
+}
+
+.rounded-lg {
+    border-radius: 0.5rem; /* Rounded corners for items */
+}
+
+.cursor-pointer {
+    cursor: pointer; /* Pointer for clickable items */
+}
+
+/* Status indicators */
+.rounded-full {
+    border-radius: 9999px; /* Full rounded styles */
+}
+
+.bg-green-100 {
+    background-color: #c6f6d5; /* Light green background */
+}
+
+.bg-yellow-100 {
+    background-color: #fefcbf; /* Light yellow background */
+}
+
+.text-sm {
+    font-size: 0.875rem; /* Smaller text for status labels */
+}
+
+/* Pagination Styles */
+.flex.justify-center {
+    margin-top: 2rem; /* Margin for pagination area */
+}
+
+/* Button Styling */
+.button-group {
+    display: flex;
+    gap: 0.75rem; /* Adds spacing between buttons */
+}
+
+button {
+    padding: 0.625rem 1.5rem; /* Padding for buttons */
+    border-radius: 0.375rem; /* Rounded corners */
+    border: none; /* No border */
+    font-size: 0.875rem; /* Standard font size */
+    font-weight: 500; /* Medium font weight */
+    cursor: pointer; /* Pointer cursor for buttons */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+/* Disabled Button */
+button:disabled {
+    opacity: 0.6; /* Reduced visibility for disabled buttons */
+    cursor: not-allowed; /* Not allowed cursor style */
+}
+
+/* Loading Spinner */
+.animate-spin {
+    animation: spin 1s linear infinite; /* Spinner animation */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg); /* Initial rotation */
+    }
+    100% {
+        transform: rotate(360deg); /* Full rotation */
+    }
+}

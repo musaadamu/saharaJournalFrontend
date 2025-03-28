@@ -1,0 +1,252 @@
+/* Home Page Styles */
+.min-h-screen {
+  min-height: 100vh;
+  background-color: #f4f4f9; /* Softer light gray background */
+  display: flex;
+  flex-direction: column;
+  padding-left: 250px;
+}
+
+.text-gray-900 {
+  color: #2d3748; /* Neutral dark gray for text */
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column; /* Default to column layout */
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 260px; /* Slightly wider sidebar */
+  background-color: #2c5282; /* Professional dark blue */
+  color: #f7fafc; /* Softer white text */
+  padding: 1.5rem; /* Increased padding for better spacing */
+  height: 100vh;
+  flex-shrink: 0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  order: 1; /* Move sidebar below main content by default */
+}
+
+/* Main Content Styles */
+.main-content {
+  flex: 1;
+  padding: 30px; /* Increased padding for spacious layout */
+  
+  overflow-y: auto;
+  order: 0; /* Ensure main content is above sidebar */
+}
+
+/* Header Styles */
+header {
+  background-color: #2c5282; /* Consistent dark blue */
+  padding: 60px 20px; /* More padding for a professional look */
+  text-align: center;
+}
+
+header h1 {
+  font-size: 3rem; /* Larger title */
+  color: #ffffff;
+  font-weight: 700; /* Bold for emphasis */
+}
+
+header p {
+  color: #e2e8f0; /* Softer light gray */
+  font-size: 1.25rem; /* Larger supporting text */
+  margin-top: 1rem;
+}
+
+header .bg-white {
+  background-color: #ffffff;
+  color: #2c5282;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem; /* Larger button */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+header .bg-white:hover {
+  background-color: #edf2f7; /* Softer hover effect */
+}
+
+/* Featured Journals Section */
+section h2 {
+  font-size: 2.25rem; /* Larger headings */
+  color: #2c5282;
+  font-weight: 700;
+}
+
+section p {
+  color: #4a5568; /* Neutral gray */
+  font-size: 1rem;
+}
+
+/* Stats Section */
+section.bg-blue-100 {
+  background-color: #ebf8ff; /* Softer light blue */
+}
+
+.stats-item {
+  background-color: #ffffff;
+  padding: 2.5rem; /* Increased padding */
+  border-radius: 0.75rem; /* Slightly more rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.stats-item:hover {
+  transform: translateY(-5px); /* Lift effect */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Elevated shadow */
+}
+
+.stats-item h3 {
+  font-size: 2.5rem; /* Larger stats numbers */
+  color: #2c5282;
+  font-weight: 700;
+}
+
+.stats-item p {
+  color: #4a5568;
+  margin-top: 0.5rem;
+}
+
+/* Footer Styles */
+footer {
+  background-color: #2c5282;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+footer p {
+  color: #e2e8f0;
+  font-size: 1rem;
+}
+
+footer a {
+  color: #ffffff;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+footer a:hover {
+  color: #edf2f7; /* Softer hover effect */
+}
+
+/* Responsive design */
+@media (min-width: 640px) {
+  header h1 {
+    font-size: 3.5rem; /* Larger font for larger screens */
+  }
+
+  section h2 {
+    font-size: 2.75rem; /* Larger headings */
+  }
+
+  .stats-item h3 {
+    font-size: 3rem; /* Bigger stats numbers */
+  }
+}
+
+@media (min-width: 768px) {
+  .stats-item {
+    padding: 3rem; /* Increased padding for larger screens */
+  }
+
+  header p {
+    font-size: 1.5rem; /* Larger supporting text */
+  }
+}
+
+@media (min-width: 1024px) {
+  header {
+    padding: 80px 40px; /* More padding for larger screens */
+  }
+
+  section {
+    padding: 5rem 40px; /* More spacious sections */
+  }
+
+  footer {
+    padding: 4rem 0; /* Increased footer padding */
+  }
+
+  .main-container {
+    flex-direction: row; /* Row layout for large screens */
+  }
+
+  .sidebar {
+    order: 0; /* Restore sidebar position for large screens */
+  }
+
+
+  .main-content {
+    order: 0; /* Maintain order for large screens */
+  }
+}
+
+@media (max-width: 640px) {
+  .main-container {
+    flex-direction: column; /* Stack sidebar and main content */
+  }
+
+  .sidebar {
+    width: 100%; /* Full width for small screens */
+    height: auto; /* Adjust height */
+    padding: 1rem; /* Reduce padding */
+    box-shadow: none; /* Remove shadow */
+  }
+
+  .main-content {
+    padding: 20px; /* Reduce padding */
+  }
+
+  header {
+    padding: 40px 10px; /* Reduce padding */
+  }
+
+  header h1 {
+    font-size: 2rem; /* Smaller title */
+  }
+
+  header p {
+    font-size: 1rem; /* Smaller supporting text */
+  }
+
+  .stats-item {
+    padding: 1.5rem; /* Reduce padding */
+  }
+
+  .stats-item h3 {
+    font-size: 2rem; /* Smaller stats numbers */
+  }
+
+  footer {
+    padding: 2rem 0; /* Reduce footer padding */
+  }
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 2.5rem; /* Adjust title size */
+  }
+
+  header p {
+    font-size: 1.125rem; /* Adjust supporting text size */
+  }
+
+  section h2 {
+    font-size: 2rem; /* Adjust heading size */
+  }
+
+  .stats-item h3 {
+    font-size: 2.25rem; /* Adjust stats numbers size */
+  }
+
+  .stats-item {
+    padding: 2rem; /* Adjust padding */
+  }
+
+  section {
+    padding: 3rem 20px; /* Adjust section padding */
+  }
+}
