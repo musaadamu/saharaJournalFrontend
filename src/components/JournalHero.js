@@ -35,7 +35,7 @@ export default function JournalHero() {
                         Browse Journals
                     </Link>
                     <Link 
-                        to="/submit"
+                        to="/submision"
                         className="bg-white text-blue-600 hover:bg-gray-200 px-8 py-3 rounded-lg font-semibold transition duration-200 ease-in-out shadow-md transform hover:scale-105 md:ml-4 no-underline" // Increased width and removed underline
                     >
                         Submit Your Research

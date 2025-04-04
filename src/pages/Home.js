@@ -33,14 +33,93 @@ export default function HomePage() {
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900">
-            <Navigation />
+           
 
             <div className="main-container flex flex-col lg:flex-row">
                 <Sidebar className="site-sidebar" />
                 
                 <main className="main-content flex-1 p-4 sm:p-6 lg:p-8 lg:pl-[280px]">
                     {/* Hero Section */}
-                    <Carousol />
+                    <Carousol 
+                            images={[
+                                {
+                                  src: "images/image1.jpg",
+                                  caption: {
+                                    title: "Amazing Sahara Journal Back Cover",
+                                    text: "Discover the beautiful and seasoned journal"
+                                  }
+                                },
+                                {
+                                  src: "images/image2.jpg",
+                                  alt: "The Sahara Jourrnal Frontend Page",
+                                  caption: {
+                                    title: "Stunning Design of a Journal of the Sahara",
+                                    text: "Discover more creative and stunning contents at Sahara Journal"
+                                  }
+                                },
+                                {
+                                  src: "images/image3.jpg",
+                                  alt: "The Journal Front and Back Cover Design",
+                                  caption: {
+                                    title: "The Journal Design and Complete Appearance",
+                                    text: "The Looks and Feel of the Sahara Journal"
+                                  }
+                                }, {
+                                    src: "images/image4.jpg",
+                                    alt: "The Sahara Journal is Our Pride",
+                                    caption: {
+                                      title: "The Sahara Journal",
+                                      text: "The Sahara Journal"
+                                    }
+                                  }, {
+                                    src: "images/image5.jpg",
+                                    alt: "The Sahara Journal",
+                                    caption: {
+                                      title: "The Beautiful Sahara Journal",
+                                      text: "The Beautiful Sahara Journal"
+                                    }
+                                  },{
+                                    src: "images/image1.jpg",
+                                    caption: {
+                                      title: "Amazing Sahara Journal Back Cover",
+                                      text: "Discover the beautiful and seasoned journal"
+                                    }
+                                  },
+                                  {
+                                    src: "images/image2.jpg",
+                                    alt: "The Sahara Jourrnal Frontend Page",
+                                    caption: {
+                                      title: "Stunning Design of a Journal of the Sahara",
+                                      text: "Discover more creative and stunning contents at Sahara Journal"
+                                    }
+                                  },
+                                  {
+                                    src: "images/image3.jpg",
+                                    alt: "The Journal Front and Back Cover Design",
+                                    caption: {
+                                      title: "The Journal Design and Complete Appearance",
+                                      text: "The Looks and Feel of the Sahara Journal"
+                                    }
+                                  }, {
+                                      src: "images/image4.jpg",
+                                      alt: "The Sahara Journal is Our Pride",
+                                      caption: {
+                                        title: "The Sahara Journal",
+                                        text: "The Sahara Journal"
+                                      }
+                                    }, {
+                                      src: "images/image5.jpg",
+                                      alt: "The Sahara Journal",
+                                      caption: {
+                                        title: "The Beautiful Sahara Journal",
+                                        text: "The Beautiful Sahara Journal"
+                                      }
+                                    },
+                                ]}
+
+                                height={900}
+                                autoplaySpeed={4000}
+                    />
                     <JournalHero />
 
                     {/* Welcome Section */}
@@ -57,7 +136,7 @@ export default function HomePage() {
                             A global platform for scholars, researchers, and academics to publish and discover cutting-edge research.
                         </p>
                         <Link
-                            to="/upload"
+                            to="/submission"
                             className="mt-6 inline-block bg-white text-blue-900 font-semibold px-4 md:px-6 py-2 md:py-3 rounded-lg shadow-lg hover:bg-gray-200 transition"
                         >
                             Submit Your Manuscript
@@ -81,7 +160,7 @@ export default function HomePage() {
             </div>
 
             {/* Footer */}
-            <Footer />
+           
         </div>
     );
 }
