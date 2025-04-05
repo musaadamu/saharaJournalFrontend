@@ -287,7 +287,8 @@ const Navigation = ({ user }) => {
     { to: "/", label: "Home" },
     { to: "/about", label: "About Us" },
     { to: "/journals", label: "Journals" },
-    { to: "/archive", label: "Archive" }
+    { to: "/archive", label: "Archive" },
+    { to: "/guide", label: "Author's Guide" }
   ];
 
   const userLinks = [

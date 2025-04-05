@@ -1,3 +1,36 @@
+/* Update the links container */
+.footer-links-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.footer-column-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Adjust mobile view */
+@media (max-width: 768px) {
+  .footer-links-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-column-group {
+    gap: 1.5rem;
+  }
+
+  .footer-social-mobile {
+    margin-top: 0;
+    grid-column: unset;
+  }
+}
+
+/* Keep all other existing CSS the same */
+
+
 .site-footer {
   background-color: #1e3a8a;
   color: #e2e8f0;
