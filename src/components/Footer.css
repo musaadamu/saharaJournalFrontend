@@ -9,6 +9,8 @@
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
+  margin-right: 300px;
+  padding-right: 500px;
   padding: 3rem 1.5rem;
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -19,6 +21,7 @@
 .footer-brand {
   display: flex;
   flex-direction: column;
+  padding-left: 200px;
 }
 
 .footer-brand h3 {
@@ -133,6 +136,7 @@
 /* Bottom Section */
 .footer-bottom {
   background-color: rgba(0, 0, 0, 0.15);
+  padding-left: 200px;
   padding: 1.25rem 0;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
