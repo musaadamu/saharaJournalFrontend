@@ -43,14 +43,14 @@ export default function HomePage() {
                     <Carousol 
                             images={[
                                 {
-                                  src: "images/image1.jpg",
+                                  src: "images/image3.jpg",
                                   caption: {
                                     title: "Amazing Sahara Journal Back Cover",
                                     text: "Discover the beautiful and seasoned journal"
                                   }
                                 },
                                 {
-                                  src: "images/image2.jpg",
+                                  src: "images/image4.jpg",
                                   alt: "The Sahara Jourrnal Frontend Page",
                                   caption: {
                                     title: "Stunning Design of a Journal of the Sahara",
@@ -79,14 +79,14 @@ export default function HomePage() {
                                       text: "The Beautiful Sahara Journal"
                                     }
                                   },{
-                                    src: "images/image1.jpg",
+                                    src: "images/image3.jpg",
                                     caption: {
                                       title: "Amazing Sahara Journal Back Cover",
                                       text: "Discover the beautiful and seasoned journal"
                                     }
                                   },
                                   {
-                                    src: "images/image2.jpg",
+                                    src: "images/image4.jpg",
                                     alt: "The Sahara Jourrnal Frontend Page",
                                     caption: {
                                       title: "Stunning Design of a Journal of the Sahara",
