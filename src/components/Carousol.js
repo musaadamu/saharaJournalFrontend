@@ -5,25 +5,39 @@ export default function CarouselWithErrorHandling({
   images = [], 
   autoplaySpeed = 5000, 
   height = 500,
-  title = "Sahara International Journals of "
+  title = "Sahara International Journals of Teacher Education",
+  basePath = "" // New prop to handle different base paths between environments
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [imageStatus, setImageStatus] = useState({});
 
-  // Modified image path handling
+  // Process images to handle paths correctly
+  const processImagePath = (path) => {
+    // Remove leading slash if present
+    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+    
+    // Handle missing file extension
+    const hasExtension = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(cleanPath);
+    const pathWithExtension = hasExtension ? cleanPath : `${cleanPath}.jpg`;
+    
+    // Construct the full path 
+    // Don't use window.location.origin - use relative paths or the basePath prop
+    return `${basePath}/${pathWithExtension}`;
+  };
+
+  // Process all image paths
   const updatedImages = images.map((image) => ({
     ...image,
-    src: image.src.startsWith('/') 
-      ? image.src.substring(1) // Remove leading slash if present
-      : image.src
+    originalSrc: image.src, // Keep original for debugging
+    src: processImagePath(image.src)
   }));
 
   useEffect(() => {
     // Log all image sources on component mount
     console.log("Carousel images:", updatedImages);
     updatedImages.forEach((img, idx) => {
-      console.log(`Image ${idx} src:`, img.src);
+      console.log(`Image ${idx} src:`, img.src, "Original:", img.originalSrc);
     });
   }, [updatedImages]);
 
@@ -57,8 +71,8 @@ export default function CarouselWithErrorHandling({
     }));
   };
 
-  const handleImageError = (index) => {
-    console.error(`Image ${index} failed to load`);
+  const handleImageError = (index, e) => {
+    console.error(`Image ${index} failed to load:`, e.target.src);
     setImageStatus(prev => ({
       ...prev,
       [index]: 'error'
@@ -94,20 +108,20 @@ export default function CarouselWithErrorHandling({
             >
               {/* Image with error handling */}
               <img
-                // Updated image src handling
-                src={`${window.location.origin}/${image.src}`}
+                src={image.src} // Use the processed path directly
                 alt={image.alt || `Slide ${index + 1}`}
                 className="w-full h-full object-contain bg-gray-900"
                 onLoad={() => handleImageLoad(index)}
-                onError={() => handleImageError(index)}
+                onError={(e) => handleImageError(index, e)}
               />
               
-              {/* Error overlay */}
+              {/* Error overlay with more detailed error information */}
               {imageStatus[index] === 'error' && (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-80 text-white">
                   <div className="text-center p-4">
                     <p className="text-red-400 font-bold">Image Failed to Load</p>
-                    <p className="text-sm mt-2 break-all">{image.src}</p>
+                    <p className="text-sm mt-2 break-all">Path: {image.src}</p>
+                    <p className="text-sm mt-1 break-all">Original: {image.originalSrc}</p>
                   </div>
                 </div>
               )}
@@ -142,7 +156,7 @@ export default function CarouselWithErrorHandling({
           <ChevronRight size={24} />
         </button>
 
-        {/* Image debugging info */}
+        {/* Enhanced debugging info */}
         <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white text-xs p-2 rounded z-20">
           Images: {updatedImages.length} | Current: {activeIndex + 1} | 
           Status: {imageStatus[activeIndex] || 'loading'}
