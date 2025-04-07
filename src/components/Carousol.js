@@ -378,8 +378,8 @@ import { ChevronLeft, ChevronRight, Info } from 'lucide-react';
 export default function Carousel({ 
   images = [], 
   autoplaySpeed = 5000, 
-  height = 900,
-  title = "Images of the Sahara International Journal",
+  height = 500,
+  title = "Images of The Sahara International Journal",
   showImageInfo = false
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
