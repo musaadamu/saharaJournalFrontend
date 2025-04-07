@@ -189,6 +189,9 @@ import LogoutPage from "./pages/LogoutPage";
 import JournalSubmission from "./components/JournalSubmission";
 import Navigation from "./components/Navigation"; // Import your custom Navigation component
 import Footer from "./components/Footer";
+import About from "./components/About";
+import Guide from "./components/Guide";
+import Contact from "./components/Contact";
 
 function App() {
     return (
@@ -206,6 +209,9 @@ function App() {
                         <Route path="/updateprofile" element={<UpdateProfile />} />
                         <Route path="/journals/uploads" element={<JournalUpload />} />
                         <Route path="/journals" element={<JournalList />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="guide" element={<Guide />} />
+                        <Route path="/contact" element={<Contact />} />
                         <Route path="/journals/:id" element={<JournalDetail />} />
                         <Route path="/submission" element={<JournalSubmission />} />
                         <Route path="/" element={<Home />} />

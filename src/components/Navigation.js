@@ -34,6 +34,7 @@ const Navigation = ({ user }) => {
     { to: "/archive", label: "Archive" },
     { to: "/guide", label: "Author's Guide" },
     { to: "/submission", label: "Submit Article" },
+    { to: "/contact", label: "Contact Us" }
   ];
 
   // Updated user navigation links with role-based items
