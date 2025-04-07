@@ -5,16 +5,18 @@ export default function CarouselWithErrorHandling({
   images = [], 
   autoplaySpeed = 5000, 
   height = 500,
-  title = "Image Gallery"
+  title = "Sahara International Journals of "
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [imageStatus, setImageStatus] = useState({});
 
-  // Ensure all image paths are prefixed with a leading slash to reference the public directory
+  // Modified image path handling
   const updatedImages = images.map((image) => ({
     ...image,
-    src: image.src.startsWith('/') ? image.src : `/${image.src}`,
+    src: image.src.startsWith('/') 
+      ? image.src.substring(1) // Remove leading slash if present
+      : image.src
   }));
 
   useEffect(() => {
@@ -92,7 +94,8 @@ export default function CarouselWithErrorHandling({
             >
               {/* Image with error handling */}
               <img
-                src={image.src}
+                // Updated image src handling
+                src={`${window.location.origin}/${image.src}`}
                 alt={image.alt || `Slide ${index + 1}`}
                 className="w-full h-full object-contain bg-gray-900"
                 onLoad={() => handleImageLoad(index)}
