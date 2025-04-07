@@ -14,199 +14,40 @@ const Carousel = () => {
           {/* Slide 1 */}
           <div className="carousel-item active">
             <img
-              src="images/image10.jpg"
+              src="images/image4.jpg"
               className="d-block w-100 carousel-img"
               alt="The Provost"
             />
             <div className="carousel-caption">
-              <h5>Leadership per Excellence</h5>
-              <p>The Provost</p>
+              <h5>The Sahara Desert, the Great Symbol of the Sahara Journal</h5>
+              <p>The Desert</p>
             </div>
           </div>
 
           <div className="carousel-item active">
             <img
-              src="images/image9.jpg"
+              src="images/image5.jpg"
               className="d-block w-100 carousel-img"
-              alt="The Provost"
+              alt="The Sahara Journal"
             />
             <div className="carousel-caption">
-              <h5>Leadership per Excellence</h5>
-              <p>The Provost</p>
+              <h5>The Camel in the Sahara</h5>
+              <p>The Great Sahara Internation Journal of Teacher Education</p>
             </div>
           </div>
           <div className="carousel-item active">
             <img
-              src="images/image10.jpg"
+              src="images/image3.jpg"
               className="d-block w-100 carousel-img"
-              alt="The Provost"
+              alt="The Sahara Journal"
             />
             <div className="carousel-caption">
-            <h5>Leadership per Excellence</h5>
-            <p>The Provost</p>
+            <h5>The Sahara International Journal of Teacher Education</h5>
+            <p>The Sahara Journal</p>
               
             </div>
           </div>
 
-          {/* Slide 2 */}
-          <div className="carousel-item">
-            <img
-              src="images/image1.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>The College's Sign Board</h5>
-              <p>The Sign of Greatness</p>
-            </div>
-          </div>
-
-          <div className="carousel-item active">
-            <img
-              src="images/image9.jpg"
-              className="d-block w-100 carousel-img"
-              alt="The Provost"
-            />
-            <div className="carousel-caption">
-              <h5>Leadership per Excellence</h5>
-              <p>The Provost</p>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img
-              src="images/image17.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>Staff Offices</h5>
-              <p>Offices for Efficient Services Delivery</p>
-            </div>
-          </div>
-          <div className="carousel-item">
-            <img
-              src="images/image5.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>Administrative Block</h5>
-              <p>Administration for Excellence</p>
-            </div>
-          </div>
-  
-
-
-          <div className="carousel-item">
-            <img
-              src="images/image18.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>Staff Offices</h5>
-              <p>Offices for Efficient Services Delivery</p>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img
-              src="images/image19.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>Staff Office</h5>
-              <p>Offices for Efficient Services Delivery</p>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img
-              src="images/image17.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>Staff Offices</h5>
-              <p>Lectures Offices</p>
-            </div>
-          </div>
-          <div className="carousel-item">
-            <img
-              src="images/image25.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-            <h5>The Administratrative Block</h5>
-              <p>The Administration Center</p>
-
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img
-              src="images/image24.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>Administratrative Block</h5>
-              <p>Centre of Administration</p>
-            </div>
-          </div>
-
-
-          <div className="carousel-item">
-            <img
-              src="images/image10.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>The Provost</h5>
-              <p>Meet Our Dynamic Provost</p>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img
-              src="images/image22.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>Staff Office</h5>
-              <p>Office in the College</p>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img
-              src="images/image23.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-              <h5>Administrative Block</h5>
-              <p>Offices for Efficient Services Delivery</p>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img
-              src="images/image9.jpg"
-              className="d-block w-100 carousel-img"
-              alt="Sign Board"
-            />
-            <div className="carousel-caption">
-            <h5>Leadership per Excellence</h5>
-              <p>The Provost</p>
-
-            </div>
-          </div>
 
 
           {/* Additional Slides */}
