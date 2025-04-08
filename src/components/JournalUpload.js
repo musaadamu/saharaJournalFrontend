@@ -583,7 +583,7 @@ import Navigation from "./Navigation";
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const JournalUpload = () => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({ 
         title: "",
         abstract: "",
         authors: "",
