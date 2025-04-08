@@ -30,6 +30,7 @@ function App() {
                     <Routes>
                         {/* Public Routes */}
                         <Route path="/" element={<Home />} />
+                        <Route path="/logout" element={<LogoutPage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/forgotpassword" element={<ForgotPassword />} />
