@@ -1,148 +1,246 @@
 /* Main Navigation Styles */
 .main-navigation {
-    background-color: #1e3a8a;
-    color: #ffffff;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1000;
-    transition: margin-left 0.3s ease;
+  background-color: #1e3a8a;
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  transition: margin-left 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Apply margin for sidebar when sidebar is present */
+@media (min-width: 768px) {
+  .main-navigation {
+    margin-left: 256px;
   }
-  
-  /* Apply margin for sidebar when sidebar is present */
-  @media (min-width: 768px) {
-    .main-navigation {
-      margin-left: 256px;
-    }
-  }
-  
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 64px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 1.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.nav-menu-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  overflow-x: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.nav-menu-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.main-links {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.user-links {
+  justify-content: flex-end;
+  padding-left: 1rem;
+}
+
+.nav-divider {
+  height: 50%;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 0.5rem;
+}
+
+.nav-links li {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0 0.75rem;
+  height: 100%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-links a.active {
+  color: #ffffff;
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: #2563eb;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  z-index: 100;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
   .nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
+    padding: 0 1rem;
+    height: 56px;
   }
   
-  .nav-logo {
-    font-size: 1.25rem;
-    font-weight: bold;
-    white-space: nowrap;
-    flex-shrink: 0;
+  .nav-brand {
+    border-right: none;
+    padding-right: 0;
   }
   
-  /* Navigation Links */
+  .hamburger {
+    display: block;
+  }
+  
+  .nav-menu-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: #1e3a8a;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    align-items: flex-start;
+    z-index: 99;
+    height: auto;
+  }
+  
+  .nav-menu-container.open {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  
   .nav-links {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    flex-direction: column;
+    width: 100%;
+    height: auto;
   }
   
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .nav-links::-webkit-scrollbar {
-    display: none;
+  .main-links, .user-links {
+    margin: 0;
+    padding: 0.5rem 0;
+    width: 100%;
+  }
+  
+  .nav-divider {
+    width: 90%;
+    height: 1px;
+    margin: 0.5rem auto;
   }
   
   .nav-links li {
-    white-space: nowrap;
+    width: 100%;
+    height: auto;
   }
   
   .nav-links a {
-    display: block;
-    text-decoration: none;
-    color: #ffffff;
-    font-weight: 500;
-    padding: 0.5rem 0.75rem;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
+    padding: 0.75rem 1.5rem;
+    height: auto;
+    width: 100%;
+    justify-content: flex-start;
   }
   
-  .nav-links a:hover,
+  .nav-links a.active::after {
+    display: none;
+  }
+  
   .nav-links a.active {
     background-color: #2563eb;
   }
-  
-  /* Hamburger Menu */
-  .hamburger {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.25rem;
-    z-index: 100;
+}
+
+/* Medium-sized devices */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nav-links a {
+    padding: 0 0.5rem;
+    font-size: 0.85rem;
   }
   
-  /* Mobile Navigation */
-  @media (max-width: 768px) {
-    .nav-container {
-      padding: 0.75rem 1rem;
-    }
-    
-    .hamburger {
-      display: block;
-    }
-    
-    .nav-links {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      flex-direction: column;
-      background-color: #1e3a8a;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      align-items: flex-start;
-      z-index: 99;
-    }
-    
-    .nav-links.open {
-      max-height: 500px;
-      padding: 0.5rem 0;
-    }
-    
-    .nav-links li {
-      width: 100%;
-    }
-    
-    .nav-links a {
-      padding: 0.75rem 1.5rem;
-      width: 100%;
-    }
+  .nav-container {
+    padding: 0 1rem;
   }
   
-  /* Medium-sized devices - scrollable horizontal nav */
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .nav-links {
-      margin-left: 1.5rem;
-      padding-bottom: 0.25rem; /* Space for potential scrollbar */
-    }
-    
-    .nav-links li:not(:last-child) {
-      margin-right: 0.5rem;
-    }
+  .nav-brand {
+    padding-right: 1rem;
+  }
+}
+
+/* Large devices */
+@media (min-width: 1025px) {
+  .nav-container {
+    padding: 0 2rem;
   }
   
-  /* Large devices */
-  @media (min-width: 1025px) {
-    .nav-links {
-      margin-left: 2rem;
-      justify-content: flex-end;
-    }
-    
-    .nav-links li:not(:last-child) {
-      margin-right: 0.75rem;
-    }
+  .nav-brand {
+    padding-right: 2rem;
   }
+  
+  .main-links {
+    margin-left: 1.5rem;
+  }
+  
+  .nav-divider {
+    margin: 0 1rem;
+  }
+}
