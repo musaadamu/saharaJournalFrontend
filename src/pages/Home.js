@@ -394,26 +394,26 @@ export default function HomePage() {
         fetchStats();
     }, []);
 
-    // Define carousel images with consistent paths
-    const carouselImages = [
-        {
-            src: "/images/image3.jpg",
-            title: "Amazing Sahara Journal Back Cover", 
-            description: "Discover the beautiful and seasoned journal"
-        },
-        {
-            src: "/images/image4.jpg",
-            alt: "The Sahara Journal Frontend Page",
-            title: "Stunning Design of a Journal of the Sahara", 
-            description: "Discover more creative and stunning contents at Sahara Journal"
-        },
-        {
-            src: "/images/image5.jpg",
-            title: "The Beautiful Sahara Journal", 
-            description: "The Beautiful Sahara Journal"
-        }
-        // You can add more images but I reduced duplicates for clarity
-    ];
+    // // Define carousel images with consistent paths
+    // const carouselImages = [
+    //     {
+    //         src: "/images/image3.jpg",
+    //         title: "Amazing Sahara Journal Back Cover", 
+    //         description: "Discover the beautiful and seasoned journal"
+    //     },
+    //     {
+    //         src: "/images/image4.jpg",
+    //         alt: "The Sahara Journal Frontend Page",
+    //         title: "Stunning Design of a Journal of the Sahara", 
+    //         description: "Discover more creative and stunning contents at Sahara Journal"
+    //     },
+    //     {
+    //         src: "/images/image5.jpg",
+    //         title: "The Beautiful Sahara Journal", 
+    //         description: "The Beautiful Sahara Journal"
+    //     }
+    //     // You can add more images but I reduced duplicates for clarity
+    // ];
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -423,8 +423,8 @@ export default function HomePage() {
             <div className="main-container">
                 <main className="main-content">
                     {/* Carousel Section - Use the updated component */}
-                    <div className="carousel-container">
-                        <Carousol 
+                    {/* <div className="carousel-container"> */}
+                        {/* <Carousol 
                             images={carouselImages}
                             height={500}
                             autoplaySpeed={4000}
@@ -432,7 +432,7 @@ export default function HomePage() {
                             title="Sahara International Journals"
                         />
                     </div>
-                    
+                     */}
                     <JournalHero />
 
                     {/* Welcome Section */}
