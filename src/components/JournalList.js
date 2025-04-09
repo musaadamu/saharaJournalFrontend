@@ -4,10 +4,8 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import './JournalList.css';
 
-// Update the API_BASE_URL to include /api prefix for production
-const API_BASE_URL = process.env.REACT_APP_API_URL 
-  ? `${process.env.REACT_APP_API_URL}/api` 
-  : 'http://localhost:5000';
+// Use environment variable or fallback to localhost
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const JournalList = () => {
     const navigate = useNavigate();
@@ -28,7 +26,7 @@ const JournalList = () => {
         setLoading(true);
         setError('');
         try {
-            console.log('Fetching journals from:', `${API_BASE_URL}/journals`);
+            console.log('Fetching journals from:', API_BASE_URL);
             const response = await axios.get(`${API_BASE_URL}/journals`, {
                 params: { 
                     page, 
@@ -41,15 +39,8 @@ const JournalList = () => {
 
             console.log('API Response:', response.data);
 
-            // Add better error handling for empty responses
-            if (!response.data || (Array.isArray(response.data) && response.data.length === 0)) {
-                setJournals([]);
-                setPagination({
-                    currentPage: 1,
-                    totalPages: 1,
-                    totalJournals: 0
-                });
-                return;
+            if (!response.data) {
+                throw new Error('No data received from server');
             }
 
             // Handle both array response and paginated response formats
