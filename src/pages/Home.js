@@ -376,23 +376,23 @@ export default function HomePage() {
         return "";  // Empty string to use relative paths
     };
 
-    useEffect(() => {
-        async function fetchStats() {
-            try {
-                const response = await fetch("/api/stats");
-                const data = await response.json();
-                setStats([
-                    { label: "Published Papers", value: `${data.publishedPapers || 0}+` },
-                    { label: "Registered Authors", value: `${data.registeredAuthors || 0}+` },
-                    { label: "Global Readers", value: `${data.globalReaders || 0}+` },
-                ]);
-            } catch (error) {
-                console.error("Error fetching stats:", error);
-            }
-        }
+    // useEffect(() => {
+    //     async function fetchStats() {
+    //         try {
+    //             const response = await fetch("/api/stats");
+    //             const data = await response.json();
+    //             setStats([
+    //                 { label: "Published Papers", value: `${data.publishedPapers || 0}+` },
+    //                 { label: "Registered Authors", value: `${data.registeredAuthors || 0}+` },
+    //                 { label: "Global Readers", value: `${data.globalReaders || 0}+` },
+    //             ]);
+    //         } catch (error) {
+    //             console.error("Error fetching stats:", error);
+    //         }
+    //     }
 
-        fetchStats();
-    }, []);
+    //     fetchStats();
+    // }, []);
 
     // // Define carousel images with consistent paths
     // const carouselImages = [
