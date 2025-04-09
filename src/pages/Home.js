@@ -397,18 +397,18 @@ export default function HomePage() {
     // Define carousel images with consistent paths
     const carouselImages = [
         {
-            src: "images/image3.jpg",
+            src: "/images/image3.jpg",
             title: "Amazing Sahara Journal Back Cover", 
             description: "Discover the beautiful and seasoned journal"
         },
         {
-            src: "images/image4.jpg",
+            src: "/images/image4.jpg",
             alt: "The Sahara Journal Frontend Page",
             title: "Stunning Design of a Journal of the Sahara", 
             description: "Discover more creative and stunning contents at Sahara Journal"
         },
         {
-            src: "images/image5.jpg",
+            src: "/images/image5.jpg",
             title: "The Beautiful Sahara Journal", 
             description: "The Beautiful Sahara Journal"
         }
