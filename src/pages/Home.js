@@ -443,7 +443,7 @@ export default function HomePage() {
                             transition={{ duration: 0.8 }}
                             className="text-3xl md:text-5xl lg:text-6xl font-bold"
                         >
-                            Welcome to the Sahara International Journal Hub
+                            Welcome to the Sahara International Journal of Teacher Education
                         </motion.h1>
                         <p className="mt-4 text-base md:text-lg lg:text-xl max-w-xl md:max-w-3xl mx-auto">
                             A global platform for scholars, researchers, and academics to publish and discover cutting-edge research.

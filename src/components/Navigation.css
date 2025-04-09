@@ -134,19 +134,32 @@
   z-index: 100;
 }
 
+.menu-placeholder {
+  width: 48px;
+  display: none;
+}
+
 /* Mobile Navigation */
 @media (max-width: 768px) {
   .nav-container {
     padding: 0 1rem;
     height: 56px;
+    position: relative;
   }
   
   .nav-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     border-right: none;
     padding-right: 0;
   }
   
   .hamburger {
+    display: block;
+  }
+  
+  .menu-placeholder {
     display: block;
   }
   

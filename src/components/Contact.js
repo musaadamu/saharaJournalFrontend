@@ -39,7 +39,7 @@ const Contact = () => {
             </p>
             <p>
               <i className="fas fa-envelope"></i>
-              <a href="mailto:editor@saharajournal.edu.ng">editor@saharajournal.edu.ng</a>
+              <a href="mailto:editor@saharajournal.edu.ng">saharajournal@yahoo.com</a>
             </p>
             <p>
               <i className="fas fa-map-marker-alt"></i>

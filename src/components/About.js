@@ -33,7 +33,7 @@ const About = () => {
             <h3>Contact Information</h3>
             <p>Location: Jos, Plateau State, Nigeria</p>
             <p>Email: contact@saharajournal.edu.ng</p>
-            <p>Phone: +234 (0) XXX-XXX-XXXX</p>
+            <p>Phone: +234 8138614901</p>
           </div>
         </div>
       </section>
