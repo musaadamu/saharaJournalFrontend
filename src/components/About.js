@@ -5,7 +5,7 @@ const About = () => {
   return (
     <div className="about-container">
       <div className="about-header">
-        <h1>Sahara International Journal of Education</h1>
+        <h1>Sahara International Journal of Teacher Education</h1>
         <p className="subtitle">Advancing Educational Research and Knowledge</p>
       </div>
 
