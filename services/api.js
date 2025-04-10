@@ -42,6 +42,11 @@ api.journals = {
   getById: (id) => api.get(`/journals/${id}`),
   download: (id, fileType) => api.get(`/journals/${id}/download/${fileType}`, {
     responseType: 'blob'
+  }),
+  upload: (formData) => api.post('/journals', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 };
 

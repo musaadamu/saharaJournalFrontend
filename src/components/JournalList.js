@@ -1,11 +1,10 @@
-// import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState, useRef } from 'react';
 // import { Link, useNavigate } from 'react-router-dom';
 // import { toast } from 'react-toastify';
-// import axios from 'axios';
 // import './JournalList.css';
 
-// // Use environment variable or fallback to localhost
-// const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+// // Import the API service
+// import api from '../services/api';
 
 // const JournalList = () => {
 //     const navigate = useNavigate();
@@ -18,77 +17,81 @@
 //         totalJournals: 0
 //     });
 
-//     useEffect(() => {
-//         fetchJournals();
-//     }, []);
+//     // Use useRef to store the fetchJournals function
+//     const fetchJournalsRef = useRef();
 
-//     const fetchJournals = async (page = 1) => {
-//         setLoading(true);
-//         setError('');
-//         try {
-//             console.log('Fetching journals from:', API_BASE_URL);
-//             const response = await axios.get(`${API_BASE_URL}/journals`, {
-//                 params: { 
-//                     page, 
+//     // Define fetchJournals inside useEffect to avoid dependency issues
+//     useEffect(() => {
+//         const fetchJournalsData = async (page = 1) => {
+//             setLoading(true);
+//             setError('');
+//             try {
+//                 console.log('Fetching journals using API service');
+//                 const response = await api.journals.getAll({
+//                     page,
 //                     limit: 10,
 //                     sortBy: 'createdAt',
 //                     order: 'desc'
-//                 },
-//                 withCredentials: true // Important for CORS with credentials
-//             });
+//                 });
 
-//             console.log('API Response:', response.data);
+//                 console.log('API Response:', response.data);
 
-//             if (!response.data) {
-//                 throw new Error('No data received from server');
-//             }
-
-//             // Handle both array response and paginated response formats
-//             const journalsData = Array.isArray(response.data) ? 
-//                 response.data : 
-//                 response.data.journals || [];
-                
-//             const paginationData = response.data.pagination || {
-//                 currentPage: page,
-//                 totalPages: 1,
-//                 totalJournals: journalsData.length
-//             };
-
-//             setJournals(journalsData);
-//             setPagination(paginationData);
-//         } catch (err) {
-//             console.error('Fetch journals error:', err);
-//             let errorMsg = 'Failed to fetch journals';
-            
-//             if (err.response) {
-//                 errorMsg = err.response.data?.message || 
-//                          (err.response.status === 401 ? 'Please login to view journals' : 
-//                          err.response.status === 404 ? 'Journal endpoint not found' : 
-//                          'Server error occurred');
-                
-//                 // Redirect to login if unauthorized
-//                 if (err.response.status === 401) {
-//                     navigate('/login');
+//                 if (!response.data) {
+//                     throw new Error("No data received from server");
 //                 }
-//             } else if (err.request) {
-//                 errorMsg = 'Network error - unable to reach server';
-//             } else {
-//                 errorMsg = err.message || 'Error fetching journals';
-//             }
 
-//             setError(errorMsg);
-//             toast.error(errorMsg);
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
+//                 // Handle both array response and paginated response formats
+//                 const journalsData = Array.isArray(response.data) ?
+//                     response.data :
+//                     response.data.journals || [];
+
+//                 const totalPages = response.data.totalPages || 1;
+//                 const totalJournals = response.data.totalJournals || journalsData.length;
+
+//                 setJournals(journalsData);
+//                 setPagination({
+//                     currentPage: page,
+//                     totalPages,
+//                     totalJournals
+//                 });
+//             } catch (err) {
+//                 console.error("Error fetching journals:", err);
+//                 let errorMsg = "Failed to fetch journals";
+
+//                 if (err.response) {
+//                     errorMsg = err.response.data?.message ||
+//                              (err.response.status === 401 ? 'Please login to view journals' :
+//                              err.response.status === 404 ? 'Journal endpoint not found' :
+//                              'Server error occurred');
+
+//                     // Redirect to login if unauthorized
+//                     if (err.response.status === 401) {
+//                         navigate('/login');
+//                     }
+//                 } else if (err.request) {
+//                     errorMsg = 'Network error - unable to reach server';
+//                 } else {
+//                     errorMsg = err.message || 'Error fetching journals';
+//                 }
+
+//                 setError(errorMsg);
+//                 toast.error(errorMsg);
+//             } finally {
+//                 setLoading(false);
+//             }
+//         };
+
+//         // Call the function
+//         fetchJournalsData();
+
+//         // Expose the function for pagination buttons
+//         fetchJournalsRef.current = fetchJournalsData;
+//     }, [navigate]);
 
 //     const handleDownload = async (id, fileType) => {
 //         try {
-//             const response = await axios.get(`${API_BASE_URL}/journals/${id}/download/${fileType}`, {
-//                 responseType: 'blob',
-//                 withCredentials: true
-//             });
+//             console.log(`Downloading ${fileType} file for journal ID:`, id);
+//             const response = await api.journals.download(id, fileType);
 
 //             const url = window.URL.createObjectURL(new Blob([response.data]));
 //             const link = document.createElement('a');
@@ -111,8 +114,8 @@
 //         <div className="journal-list-container max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
 //             <div className="header flex flex-col sm:flex-row justify-between items-center mb-6">
 //                 <h2 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Journal List</h2>
-//                 <Link 
-//                     to="/journals/new" 
+//                 <Link
+//                     to="/journals/new"
 //                     className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
 //                 >
 //                     + New Journal
@@ -135,7 +138,7 @@
 //                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 //                         {journals.map((journal) => (
 //                             <div key={journal._id} className="journal-card border rounded-lg p-4 hover:shadow-md transition-shadow">
-//                                 <h3 
+//                                 <h3
 //                                     className="text-lg font-semibold text-blue-600 cursor-pointer hover:underline"
 //                                     onClick={() => navigate(`/journals/${journal._id}`)}
 //                                 >
@@ -145,27 +148,27 @@
 //                                     {journal.abstract || 'No abstract available'}
 //                                 </p>
 //                                 <span className={`status mt-2 px-2 py-1 rounded-full text-xs ${
-//                                     journal.status === 'Published' 
-//                                         ? 'bg-green-100 text-green-800' 
+//                                     journal.status === 'Published'
+//                                         ? 'bg-green-100 text-green-800'
 //                                         : 'bg-yellow-100 text-yellow-800'
 //                                 }`}>
 //                                     {journal.status || 'Draft'}
 //                                 </span>
 //                                 <div className="actions mt-4 flex flex-wrap gap-2">
-//                                     <button 
-//                                         onClick={() => navigate(`/journals/${journal._id}`)} 
+//                                     <button
+//                                         onClick={() => navigate(`/journals/${journal._id}`)}
 //                                         className="text-blue-500 hover:text-blue-700"
 //                                     >
 //                                         View
 //                                     </button>
-//                                     <button 
-//                                         onClick={() => handleDownload(journal._id, 'pdf')} 
+//                                     <button
+//                                         onClick={() => handleDownload(journal._id, 'pdf')}
 //                                         className="text-red-500 hover:text-red-700"
 //                                     >
 //                                         Download PDF
 //                                     </button>
-//                                     <button 
-//                                         onClick={() => handleDownload(journal._id, 'docx')} 
+//                                     <button
+//                                         onClick={() => handleDownload(journal._id, 'docx')}
 //                                         className="text-blue-500 hover:text-blue-700"
 //                                     >
 //                                         Download DOCX
@@ -176,9 +179,9 @@
 //                     </div>
 //                     {pagination.totalPages > 1 && (
 //                         <div className="pagination flex justify-between items-center mt-6">
-//                             <button 
-//                                 onClick={() => fetchJournals(pagination.currentPage - 1)} 
-//                                 disabled={pagination.currentPage === 1} 
+//                             <button
+//                                 onClick={() => fetchJournalsRef.current(pagination.currentPage - 1)}
+//                                 disabled={pagination.currentPage === 1}
 //                                 className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
 //                             >
 //                                 Previous
@@ -186,9 +189,9 @@
 //                             <span className="text-sm text-gray-600">
 //                                 Page {pagination.currentPage} of {pagination.totalPages}
 //                             </span>
-//                             <button 
-//                                 onClick={() => fetchJournals(pagination.currentPage + 1)} 
-//                                 disabled={pagination.currentPage === pagination.totalPages} 
+//                             <button
+//                                 onClick={() => fetchJournalsRef.current(pagination.currentPage + 1)}
+//                                 disabled={pagination.currentPage === pagination.totalPages}
 //                                 className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
 //                             >
 //                                 Next
@@ -202,18 +205,14 @@
 // };
 
 // export default JournalList;
-
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import './JournalList.css';
 
-// Use environment variable or fallback to localhost
-// const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-
-const API_BASE_URL = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`;
+// Import the API service
+import api from '../services/api';
 
 const JournalList = () => {
     const navigate = useNavigate();
@@ -226,23 +225,17 @@ const JournalList = () => {
         totalJournals: 0
     });
 
-    useEffect(() => {
-        fetchJournals();
-    }, []);
-
-    const fetchJournals = async (page = 1) => {
+    // Define fetchJournals with useCallback to avoid dependency issues
+    const fetchJournals = useCallback(async (page = 1) => {
         setLoading(true);
         setError('');
         try {
-            console.log('Fetching journals from:', API_BASE_URL);
-            const response = await axios.get(`${API_BASE_URL}/journals`, {
-                params: { 
-                    page, 
-                    limit: 10,
-                    sortBy: 'createdAt',
-                    order: 'desc'
-                },
-                withCredentials: true // Important for CORS with credentials
+            console.log('Fetching journals using API service');
+            const response = await api.journals.getAll({
+                page, 
+                limit: 10,
+                sortBy: 'createdAt',
+                order: 'desc'
             });
 
             console.log('API Response:', response.data);
@@ -289,14 +282,16 @@ const JournalList = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [navigate]);
+
+    useEffect(() => {
+        fetchJournals();
+    }, [fetchJournals]);
 
     const handleDownload = async (id, fileType) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/journals/${id}/download/${fileType}`, {
-                responseType: 'blob',
-                withCredentials: true
-            });
+            console.log(`Downloading ${fileType} file for journal ID:`, id);
+            const response = await api.journals.download(id, fileType);
 
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');

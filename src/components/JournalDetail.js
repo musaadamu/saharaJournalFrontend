@@ -37,18 +37,18 @@
 //     return (
 //         <div className="max-w-3xl mx-auto bg-white p-6 shadow-md rounded-lg">
 //             <h2 className="text-2xl font-bold mb-4">{journal?.title || 'Untitled Journal'}</h2>
-            
+
 //             <div className="space-y-3">
 //                 <p><strong>Abstract:</strong> {journal?.abstract || 'No abstract available'}</p>
 //                 <p><strong>Content:</strong> {journal?.content || 'Download PDF or WORD file'}</p>
 
 //                 {journal?.pdfUrl && (
 //                     <p>
-//                         <strong>PDF:</strong> 
-//                         <a 
-//                             href={journal.pdfUrl} 
-//                             target="_blank" 
-//                             rel="noopener noreferrer" 
+//                         <strong>PDF:</strong>
+//                         <a
+//                             href={journal.pdfUrl}
+//                             target="_blank"
+//                             rel="noopener noreferrer"
 //                             className="text-blue-600 hover:underline"
 //                         >
 //                             View PDF
@@ -105,18 +105,18 @@
 //     return (
 //         <div className="max-w-3xl mx-auto bg-white p-6 shadow-md rounded-lg">
 //             <h2 className="text-2xl font-bold mb-4">{journal?.title || 'Untitled Journal'}</h2>
-            
+
 //             <div className="space-y-3">
 //                 <p><strong>Abstract:</strong> {journal?.abstract || 'No abstract available'}</p>
 //                 <p><strong>Content:</strong> {journal?.content || 'Download PDF or WORD file'}</p>
 
 //                 {journal?.pdfUrl && (
 //                     <p>
-//                         <strong>PDF:</strong> 
-//                         <a 
-//                             href={journal.pdfUrl} 
-//                             target="_blank" 
-//                             rel="noopener noreferrer" 
+//                         <strong>PDF:</strong>
+//                         <a
+//                             href={journal.pdfUrl}
+//                             target="_blank"
+//                             rel="noopener noreferrer"
 //                             className="text-blue-600 hover:underline"
 //                         >
 //                             Download PDF
@@ -126,11 +126,11 @@
 
 //                 {journal?.docxFilePath && (
 //                     <p>
-//                         <strong>Word Document:</strong> 
-//                         <a 
-//                             href={journal.docxFilePath} 
-//                             target="_blank" 
-//                             rel="noopener noreferrer" 
+//                         <strong>Word Document:</strong>
+//                         <a
+//                             href={journal.docxFilePath}
+//                             target="_blank"
+//                             rel="noopener noreferrer"
 //                             className="text-blue-600 hover:underline"
 //                         >
 //                             Download Word Document
@@ -205,16 +205,16 @@
 //     return (
 //         <div className="max-w-3xl mx-auto bg-white p-6 shadow-md rounded-lg">
 //             <h2 className="text-2xl font-bold mb-4">{journal?.title || 'Untitled Journal'}</h2>
-            
+
 //             <div className="space-y-3">
 //                 <p><strong>Abstract:</strong> {journal?.abstract || 'No abstract available'}</p>
 //                 <p><strong>Content:</strong> {journal?.content || 'Download PDF or WORD file'}</p>
 
 //                 {journal?.pdfUrl && (
 //                     <p>
-//                         <strong>PDF:</strong> 
-//                         <button 
-//                             onClick={() => handleDownload('pdf')} 
+//                         <strong>PDF:</strong>
+//                         <button
+//                             onClick={() => handleDownload('pdf')}
 //                             className="text-blue-600 hover:underline"
 //                         >
 //                             Download PDF
@@ -224,9 +224,9 @@
 
 //                 {journal?.docxFilePath && (
 //                     <p>
-//                         <strong>Word Document:</strong> 
-//                         <button 
-//                             onClick={() => handleDownload('docx')} 
+//                         <strong>Word Document:</strong>
+//                         <button
+//                             onClick={() => handleDownload('docx')}
 //                             className="text-blue-600 hover:underline"
 //                         >
 //                             Download Word Document
@@ -302,7 +302,7 @@
 //     return (
 //         <div className="max-w-3xl mx-auto bg-white p-6 shadow-md rounded-lg">
 //             <h2 className="text-2xl font-bold mb-4">{journal?.title || 'Untitled Journal'}</h2>
-            
+
 //             <div className="space-y-3">
 //                 <p><strong>Abstract:</strong> {journal?.abstract || 'No abstract available'}</p>
 //                 <p><strong>Content:</strong> {journal?.content || 'Download PDF or WORD file'}</p>
@@ -310,8 +310,8 @@
 //                 {journal?.pdfUrl && (
 //                     <p>
 //                         <strong>PDF:</strong> {' '}
-//                         <button 
-//                             onClick={() => handleDownload('pdf')} 
+//                         <button
+//                             onClick={() => handleDownload('pdf')}
 //                             className="text-blue-600 hover:underline ml-2"
 //                         >
 //                             Download PDF
@@ -322,8 +322,8 @@
 //                 {journal?.docxFilePath && (
 //                     <p>
 //                         <strong>Word Document:</strong> {' '}
-//                         <button 
-//                             onClick={() => handleDownload('docx')} 
+//                         <button
+//                             onClick={() => handleDownload('docx')}
 //                             className="text-blue-600 hover:underline ml-2"
 //                         >
 //                             Download Word Document
@@ -399,7 +399,7 @@
 //     return (
 //         <div className="max-w-3xl mx-auto bg-white p-6 shadow-md rounded-lg">
 //             <h2 className="text-2xl font-bold mb-4">{journal?.title || 'Untitled Journal'}</h2>
-            
+
 //             <div className="space-y-3">
 //                 <p><strong>Abstract:</strong> {journal?.abstract || 'No abstract available'}</p>
 //                 <p><strong>Content:</strong> {journal?.content || 'Download PDF or WORD file'}</p>
@@ -407,8 +407,8 @@
 //                 {/* Always show the PDF download button, like in JournalList */}
 //                 <p>
 //                     <strong>PDF:</strong> {' '}
-//                     <button 
-//                         onClick={() => handleDownload('pdf')} 
+//                     <button
+//                         onClick={() => handleDownload('pdf')}
 //                         className="text-blue-600 hover:underline ml-2"
 //                     >
 //                         Download PDF
@@ -418,8 +418,8 @@
 //                 {/* Always show the Word download button, like in JournalList */}
 //                 <p>
 //                     <strong>Word Document:</strong> {' '}
-//                     <button 
-//                         onClick={() => handleDownload('docx')} 
+//                     <button
+//                         onClick={() => handleDownload('docx')}
 //                         className="text-blue-600 hover:underline ml-2"
 //                     >
 //                         Download Word Document
@@ -451,19 +451,13 @@ const JournalDetail = () => {
     useEffect(() => {
         const fetchJournal = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/journals/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-                    },
-                });
-
-                if (!response.ok) throw new Error('Failed to fetch journal details');
-
-                const data = await response.json();
-                console.log("Journal data:", data); // Debug log
-                setJournal(data);
+                console.log('Fetching journal details for ID:', id);
+                const response = await api.journals.getById(id);
+                console.log("Journal data:", response.data); // Debug log
+                setJournal(response.data);
             } catch (err) {
-                setError(err.message);
+                console.error('Error fetching journal:', err);
+                setError(err.response?.data?.message || err.message);
             } finally {
                 setLoading(false);
             }
@@ -474,7 +468,10 @@ const JournalDetail = () => {
 
     const handleDownload = async (fileType) => {
         try {
-            const { data } = await api.get(`/journals/${id}/download/${fileType}`, { responseType: 'blob' });
+            console.log(`Downloading ${fileType} file for journal ID:`, id);
+            const { data } = await api.journals.download(id, fileType);
+
+            // Create a download link
             const url = window.URL.createObjectURL(new Blob([data]));
             const link = document.createElement('a');
             link.href = url;
@@ -482,8 +479,10 @@ const JournalDetail = () => {
             document.body.appendChild(link);
             link.click();
             link.remove();
+
             toast.success(`Journal downloaded as ${fileType.toUpperCase()}`);
         } catch (err) {
+            console.error(`Error downloading ${fileType} file:`, err);
             toast.error(`Failed to download ${fileType.toUpperCase()} file`);
         }
     };
@@ -494,7 +493,7 @@ const JournalDetail = () => {
     return (
         <div className="max-w-3xl mx-auto bg-white p-6 shadow-md rounded-lg">
             <h2 className="text-2xl font-bold mb-4">{journal?.title || 'Untitled Journal'}</h2>
-            
+
             <div className="space-y-3">
                 <p><strong>Abstract:</strong> {journal?.abstract || 'No abstract available'}</p>
                 <p><strong>Content:</strong> {journal?.content || 'Download PDF or WORD file'}</p>
@@ -502,8 +501,8 @@ const JournalDetail = () => {
                 {/* Always show the PDF download button, like in JournalList */}
                 <p>
                     <strong>PDF:</strong> {' '}
-                    <button 
-                        onClick={() => handleDownload('pdf')} 
+                    <button
+                        onClick={() => handleDownload('pdf')}
                         className="text-blue-600 hover:underline ml-2"
                     >
                         Download PDF
@@ -513,8 +512,8 @@ const JournalDetail = () => {
                 {/* Always show the Word download button, like in JournalList */}
                 <p>
                     <strong>Word Document:</strong> {' '}
-                    <button 
-                        onClick={() => handleDownload('docx')} 
+                    <button
+                        onClick={() => handleDownload('docx')}
                         className="text-blue-600 hover:underline ml-2"
                     >
                         Download Word Document

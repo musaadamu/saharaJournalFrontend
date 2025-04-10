@@ -225,10 +225,10 @@
 // // // //         } catch (err) {
 // // // //             console.error("Upload error:", err);
 // // // //             let errorMsg = "Failed to upload journal";
-            
+
 // // // //             if (err.response) {
-// // // //                 errorMsg = err.response.data?.message || 
-// // // //                          (err.response.status === 401 ? "Please login to upload journals" : 
+// // // //                 errorMsg = err.response.data?.message ||
+// // // //                          (err.response.status === 401 ? "Please login to upload journals" :
 // // // //                          "Server error occurred");
 // // // //             } else if (err.request) {
 // // // //                 errorMsg = "Network error - unable to reach server";
@@ -400,10 +400,10 @@
 // // //         } catch (err) {
 // // //             console.error("Upload error:", err);
 // // //             let errorMsg = "Failed to upload journal";
-            
+
 // // //             if (err.response) {
-// // //                 errorMsg = err.response.data?.message || 
-// // //                          (err.response.status === 401 ? "Please login to upload journals" : 
+// // //                 errorMsg = err.response.data?.message ||
+// // //                          (err.response.status === 401 ? "Please login to upload journals" :
 // // //                          "Server error occurred");
 // // //             } else if (err.request) {
 // // //                 errorMsg = "Network error - unable to reach server";
@@ -426,7 +426,7 @@
 // // //     return (
 // // //         <div className="min-h-screen flex flex-col">
 // // //             <Navigation />
-            
+
 // // //             <main className="flex-grow bg-gray-50 py-8">
 // // //                 <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 // // //                     <div className="bg-white shadow-xl rounded-lg overflow-hidden">
@@ -583,7 +583,7 @@
 // // const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 // // const JournalUpload = () => {
-// //     const [formData, setFormData] = useState({ 
+// //     const [formData, setFormData] = useState({
 // //         title: "",
 // //         abstract: "",
 // //         authors: "",
@@ -805,10 +805,10 @@
 //         } catch (err) {
 //             console.error("Upload error:", err);
 //             let errorMsg = "Failed to upload journal";
-            
+
 //             if (err.response) {
-//                 errorMsg = err.response.data?.message || 
-//                          (err.response.status === 401 ? "Please login to upload journals" : 
+//                 errorMsg = err.response.data?.message ||
+//                          (err.response.status === 401 ? "Please login to upload journals" :
 //                          "Server error occurred");
 //             } else if (err.request) {
 //                 errorMsg = "Network error - unable to reach server";
@@ -831,7 +831,7 @@
 //     return (
 //         <div className="min-h-screen flex flex-col">
 //             <Navigation />
-            
+
 //             <main className="flex-grow bg-gray-50 py-8">
 //                 <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 //                     <div className="bg-white shadow-xl rounded-lg overflow-hidden">
@@ -981,12 +981,10 @@
 // export default JournalUpload;
 
 import React, { useState } from "react";
-import axios from "axios";
 import "./JournalUpload.css";
 import Footer from "./Footer";
 import Navigation from "./Navigation";
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+import api from "../services/api";
 
 const JournalUpload = () => {
     const [formData, setFormData] = useState({
@@ -1035,24 +1033,34 @@ const JournalUpload = () => {
             setLoading(false);
             return;
         }
+
+        // Convert authors array to a JSON string and append it as a single field
         formDataObj.append("authors", JSON.stringify(authorNames));
+        console.log('Authors appended:', JSON.stringify(authorNames));
 
         // Process keywords as array
         const keywords = formData.keywords
             .split(",")
             .map((kw) => kw.trim())
             .filter(Boolean);
+
+        // Convert keywords array to a JSON string and append it as a single field
         formDataObj.append("keywords", JSON.stringify(keywords));
+        console.log('Keywords appended:', JSON.stringify(keywords));
 
         formDataObj.append("file", file);
 
         try {
-            const response = await axios.post(`${API_BASE_URL}/journals`, formDataObj, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "Authorization": `Bearer ${localStorage.getItem("authToken")}`
-                }
-            });
+            console.log("Uploading journal...");
+            console.log("Form data entries:");
+            for (let pair of formDataObj.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+
+            // Use the api service's journal upload method
+            const response = await api.journals.upload(formDataObj);
+
+            console.log("Upload response:", response);
 
             if (!response.data) {
                 throw new Error("No data received from server");
@@ -1063,11 +1071,10 @@ const JournalUpload = () => {
         } catch (err) {
             console.error("Upload error:", err);
             let errorMsg = "Failed to upload journal";
-            
+
             if (err.response) {
-                errorMsg = err.response.data?.message || 
-                         (err.response.status === 401 ? "Please login to upload journals" : 
-                         "Server error occurred");
+                console.log("Error response:", err.response);
+                errorMsg = err.response.data?.message || "Server error occurred";
             } else if (err.request) {
                 errorMsg = "Network error - unable to reach server";
             } else {
@@ -1089,7 +1096,7 @@ const JournalUpload = () => {
     return (
         <div className="min-h-screen flex flex-col">
             <Navigation />
-            
+
             <main className="flex-grow bg-gray-50 py-8">
                 <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="bg-white shadow-xl rounded-lg overflow-hidden">
