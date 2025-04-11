@@ -82,5 +82,16 @@ api.journals = {
   }
 };
 
+// Helper methods for submissions
+api.submissions = {
+  getAll: (params) => api.get('/submissions', { params }),
+  getById: (id) => api.get(`/submissions/${id}`),
+  download: (id, fileType) => api.get(`/submissions/${id}/download/${fileType}`, {
+    responseType: 'blob'
+  }),
+  updateStatus: (id, status) => api.patch(`/submissions/${id}/status`, { status }),
+  delete: (id) => api.delete(`/submissions/${id}`)
+};
+
 export default api;
 export const baseURL = api.defaults.baseURL;
