@@ -21,7 +21,7 @@
 
 // export default ProtectedRoute;
 
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
 
@@ -31,11 +31,24 @@ const LoadingSpinner = () => (
     </div>
 );
 
-const ProtectedRoute = ({ allowedRoles }) => {
+const ProtectedRoute = ({ children, allowedRoles }) => {
     const { user, loading } = useSelector((state) => state.auth);
 
+    // Debug user role information
+    console.log('Protected Route - User:', user);
+    console.log('Protected Route - Allowed Roles:', allowedRoles);
+
     const isAuthorized = useMemo(() => {
-        return allowedRoles ? allowedRoles.includes(user?.role) : true;
+        // If no roles are specified, allow access
+        if (!allowedRoles) return true;
+
+        // If user has no role, deny access to role-restricted routes
+        if (!user || !user.role) return false;
+
+        // Check if user's role is in the allowed roles
+        const hasRole = allowedRoles.includes(user.role);
+        console.log('User role check:', user.role, 'is in allowed roles:', hasRole);
+        return hasRole;
     }, [user, allowedRoles]);
 
     if (loading) {
@@ -47,10 +60,10 @@ const ProtectedRoute = ({ allowedRoles }) => {
     }
 
     if (!isAuthorized) {
-        return <Navigate to="/not-authorized" replace />;
+        return <Navigate to="/unauthorized" replace />;
     }
 
-    return <Outlet />;
+    return children;
 };
 
 export default ProtectedRoute;

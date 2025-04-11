@@ -2,7 +2,6 @@
 
 
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../services/api"; // adjust path as needed
@@ -12,7 +11,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './ManageJournal.css';
 
 export default function ManageJournal() {
-    const { user } = useSelector((state) => state.auth);
+    // We don't need to check for user role here as it's handled by the ProtectedRoute component
     // State for journals
     const [journals, setJournals] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -39,14 +38,9 @@ export default function ManageJournal() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user || user.role !== "admin") {
-            navigate("/unauthorized");
-            return;
-        }
-
         fetchJournals();
         fetchSubmissions();
-    }, [user, navigate]);
+    }, []);
 
     const fetchJournals = async (page = 1) => {
         setLoading(true);

@@ -15,6 +15,11 @@
 @media (min-width: 768px) {
   .main-navigation {
     margin-left: 256px;
+    transition: margin-left 0.3s ease;
+  }
+
+  .sidebar-open .main-navigation {
+    margin-left: 0;
   }
 }
 
@@ -102,6 +107,7 @@
   transition: background-color 0.2s ease, color 0.2s ease;
   position: relative;
   font-size: 0.9rem;
+  white-space: nowrap; /* Prevent text from wrapping */
 }
 
 .nav-links a:hover {
@@ -124,7 +130,7 @@
 
 /* Hamburger Menu */
 .hamburger {
-  display: none;
+  display: none; /* Hide by default on larger screens */
   background: none;
   border: none;
   color: white;
@@ -132,6 +138,18 @@
   cursor: pointer;
   padding: 0.25rem;
   z-index: 100;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-menu-toggle {
+  order: 1;
+}
+
+.sidebar-toggle {
+  order: 3;
 }
 
 .menu-placeholder {
@@ -142,27 +160,43 @@
 /* Mobile Navigation */
 @media (max-width: 768px) {
   .nav-container {
-    padding: 0 1rem;
+    padding: 0;
     height: 56px;
     position: relative;
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    align-items: center;
   }
-  
+
   .nav-brand {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    grid-column: 2;
+    justify-content: center;
     border-right: none;
     padding-right: 0;
+    text-align: center;
   }
-  
+
+  .nav-logo {
+    width: 100%;
+    text-align: center;
+  }
+
   .hamburger {
-    display: block;
+    display: flex; /* Show and use flex layout on mobile */
   }
-  
+
+  .main-menu-toggle {
+    grid-column: 1;
+  }
+
+  .sidebar-toggle {
+    grid-column: 3;
+  }
+
   .menu-placeholder {
-    display: block;
+    display: none;
   }
-  
+
   .nav-menu-container {
     position: absolute;
     top: 100%;
@@ -178,46 +212,48 @@
     z-index: 99;
     height: auto;
   }
-  
+
   .nav-menu-container.open {
     max-height: 500px;
     overflow-y: auto;
   }
-  
+
   .nav-links {
     flex-direction: column;
     width: 100%;
     height: auto;
   }
-  
+
   .main-links, .user-links {
     margin: 0;
     padding: 0.5rem 0;
     width: 100%;
   }
-  
+
   .nav-divider {
     width: 90%;
     height: 1px;
     margin: 0.5rem auto;
   }
-  
+
   .nav-links li {
     width: 100%;
     height: auto;
   }
-  
+
   .nav-links a {
     padding: 0.75rem 1.5rem;
     height: auto;
     width: 100%;
     justify-content: flex-start;
+    white-space: normal; /* Allow wrapping on mobile for better readability */
+    line-height: 1.2; /* Improve line spacing for wrapped text */
   }
-  
+
   .nav-links a.active::after {
     display: none;
   }
-  
+
   .nav-links a.active {
     background-color: #2563eb;
   }
@@ -228,14 +264,20 @@
   .nav-links a {
     padding: 0 0.5rem;
     font-size: 0.85rem;
+    white-space: nowrap; /* Ensure no wrapping on medium screens */
   }
-  
+
   .nav-container {
     padding: 0 1rem;
   }
-  
+
   .nav-brand {
     padding-right: 1rem;
+  }
+
+  /* Hide hamburger on medium screens */
+  .hamburger {
+    display: none;
   }
 }
 
@@ -244,16 +286,28 @@
   .nav-container {
     padding: 0 2rem;
   }
-  
+
   .nav-brand {
     padding-right: 2rem;
   }
-  
+
   .main-links {
     margin-left: 1.5rem;
   }
-  
+
   .nav-divider {
     margin: 0 1rem;
+  }
+
+  /* Explicitly hide hamburger on large screens */
+  .hamburger {
+    display: none;
+  }
+
+  /* Ensure links don't wrap */
+  .nav-links a {
+    white-space: nowrap;
+    font-size: 0.95rem;
+    padding: 0 1rem;
   }
 }

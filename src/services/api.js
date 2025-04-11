@@ -14,6 +14,9 @@ const getBaseUrl = () => {
 const apiBaseUrl = getBaseUrl();
 console.log('API Base URL:', apiBaseUrl);
 
+// Add a function to check if we're using the production API
+export const isProduction = () => apiBaseUrl.includes('saharabackend-v190.onrender.com');
+
 // Create axios instance with base URL
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -55,6 +58,9 @@ api.auth = {
   login: (credentials) => api.post('/auth/login', credentials),
   register: (userData) => api.post('/auth/register', userData),
   profile: () => api.get('/auth/profile'),
+  updateProfile: (userData) => api.put('/auth/profile', userData),
+  forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
+  resetPassword: (token, password) => api.post(`/auth/reset-password/${token}`, { password }),
   checkAdmin: async () => {
     try {
       const response = await api.get('/auth/profile');

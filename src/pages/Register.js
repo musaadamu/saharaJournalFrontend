@@ -6,12 +6,11 @@ import { toast } from "react-toastify";
 import './Register.css';
 
 const Register = () => {
-    const [formData, setFormData] = useState({ 
-        name: "", 
-        email: "", 
-        password: "", 
-        confirmPassword: "", 
-        role: "author" 
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +37,7 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const { name, email, password, confirmPassword, role } = formData;
+        const { name, email, password, confirmPassword } = formData;
 
         if (!name.trim() || !email.trim() || !password || !confirmPassword) {
             return toast.error("All fields are required");
@@ -48,7 +47,8 @@ const Register = () => {
             return toast.error("Passwords do not match");
         }
 
-        dispatch(registerUser({ name: name.trim(), email: email.trim(), password, role }));
+        // Always set role to 'author' for security
+        dispatch(registerUser({ name: name.trim(), email: email.trim(), password, role: 'author' }));
     };
 
     return (
@@ -58,7 +58,7 @@ const Register = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block font-semibold">Name:</label>
-                        <input 
+                        <input
                             type="text"
                             name="name"
                             value={formData.name}
@@ -70,7 +70,7 @@ const Register = () => {
                     </div>
                     <div>
                         <label className="block font-semibold">Email:</label>
-                        <input 
+                        <input
                             type="email"
                             name="email"
                             value={formData.email}
@@ -81,27 +81,13 @@ const Register = () => {
                         />
                     </div>
 
-                    {/* Role Selection */}
-                    <div>
-                        <label className="block font-semibold">Role:</label>
-                        <select 
-                            name="role"
-                            value={formData.role}
-                            onChange={handleChange}
-                            className="w-full p-3 border rounded-md"
-                            required
-                        >
-                            <option value="author">Author</option>
-                            <option value="editor">Editor</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
+                    {/* Role is automatically set to 'author' for all new registrations */}
 
                     {/* Password Field */}
                     <div>
                         <label className="block font-semibold">Password:</label>
                         <div className="relative">
-                            <input 
+                            <input
                                 type={showPassword ? "text" : "password"}
                                 name="password"
                                 value={formData.password}
@@ -110,8 +96,8 @@ const Register = () => {
                                 required
                                 className="w-full p-3 border rounded-md pr-10"
                             />
-                            <button 
-                                type="button" 
+                            <button
+                                type="button"
                                 className="absolute right-3 top-3 text-sm"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
@@ -124,7 +110,7 @@ const Register = () => {
                     <div>
                         <label className="block font-semibold">Confirm Password:</label>
                         <div className="relative">
-                            <input 
+                            <input
                                 type={showConfirmPassword ? "text" : "password"}
                                 name="confirmPassword"
                                 value={formData.confirmPassword}
@@ -133,8 +119,8 @@ const Register = () => {
                                 required
                                 className="w-full p-3 border rounded-md pr-10"
                             />
-                            <button 
-                                type="button" 
+                            <button
+                                type="button"
                                 className="absolute right-3 top-3 text-sm"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             >

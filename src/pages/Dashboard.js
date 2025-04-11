@@ -113,9 +113,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../services/api";
 import "./Dashboard.css"; // Import the CSS file
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const Dashboard = () => {
     const { user, loading: userLoading, error: userError } = useSelector((state) => state.auth);
@@ -141,49 +140,52 @@ const Dashboard = () => {
             setLoading(true);
             setError("");
 
-            const response = await fetch(`${API_BASE_URL}/journals`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-                    'Content-Type': 'application/json'
-                },
-                params: {
-                    page,
-                    limit: 10,
-                    sortBy: "createdAt",
-                    order: "desc",
-                }
+            console.log('Fetching journals for dashboard...');
+            const response = await api.journals.getAll({
+                page,
+                limit: 10,
+                sortBy: 'createdAt',
+                order: 'desc'
             });
 
-            if (!response.ok) {
-                throw new Error(response.status === 401 ? 'Please login to view journals' : 
-                               response.status === 404 ? 'No journals found' : 
-                               'Failed to fetch journals');
-            }
+            console.log('Journals response:', response.data);
 
-            const data = await response.json();
-            
             // Handle both array response and paginated response
-            const journalsData = Array.isArray(data) ? 
-                data : 
-                data.journals || [];
-                
-            const paginationData = data.pagination || {
+            const journalsData = Array.isArray(response.data) ?
+                response.data :
+                response.data.journals || [];
+
+            const paginationData = response.data.pagination || {
                 currentPage: page,
                 totalPages: 1,
                 totalJournals: journalsData.length
             };
-            
+
             setJournals(journalsData);
             setPagination(paginationData);
         } catch (err) {
             console.error('Fetch journals error:', err);
-            const errorMessage = err.response?.data?.message || err.message || "Failed to fetch journals";
-            setError(errorMessage);
-            toast.error(errorMessage);
+            let errorMsg = "Failed to fetch journals";
 
-            if (err.response?.status === 401) {
-                navigate('/login');
+            if (err.code === 'ECONNABORTED') {
+                errorMsg = 'Request timed out. Server may be slow or unavailable.';
+            } else if (err.response) {
+                errorMsg = err.response.data?.message ||
+                    (err.response.status === 401 ? 'Please login to view journals' :
+                        err.response.status === 404 ? 'No journals found' :
+                            'Server error occurred');
+
+                if (err.response.status === 401) {
+                    navigate('/login');
+                }
+            } else if (err.request) {
+                errorMsg = 'Network error - unable to reach server';
+            } else {
+                errorMsg = err.message || 'Error fetching journals';
             }
+
+            setError(errorMsg);
+            toast.error(errorMsg);
         } finally {
             setLoading(false);
         }
@@ -207,27 +209,26 @@ const Dashboard = () => {
 
     const handleDownload = async (id, fileType) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/journals/${id}/download/${fileType}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-                },
-            });
+            console.log(`Downloading journal ${id} as ${fileType}...`);
+            const response = await api.journals.download(id, fileType);
 
-            if (!response.ok) throw new Error(`Failed to download ${fileType} file`);
-            
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
-            link.href = url;
             const journal = journals.find(j => j._id === id);
+            link.href = url;
             link.setAttribute('download', `${journal?.title || 'journal'}.${fileType}`);
             document.body.appendChild(link);
             link.click();
             link.remove();
+
             toast.success(`Journal downloaded as ${fileType.toUpperCase()}`);
         } catch (err) {
             console.error('Download error:', err);
-            toast.error(`Failed to download ${fileType.toUpperCase()} file`);
+            let errorMsg = `Failed to download ${fileType.toUpperCase()} file`;
+            if (err.code === 'ECONNABORTED') {
+                errorMsg = 'Download timed out. File may be too large or server is slow.';
+            }
+            toast.error(errorMsg);
         }
     };
 
@@ -254,13 +255,13 @@ const Dashboard = () => {
             <div className="dashboard-content">
                 <h2 className="dashboard-title">Welcome to Dashboard</h2>
                 <p className="dashboard-user">User: {user?.email}</p>
-                
+
                 {journals.length > 0 ? (
                     <>
                         <div className="journal-list">
                             {journals.map((journal) => (
                                 <div key={journal._id} className="journal-card">
-                                    <h3 
+                                    <h3
                                         className="journal-title cursor-pointer hover:underline"
                                         onClick={() => handleViewJournal(journal._id)}
                                     >
@@ -274,21 +275,21 @@ const Dashboard = () => {
                                     }`}>
                                         {journal.status || 'Draft'}
                                     </span>
-                                    
+
                                     <div className="journal-actions">
-                                        <button 
+                                        <button
                                             onClick={() => handleViewJournal(journal._id)}
                                             className="action-button view-button"
                                         >
                                             View
                                         </button>
-                                        <button 
+                                        <button
                                             onClick={() => handleDownload(journal._id, 'pdf')}
                                             className="action-button pdf-button"
                                         >
                                             PDF
                                         </button>
-                                        <button 
+                                        <button
                                             onClick={() => handleDownload(journal._id, 'docx')}
                                             className="action-button docx-button"
                                         >
@@ -298,12 +299,12 @@ const Dashboard = () => {
                                 </div>
                             ))}
                         </div>
-                        
+
                         {pagination.totalPages > 1 && (
                             <div className="pagination">
-                                <button 
-                                    onClick={() => fetchJournals(pagination.currentPage - 1)} 
-                                    disabled={pagination.currentPage === 1} 
+                                <button
+                                    onClick={() => fetchJournals(pagination.currentPage - 1)}
+                                    disabled={pagination.currentPage === 1}
                                     className="pagination-button prev-button"
                                 >
                                     Previous
@@ -311,9 +312,9 @@ const Dashboard = () => {
                                 <span className="page-info">
                                     Page {pagination.currentPage} of {pagination.totalPages}
                                 </span>
-                                <button 
-                                    onClick={() => fetchJournals(pagination.currentPage + 1)} 
-                                    disabled={pagination.currentPage === pagination.totalPages} 
+                                <button
+                                    onClick={() => fetchJournals(pagination.currentPage + 1)}
+                                    disabled={pagination.currentPage === pagination.totalPages}
                                     className="pagination-button next-button"
                                 >
                                     Next

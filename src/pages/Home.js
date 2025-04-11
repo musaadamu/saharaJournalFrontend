@@ -33,14 +33,14 @@
 
 // //     return (
 // //         <div className="min-h-screen bg-gray-50 text-gray-900">
-           
+
 
 // //             <div className="main-container flex flex-col lg:flex-row">
 // //                 <Sidebar className="site-sidebar" />
-                
+
 // //                 <main className="main-content flex-1 p-4 sm:p-6 lg:p-8 lg:pl-[280px]">
 // //                     {/* Hero Section */}
-// //                     <Carousol 
+// //                     <Carousol
 // //                             images={[
 // //                                 {
 // //                                   src: "images/image3.jpg",
@@ -160,7 +160,7 @@
 // //             </div>
 
 // //             {/* Footer */}
-           
+
 // //         </div>
 // //     );
 // // }
@@ -203,12 +203,12 @@
 //         <div className="min-h-screen bg-gray-50 text-gray-900">
 //             {/* Always include Sidebar component first */}
 //             <Sidebar className="site-sidebar" />
-            
+
 //             <div className="main-container">
 //                 <main className="main-content">
 //                     {/* Carousel Section */}
 //                     <div className="carousel-container">
-//                         <Carousol 
+//                         <Carousol
 //                             images={[
 //                                 {
 //                                   src: "images/image3.jpg",
@@ -304,7 +304,7 @@
 //                             autoplaySpeed={4000}
 //                         />
 //                     </div>
-                    
+
 //                     <JournalHero />
 
 //                     {/* Welcome Section */}
@@ -357,82 +357,60 @@ import JournalList from "../components/JournalList";
 import JournalHero from "../components/JournalHero";
 import Sidebar from "../components/Sidebar";
 import './Home.css';
-import Carousol from "../components/Carousol";
+import ImprovedCarousel from "../components/Carousol";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
 export default function HomePage() {
     const [stats, setStats] = useState([]);
 
-    // Determine the base path based on environment
-    // You'll need to adjust this based on your Vercel configuration
-    const getImageBasePath = () => {
-        // Check if we're running on Vercel
-        if (process.env.VERCEL) {
-            // For Vercel, you might need a different base path
-            return "";  // This might need to be adjusted based on your Vercel setup
+    // Define carousel images with consistent paths
+    const carouselImages = [
+        {
+            src: "image3",  // Just use the base name without extension
+            title: "Amazing Sahara Journal Back Cover",
+            description: "Discover the beautiful and seasoned journal"
+        },
+        {
+            src: "image4",
+            alt: "The Sahara Journal Frontend Page",
+            title: "Stunning Design of a Journal of the Sahara",
+            description: "Discover more creative and stunning contents at Sahara Journal"
+        },
+        {
+            src: "image5",
+            title: "The Beautiful Sahara Journal",
+            description: "The Beautiful Sahara Journal"
+        },
+        {
+            src: "image1",
+            title: "Sahara Journal Publication",
+            description: "Quality research publications"
+        },
+        {
+            src: "image2",
+            title: "International Journal of Teacher Education",
+            description: "Advancing education research globally"
         }
-        // For local development
-        return "";  // Empty string to use relative paths
-    };
-
-    // useEffect(() => {
-    //     async function fetchStats() {
-    //         try {
-    //             const response = await fetch("/api/stats");
-    //             const data = await response.json();
-    //             setStats([
-    //                 { label: "Published Papers", value: `${data.publishedPapers || 0}+` },
-    //                 { label: "Registered Authors", value: `${data.registeredAuthors || 0}+` },
-    //                 { label: "Global Readers", value: `${data.globalReaders || 0}+` },
-    //             ]);
-    //         } catch (error) {
-    //             console.error("Error fetching stats:", error);
-    //         }
-    //     }
-
-    //     fetchStats();
-    // }, []);
-
-    // // Define carousel images with consistent paths
-    // const carouselImages = [
-    //     {
-    //         src: "/images/image3.jpg",
-    //         title: "Amazing Sahara Journal Back Cover", 
-    //         description: "Discover the beautiful and seasoned journal"
-    //     },
-    //     {
-    //         src: "/images/image4.jpg",
-    //         alt: "The Sahara Journal Frontend Page",
-    //         title: "Stunning Design of a Journal of the Sahara", 
-    //         description: "Discover more creative and stunning contents at Sahara Journal"
-    //     },
-    //     {
-    //         src: "/images/image5.jpg",
-    //         title: "The Beautiful Sahara Journal", 
-    //         description: "The Beautiful Sahara Journal"
-    //     }
-    //     // You can add more images but I reduced duplicates for clarity
-    // ];
+    ];
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900">
             {/* Always include Sidebar component first */}
             <Sidebar className="site-sidebar" />
-            
+
             <div className="main-container">
                 <main className="main-content">
-                    {/* Carousel Section - Use the updated component */}
-                    {/* <div className="carousel-container"> */}
-                        {/* <Carousol 
+                    {/* Carousel Section - Use the improved component */}
+                    <div className="carousel-container">
+                        <ImprovedCarousel
                             images={carouselImages}
                             height={500}
                             autoplaySpeed={4000}
-                            basePath={getImageBasePath()}
-                            title="Sahara International Journals"
+                            title="Sahara International Journal of Teacher Education"
                         />
                     </div>
-                     */}
+
                     <JournalHero />
 
                     {/* Welcome Section */}

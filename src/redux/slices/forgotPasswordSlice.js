@@ -1,22 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-const BASE_URL = 'http://localhost:5000/api/auth';
+import api from '../../services/api';
 
 // Send password reset email
 export const sendResetEmail = createAsyncThunk(
     'auth/forgotPassword',
     async (email, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${BASE_URL}/forgot-password`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email }),
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data?.message || 'Failed to send reset link');
-            return data.message;
+            console.log('Sending password reset email to:', email);
+            const response = await api.auth.forgotPassword(email);
+            console.log('Password reset response:', response.data);
+            return response.data.message;
         } catch (error) {
-            return rejectWithValue(error.message);
+            console.error('Password reset error:', error);
+            return rejectWithValue(error.response?.data?.message || 'Failed to send reset link');
         }
     }
 );
@@ -26,16 +22,13 @@ export const resetPassword = createAsyncThunk(
     'auth/resetPassword',
     async ({ token, password }, { rejectWithValue }) => {
         try {
-            const response = await fetch(`${BASE_URL}/reset-password/${token}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password }),
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data?.message || 'Failed to reset password');
-            return data.message;
+            console.log('Resetting password with token:', token);
+            const response = await api.auth.resetPassword(token, password);
+            console.log('Password reset response:', response.data);
+            return response.data.message;
         } catch (error) {
-            return rejectWithValue(error.message);
+            console.error('Password reset error:', error);
+            return rejectWithValue(error.response?.data?.message || 'Failed to reset password');
         }
     }
 );

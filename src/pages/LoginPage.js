@@ -13,7 +13,15 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (user) {
-            navigate("/dashboard", { replace: true }); // Redirects to dashboard if authenticated
+            console.log('User logged in:', user);
+            // Redirect admin users to the manage-journals page
+            if (user.role === 'admin') {
+                console.log('Admin user detected, redirecting to manage-journals');
+                navigate("/manage-journals", { replace: true });
+            } else {
+                // Redirect regular users to dashboard
+                navigate("/dashboard", { replace: true });
+            }
         }
     }, [user, navigate]);
 
@@ -39,7 +47,7 @@ const LoginPage = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label htmlFor="email" className="block font-semibold">Email:</label>
-                        <input 
+                        <input
                             id="email"
                             type="email"
                             value={email}
@@ -51,7 +59,7 @@ const LoginPage = () => {
                     </div>
                     <div>
                         <label htmlFor="password" className="block font-semibold">Password:</label>
-                        <input 
+                        <input
                             id="password"
                             type="password"
                             value={password}

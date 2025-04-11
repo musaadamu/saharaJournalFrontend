@@ -140,9 +140,7 @@
 
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const BASE_URL = 'http://localhost:5000/api/auth';
+import api from '../../services/api';
 
 // Retrieve token and user from localStorage if available
 const storedToken = localStorage.getItem('authToken');
@@ -155,32 +153,34 @@ const initialState = {
     error: null,
 };
 
-// Axios instance with interceptors
-const axiosInstance = axios.create({
-    baseURL: BASE_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
-
-axiosInstance.interceptors.request.use((config) => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-}, (error) => Promise.reject(error));
+// We'll use the api service instead of creating a new axios instance
+// This ensures we use the same base URL configuration for all API calls
 
 // Async Thunk for registering a user
 export const registerUser = createAsyncThunk(
     'auth/register',
     async (userData, { rejectWithValue }) => {
         try {
-            const { data } = await axiosInstance.post('/register', userData);
+            console.log('Registering user with data:', userData);
+            const response = await api.auth.register(userData);
+            const { data } = response;
+            console.log('Registration response:', data);
+
+            // Ensure user data includes role
+            const userWithRole = {
+                ...data.user,
+                role: data.user.role || userData.role || 'author' // Fallback to form data or default to author
+            };
+
             localStorage.setItem('authToken', data.token);
-            localStorage.setItem('authUser', JSON.stringify(data.user));
-            return data;
+            localStorage.setItem('authUser', JSON.stringify(userWithRole));
+
+            return {
+                ...data,
+                user: userWithRole
+            };
         } catch (error) {
+            console.error('Registration error:', error);
             return rejectWithValue(error.response?.data?.message || 'Registration failed');
         }
     }
@@ -191,11 +191,28 @@ export const loginUser = createAsyncThunk(
     'auth/login',
     async (credentials, { rejectWithValue }) => {
         try {
-            const { data } = await axiosInstance.post('/login', credentials);
+            console.log('Logging in with credentials:', credentials);
+            const response = await api.auth.login(credentials);
+            const { data } = response;
+            console.log('Login response:', data);
+
+            // Ensure user data includes role
+            const userWithRole = {
+                ...data.user,
+                role: data.user.role || 'author' // Default to author if no role is provided
+            };
+
+            console.log('User with role:', userWithRole);
+
             localStorage.setItem('authToken', data.token);
-            localStorage.setItem('authUser', JSON.stringify(data.user));
-            return data;
+            localStorage.setItem('authUser', JSON.stringify(userWithRole));
+
+            return {
+                ...data,
+                user: userWithRole
+            };
         } catch (error) {
+            console.error('Login error:', error);
             return rejectWithValue(error.response?.data?.message || 'Login failed');
         }
     }
@@ -206,10 +223,12 @@ export const updateUserProfile = createAsyncThunk(
     'auth/updateUserProfile',
     async (userData, { rejectWithValue }) => {
         try {
-            const { data } = await axiosInstance.put('/profile', userData);
+            const response = await api.auth.updateProfile(userData);
+            const { data } = response;
             localStorage.setItem('authUser', JSON.stringify(data));
             return data;
         } catch (error) {
+            console.error('Profile update error:', error);
             return rejectWithValue(error.response?.data?.message || 'Profile update failed');
         }
     }
