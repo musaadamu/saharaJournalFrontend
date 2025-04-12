@@ -28,8 +28,18 @@ export default function ImprovedCarousel({
     const hasExtension = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(cleanPath);
     const pathWithExtension = hasExtension ? cleanPath : `${cleanPath}.jpg`;
 
-    // For Vercel, we need to use the public URL pattern
-    // This works in both development and production
+    // For Vercel deployment, we need to ensure the path is correct
+    // Check if we're in a production environment (Vercel)
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    // In production on Vercel, we need to use the absolute path
+    if (isProduction) {
+      // Use the public URL from environment or default to empty string
+      const publicUrl = process.env.PUBLIC_URL || '';
+      return `${publicUrl}/${pathWithExtension}`;
+    }
+
+    // For local development
     return `/${pathWithExtension}`;
   };
 
@@ -38,7 +48,10 @@ export default function ImprovedCarousel({
     // Handle different image object structures
     const processedImage = {
       originalSrc: image.src, // Keep original for debugging
-      src: processImagePath(image.src),
+      // If the image path already includes /images/ and an extension, use it directly
+      src: image.src.includes('/images/') && /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(image.src)
+        ? image.src  // Use the path as-is if it's already well-formed
+        : processImagePath(image.src),  // Otherwise process it
       alt: image.alt || image.title || 'Carousel image',
       title: image.title || (image.caption && image.caption.title) || '',
       description: image.description || (image.caption && image.caption.text) || ''
@@ -104,9 +117,25 @@ export default function ImprovedCarousel({
     console.error('Image error details:', {
       src: e.target.src,
       originalSrc: processedImages[index].originalSrc,
+      processedSrc: processedImages[index].src,
       navigator: navigator?.userAgent,
-      location: window.location.href
+      location: window.location.href,
+      environment: process.env.NODE_ENV,
+      publicUrl: process.env.PUBLIC_URL || 'not set'
     });
+
+    // Try to fetch the image directly to check response
+    fetch(e.target.src)
+      .then(response => {
+        console.log(`Fetch response for image ${index}:`, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: [...response.headers.entries()]
+        });
+      })
+      .catch(fetchError => {
+        console.error(`Fetch error for image ${index}:`, fetchError);
+      });
   };
 
   // Check if we have valid images
@@ -143,16 +172,24 @@ export default function ImprovedCarousel({
                 className="w-full h-full object-contain bg-gray-900"
                 onLoad={() => handleImageLoad(index)}
                 onError={(e) => handleImageError(index, e)}
+                loading="lazy" /* Add lazy loading */
+                crossOrigin="anonymous" /* Handle CORS issues */
               />
 
-              {/* Error overlay with more detailed error information */}
+              {/* Error overlay with fallback image */}
               {imageStatus[index] === 'error' && (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-80 text-white">
-                  <div className="text-center p-4">
-                    <p className="text-red-400 font-bold">Image Failed to Load</p>
-                    <p className="text-sm mt-2 break-all">Path: {image.src}</p>
-                    <p className="text-sm mt-1 break-all">Original: {image.originalSrc}</p>
-                    <p className="text-sm mt-1">Try refreshing the page</p>
+                  <div className="text-center p-4 w-full h-full flex flex-col items-center justify-center">
+                    {/* Fallback image - use a data URI for guaranteed availability */}
+                    <div className="w-full h-64 flex items-center justify-center mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                      </svg>
+                    </div>
+                    <p className="text-xl font-bold">{image.title || `Slide ${index + 1}`}</p>
+                    <p className="text-base mt-2">{image.description || 'Sahara Journal'}</p>
                   </div>
                 </div>
               )}

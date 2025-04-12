@@ -1,11 +1,12 @@
 /* Journal List Container */
-.max-w-full {
-    max-width: 80%; /* Set max width to 80% of the viewport */
+.journal-list-container {
+    width: 100%; /* Use full width */
     margin: 0 auto; /* Center the container */
     background-color: #ffffff; /* White background */
-    padding: 1.5rem; /* Padding for the container */
+    padding: 1rem; /* Reduced padding for the container */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
     border-radius: 0.5rem; /* Rounded corners */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .flex {
@@ -76,6 +77,14 @@
     display: block; /* Ensure block layout for abstract */
 }
 
+/* Justified text for abstracts */
+.text-justify {
+    text-align: justify; /* Justify text for a professional look */
+    hyphens: auto; /* Enable hyphenation for better justification */
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+}
+
 .line-clamp-2 {
     overflow: hidden;
     display: -webkit-box;
@@ -132,9 +141,10 @@
 }
 
 /* Button Styling */
-.button-group {
+.button-group, .actions {
     display: flex;
     gap: 0.75rem; /* Adds spacing between buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap */
 }
 
 button {
@@ -145,6 +155,12 @@ button {
     font-weight: 500; /* Medium font weight */
     cursor: pointer; /* Pointer cursor for buttons */
     transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    display: inline-flex; /* Better alignment for icon + text */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    min-width: 120px; /* Minimum width for buttons */
+    text-align: center; /* Center text */
+    margin-bottom: 0.5rem; /* Add some bottom margin */
 }
 
 /* Disabled Button */

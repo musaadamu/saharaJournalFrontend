@@ -356,6 +356,7 @@ import { useEffect, useState } from "react";
 import JournalList from "../components/JournalList";
 import JournalHero from "../components/JournalHero";
 import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
 import './Home.css';
 import ImprovedCarousel from "../components/Carousol";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -364,31 +365,31 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default function HomePage() {
     const [stats, setStats] = useState([]);
 
-    // Define carousel images with consistent paths
+    // Define carousel images with explicit paths for better compatibility
     const carouselImages = [
         {
-            src: "image3",  // Just use the base name without extension
+            src: "/images/image3.jpg",  // Use full path with extension
             title: "Amazing Sahara Journal Back Cover",
             description: "Discover the beautiful and seasoned journal"
         },
         {
-            src: "image4",
+            src: "/images/image4.jpg",
             alt: "The Sahara Journal Frontend Page",
             title: "Stunning Design of a Journal of the Sahara",
             description: "Discover more creative and stunning contents at Sahara Journal"
         },
         {
-            src: "image5",
+            src: "/images/image5.jpg",
             title: "The Beautiful Sahara Journal",
             description: "The Beautiful Sahara Journal"
         },
         {
-            src: "image1",
+            src: "/images/image1.jpg",
             title: "Sahara Journal Publication",
             description: "Quality research publications"
         },
         {
-            src: "image2",
+            src: "/images/image2.jpg",
             title: "International Journal of Teacher Education",
             description: "Advancing education research globally"
         }
@@ -435,7 +436,7 @@ export default function HomePage() {
                     </header>
 
                     {/* Featured Journals Section */}
-                    <section className="py-10 md:py-16 px-4 md:px-20 text-center">
+                    <section className="py-10 md:py-16 px-2 md:px-10 text-center">
                         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8">Featured Publications</h2>
                         <JournalList />
                         <div className="mt-4 md:mt-6">
@@ -447,6 +448,8 @@ export default function HomePage() {
                             </Link>
                         </div>
                     </section>
+                    {/* Include Footer inside the main-container */}
+                    <Footer />
                 </main>
             </div>
         </div>

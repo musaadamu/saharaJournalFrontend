@@ -495,7 +495,7 @@ const JournalDetail = () => {
             <h2 className="text-2xl font-bold mb-4">{journal?.title || 'Untitled Journal'}</h2>
 
             <div className="space-y-3">
-                <p><strong>Abstract:</strong> {journal?.abstract || 'No abstract available'}</p>
+                <p className="text-justify"><strong>Abstract:</strong> {journal?.abstract || 'No abstract available'}</p>
                 <p><strong>Content:</strong> {journal?.content || 'Download PDF or WORD file'}</p>
 
                 {/* Always show the PDF download button, like in JournalList */}

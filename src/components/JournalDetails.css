@@ -63,6 +63,14 @@
     text-align: center; /* Center the loading message */
 }
 
+/* Justified Text */
+.text-justify {
+    text-align: justify; /* Justify text for a professional look */
+    hyphens: auto; /* Enable hyphenation for better justification */
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+}
+
 /* Responsive Design */
 @media (max-width: 640px) {
     .max-w-3xl {

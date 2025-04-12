@@ -10,6 +10,10 @@ body {
 main {
   padding-top: 64px; /* Height of the navigation bar */
   transition: margin-left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 @media (min-width: 768px) {

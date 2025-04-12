@@ -63,7 +63,7 @@
 
 // // const Footer = () => {
 // //   const currentYear = new Date().getFullYear();
-  
+
 // //   return (
 // //     <footer className="site-footer">
 // //       <div className="footer-container">
@@ -82,7 +82,7 @@
 // //             </div>
 // //           </div>
 // //         </div>
-        
+
 // //         {/* Middle Sections */}
 // //         <div className="footer-links-container">
 // //           <div className="footer-column">
@@ -95,7 +95,7 @@
 // //               <li><a href="/contact">Contact</a></li>
 // //             </ul>
 // //           </div>
-          
+
 // //           <div className="footer-column">
 // //             <h4>Resources</h4>
 // //             <ul className="footer-links">
@@ -106,7 +106,7 @@
 // //               <li><a href="/citations">Citation Guidelines</a></li>
 // //             </ul>
 // //           </div>
-          
+
 // //           <div className="footer-column">
 // //             <h4>Legal</h4>
 // //             <ul className="footer-links">
@@ -117,7 +117,7 @@
 // //               <li><a href="/ethics">Publication Ethics</a></li>
 // //             </ul>
 // //           </div>
-          
+
 // //           {/* Social links for mobile view */}
 // //           <div className="footer-social-mobile">
 // //             <h4>Connect With Us</h4>
@@ -131,7 +131,7 @@
 // //           </div>
 // //         </div>
 // //       </div>
-      
+
 // //       {/* Bottom Section with Copyright and ISSN */}
 // //       <div className="footer-bottom">
 // //         <div className="footer-bottom-container">
@@ -156,7 +156,7 @@
 
 // const Footer = () => {
 //   const currentYear = new Date().getFullYear();
-  
+
 //   return (
 //     <footer className="site-footer">
 //       <div className="footer-container">
@@ -176,7 +176,7 @@
 //             </div>
 //           </div>
 //         </div>
-        
+
 //         {/* Middle Sections */}
 //         <div className="footer-links-container">
 //           <div className="footer-column">
@@ -189,7 +189,7 @@
 //               <li><a href="/contact">Contact</a></li>
 //             </ul>
 //           </div>
-          
+
 //           <div className="footer-column">
 //             <h4>Resources</h4>
 //             <ul className="footer-links">
@@ -200,7 +200,7 @@
 //               <li><a href="/citation-metrics">Citation Metrics <FiExternalLink size={12} style={{marginLeft: '4px'}} /></a></li>
 //             </ul>
 //           </div>
-          
+
 //           <div className="footer-column">
 //             <h4>Legal</h4>
 //             <ul className="footer-links">
@@ -211,7 +211,7 @@
 //               <li><a href="/ethics">Publication Ethics</a></li>
 //             </ul>
 //           </div>
-          
+
 //           {/* Social links for mobile view */}
 //           <div className="footer-social-mobile">
 //             <h4>Connect With Us</h4>
@@ -226,7 +226,7 @@
 //           </div>
 //         </div>
 //       </div>
-      
+
 //       {/* Bottom Section with Copyright and ISSN */}
 //       <div className="footer-bottom">
 //         <div className="footer-bottom-container">
@@ -252,9 +252,9 @@ import "./Footer.css";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   return (
-    <footer className="site-footer bg-blue-900">
+    <footer className="site-footer bg-blue-900 w-full">
       <div className="footer-container max-w-7xl mx-auto">
         {/* Top Section with Logo and Description */}
         <div className="footer-brand">
@@ -272,7 +272,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Middle Sections */}
         <div className="footer-links-container">
           <div className="footer-column">
@@ -285,7 +285,7 @@ const Footer = () => {
               <li><a href="/contact">Contact</a></li>
             </ul>
           </div>
-          
+
           <div className="footer-column">
             <h4>Resources</h4>
             <ul className="footer-links">
@@ -296,7 +296,7 @@ const Footer = () => {
               <li><a href="/citation-metrics">Citation Metrics <FiExternalLink size={12} style={{marginLeft: '4px'}} /></a></li>
             </ul>
           </div>
-          
+
           <div className="footer-column">
             <h4>Legal</h4>
             <ul className="footer-links">
@@ -307,7 +307,7 @@ const Footer = () => {
               <li><a href="/ethics">Publication Ethics</a></li>
             </ul>
           </div>
-          
+
           {/* Social links for mobile view */}
           <div className="footer-social-mobile">
             <h4>Connect With Us</h4>
@@ -322,10 +322,10 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Bottom Section with Copyright and ISSN */}
       <div className="footer-bottom bg-blue-800">
-        <div className="footer-bottom-container max-w-7xl mx-auto">
+        <div className="footer-bottom-container max-w-[1280px] mx-auto">
           <div className="footer-copyright">
             <p>&copy; {currentYear} Sahara Journal. All rights reserved.</p>
           </div>

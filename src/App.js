@@ -18,7 +18,6 @@ import ManageJournal from "./pages/ManageJournal";
 import LogoutPage from "./pages/LogoutPage";
 import JournalSubmission from "./components/JournalSubmission";
 import Navigation from "./components/Navigation";
-import Footer from "./components/Footer";
 import About from "./components/About";
 import Guide from "./components/Guide";
 import Contact from "./components/Contact";
@@ -57,10 +56,16 @@ function App() {
                         <Route path="/unauthorized" element={<Unauthorized />} />
 
                         {/* Protected Routes */}
-                        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                        <Route path="/updateprofile" element={<ProtectedRoute><UpdateProfile /></ProtectedRoute>} />
-                        <Route path="/journals/uploads" element={<ProtectedRoute><JournalUpload /></ProtectedRoute>} />
-                        <Route path="/submission" element={<ProtectedRoute><JournalSubmission /></ProtectedRoute>} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/updateprofile" element={<UpdateProfile />} />
+                        <Route path="/submission" element={<JournalSubmission />} />
+
+                        {/* Admin-only Routes */}
+                        <Route path="/journals/uploads" element={
+                            <ProtectedRoute allowedRoles={["admin"]}>
+                                <JournalUpload />
+                            </ProtectedRoute>
+                        } />
                         <Route path="/manage-journals" element={
                             <ProtectedRoute allowedRoles={["admin"]}>
                                 <ManageJournal />
@@ -72,8 +77,6 @@ function App() {
 
                     </Routes>
                 </main>
-
-                <Footer />
             </div>
         </Router>
     );

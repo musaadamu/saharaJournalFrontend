@@ -55,15 +55,58 @@ api.interceptors.response.use(
 
 // Helper methods for authentication
 api.auth = {
-  login: (credentials) => api.post('/auth/login', credentials),
-  register: (userData) => api.post('/auth/register', userData),
-  profile: () => api.get('/auth/profile'),
-  updateProfile: (userData) => api.put('/auth/profile', userData),
-  forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
-  resetPassword: (token, password) => api.post(`/auth/reset-password/${token}`, { password }),
+  // Try both endpoint patterns for better compatibility
+  login: (credentials) => {
+    console.log('Attempting login with credentials:', credentials);
+    return api.post('/login', credentials)
+      .catch(error => {
+        console.log('Login failed at /login, trying /api/auth/login');
+        return api.post('/api/auth/login', credentials);
+      });
+  },
+  register: (userData) => {
+    console.log('Attempting registration with data:', userData);
+    return api.post('/register', userData)
+      .catch(error => {
+        console.log('Registration failed at /register, trying /api/auth/register');
+        return api.post('/api/auth/register', userData);
+      });
+  },
+  profile: () => {
+    return api.get('/me')
+      .catch(error => {
+        console.log('Profile fetch failed at /me, trying /api/auth/me');
+        return api.get('/api/auth/me');
+      });
+  },
+  updateProfile: (userData) => {
+    return api.put('/profile', userData)
+      .catch(error => {
+        console.log('Profile update failed at /profile, trying /api/auth/profile');
+        return api.put('/api/auth/profile', userData);
+      });
+  },
+  forgotPassword: (email) => {
+    return api.post('/forgot-password', { email })
+      .catch(error => {
+        console.log('Forgot password failed at /forgot-password, trying /api/auth/forgot-password');
+        return api.post('/api/auth/forgot-password', { email });
+      });
+  },
+  resetPassword: (token, password) => {
+    return api.post(`/reset-password/${token}`, { password })
+      .catch(error => {
+        console.log('Reset password failed at /reset-password, trying /api/auth/reset-password');
+        return api.post(`/api/auth/reset-password/${token}`, { password });
+      });
+  },
   checkAdmin: async () => {
     try {
-      const response = await api.get('/auth/profile');
+      const response = await api.get('/me')
+        .catch(error => {
+          console.log('Admin check failed at /me, trying /api/auth/me');
+          return api.get('/api/auth/me');
+        });
       return response.data?.user?.role === 'admin';
     } catch (error) {
       console.error('Error checking admin status:', error);

@@ -106,7 +106,7 @@ const JournalList = () => {
     if (loading) return <div className="loading-spinner">Loading journals...</div>;
 
     return (
-        <div className="journal-list-container max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="journal-list-container w-full mx-auto p-2 sm:p-4 lg:p-6">
             <div className="header flex flex-col sm:flex-row justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Journal List</h2>
                 <Link
@@ -130,16 +130,16 @@ const JournalList = () => {
                 </div>
             ) : (
                 <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
                         {journals.map((journal) => (
-                            <div key={journal._id} className="journal-card border rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div key={journal._id} className="journal-card border rounded-lg p-3 hover:shadow-md transition-shadow">
                                 <h3
                                     className="text-lg font-semibold text-blue-600 cursor-pointer hover:underline"
                                     onClick={() => navigate(`/journals/${journal._id}`)}
                                 >
                                     {journal.title || 'Untitled Journal'}
                                 </h3>
-                                <p className="text-gray-600 mt-2">
+                                <p className="text-gray-600 mt-2 text-justify">
                                     {journal.abstract || 'No abstract available'}
                                 </p>
                                 <span className="status mt-2 px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">

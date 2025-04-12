@@ -13,14 +13,18 @@
 .main-container {
   display: flex;
   flex-direction: column; /* Default to column layout */
+  width: calc(100% - 250px); /* Subtract sidebar width */
+  margin-left: 250px; /* Match sidebar width exactly */
+  overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 /* Main Content Styles - Important for sidebar offset */
 .main-content {
   flex: 1;
-  padding: 30px; /* Increased padding for spacious layout */
+  padding: 20px 30px; /* Reduced horizontal padding to better utilize space */
   margin-left: 0; /* Default for mobile - will be overridden for larger screens */
   transition: margin-left 0.3s ease;
+  max-width: 100%; /* Ensure content doesn't overflow */
 }
 
 /* Header Styles */
@@ -150,7 +154,8 @@ footer a:hover {
 
   /* This is the key fix - offset the main content by the sidebar width */
   .main-content {
-    margin-left: 250px; /* Match sidebar width */
+    margin-left: 0; /* No need for margin since container is already offset */
+    max-width: 100%; /* Ensure content uses full width */
   }
 
   header {
@@ -172,8 +177,13 @@ footer a:hover {
     margin-top: 60px; /* Give space for the toggle button */
   }
 
+  .main-container {
+    width: 100%; /* Full width on mobile */
+    margin-left: 0;
+  }
+
   .main-content {
-    padding: 20px; /* Reduce padding */
+    padding: 15px; /* Reduce padding further on mobile */
   }
 
   header {
@@ -205,4 +215,6 @@ footer a:hover {
 .carousel-container {
   max-width: 100%;
   overflow: hidden;
+  padding: 0; /* Remove padding to maximize width */
+  margin: 0 -10px; /* Negative margin to counteract parent padding */
 }
