@@ -142,6 +142,15 @@
   height: 48px;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.hamburger:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger:active {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .main-menu-toggle {
@@ -174,6 +183,9 @@
     border-right: none;
     padding-right: 0;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 
   .nav-logo {
@@ -207,15 +219,31 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
     align-items: flex-start;
-    z-index: 99;
+    z-index: 1001; /* Higher than the main navigation */
     height: auto;
+    opacity: 0;
+    visibility: hidden;
   }
 
   .nav-menu-container.open {
     max-height: 500px;
     overflow-y: auto;
+    opacity: 1;
+    visibility: visible;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
   .nav-links {
@@ -246,8 +274,10 @@
     height: auto;
     width: 100%;
     justify-content: flex-start;
-    white-space: normal; /* Allow wrapping on mobile for better readability */
-    line-height: 1.2; /* Improve line spacing for wrapped text */
+    white-space: nowrap; /* Keep text on one line for menu items */
+    line-height: 1.2; /* Improve line spacing */
+    font-size: 1rem; /* Slightly larger font for better readability */
+    display: block; /* Ensure proper display */
   }
 
   .nav-links a.active::after {
@@ -256,6 +286,14 @@
 
   .nav-links a.active {
     background-color: #2563eb;
+    position: relative;
+  }
+
+  .nav-links a.active::before {
+    content: '•';
+    position: absolute;
+    left: 0.5rem;
+    color: white;
   }
 }
 

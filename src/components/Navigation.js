@@ -222,6 +222,8 @@ const Navigation = ({ user, toggleSidebar }) => {
 
   const toggleMenu = () => {
     setMenuOpen(prev => !prev);
+    // Log menu state for debugging
+    console.log('Menu toggled, new state:', !menuOpen);
   };
 
   const closeMenu = () => {
@@ -282,8 +284,9 @@ const Navigation = ({ user, toggleSidebar }) => {
           className="hamburger main-menu-toggle"
           onClick={toggleMenu}
           aria-label="Toggle Navigation Menu"
+          aria-expanded={menuOpen}
         >
-          <span className="hamburger-icon">{menuOpen ? "✖" : "☰"}</span>
+          <span className="hamburger-icon" style={{ fontSize: '1.5rem' }}>{menuOpen ? "✖" : "☰"}</span>
         </button>
 
         <div className="nav-brand">
@@ -295,7 +298,7 @@ const Navigation = ({ user, toggleSidebar }) => {
           onClick={toggleSidebar}
           aria-label="Toggle Sidebar"
         >
-          <span className="hamburger-icon">☰</span>
+          <span className="hamburger-icon" style={{ fontSize: '1.5rem' }}>☰</span>
         </button>
 
         <div className={`nav-menu-container ${menuOpen ? "open" : ""}`}>
