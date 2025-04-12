@@ -20,11 +20,12 @@ export const isProduction = () => apiBaseUrl.includes('saharabackend-v190.onrend
 // Create axios instance with base URL
 const api = axios.create({
   baseURL: apiBaseUrl,
-  timeout: 10000,
+  timeout: 30000, // Increase timeout to 30 seconds
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
-  }
+  },
+  withCredentials: true // Enable sending cookies with cross-origin requests
 });
 
 // Request interceptor to inject token
@@ -120,7 +121,12 @@ api.journals = {
   getAll: (params) => api.get('/journals', { params }),
   getById: (id) => api.get(`/journals/${id}`),
   download: (id, fileType) => api.get(`/journals/${id}/download/${fileType}`, {
-    responseType: 'blob'
+    responseType: 'blob',
+    headers: {
+      'Accept': '*/*',
+      'Content-Type': 'application/octet-stream'
+    },
+    timeout: 60000 // 60 seconds timeout for downloads
   }),
   upload: (formData) => {
     return api.post('/journals', formData, {

@@ -6,8 +6,9 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import './JournalList.css';
 
-// Import the API service
+// Import the API service and utilities
 import api from '../services/api';
+import { downloadJournalFile } from '../utils/fileDownload';
 
 const JournalList = () => {
     const navigate = useNavigate();
@@ -84,23 +85,14 @@ const JournalList = () => {
     }, [fetchJournals]);
 
     const handleDownload = async (id, fileType) => {
-        try {
-            console.log(`Downloading ${fileType} file for journal ID:`, id);
-            const response = await api.journals.download(id, fileType);
-
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            const journal = journals.find(j => j._id === id);
-            link.setAttribute('download', `${journal?.title || 'journal'}.${fileType}`);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            toast.success(`Journal downloaded as ${fileType.toUpperCase()}`);
-        } catch (err) {
-            console.error('Download error:', err);
-            toast.error(`Failed to download ${fileType.toUpperCase()} file`);
-        }
+        console.log(`Downloading ${fileType} file for journal ID:`, id);
+        const journal = journals.find(j => j._id === id);
+        await downloadJournalFile(
+            api.defaults.baseURL,
+            id,
+            fileType,
+            journal?.title || 'journal'
+        );
     };
 
     if (loading) return <div className="loading-spinner">Loading journals...</div>;

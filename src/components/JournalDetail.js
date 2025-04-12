@@ -439,7 +439,9 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../services/api';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { downloadJournalFile } from '../utils/fileDownload';
 import './JournalDetails.css';
 
 const JournalDetail = () => {
@@ -467,24 +469,13 @@ const JournalDetail = () => {
     }, [id]);
 
     const handleDownload = async (fileType) => {
-        try {
-            console.log(`Downloading ${fileType} file for journal ID:`, id);
-            const { data } = await api.journals.download(id, fileType);
-
-            // Create a download link
-            const url = window.URL.createObjectURL(new Blob([data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `${journal?.title || 'journal'}.${fileType}`);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-
-            toast.success(`Journal downloaded as ${fileType.toUpperCase()}`);
-        } catch (err) {
-            console.error(`Error downloading ${fileType} file:`, err);
-            toast.error(`Failed to download ${fileType.toUpperCase()} file`);
-        }
+        console.log(`Downloading ${fileType} file for journal ID:`, id);
+        await downloadJournalFile(
+            api.defaults.baseURL,
+            id,
+            fileType,
+            journal?.title || 'journal'
+        );
     };
 
     if (loading) return <p className="text-gray-600">Loading...</p>;
