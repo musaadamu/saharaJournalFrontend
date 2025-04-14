@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 1px solid #ccc;
+            background-color: #111827;
+        }
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .carousel-slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 16px;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        .carousel-caption h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        .carousel-caption p {
+            margin: 0;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .carousel-nav button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .image-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carousel Image Test</h1>
+    <p>This page tests if carousel images are loading and displaying correctly.</p>
+
+    <div class="carousel-container">
+        <div class="carousel-slide active">
+            <img src="/images/image1.JPG" alt="Image 1">
+            <div class="carousel-caption">
+                <h3>Sahara Journal Publication</h3>
+                <p>Quality research publications</p>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <img src="/images/image2.JPG" alt="Image 2">
+            <div class="carousel-caption">
+                <h3>International Journal of Teacher Education</h3>
+                <p>Advancing education research globally</p>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <img src="/images/image3.JPG" alt="Image 3">
+            <div class="carousel-caption">
+                <h3>Amazing Sahara Journal Back Cover</h3>
+                <p>Discover the beautiful and seasoned journal</p>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <img src="/images/image4.JPG" alt="Image 4">
+            <div class="carousel-caption">
+                <h3>Stunning Design of a Journal of the Sahara</h3>
+                <p>Discover more creative and stunning contents at Sahara Journal</p>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <img src="/images/image5.JPG" alt="Image 5">
+            <div class="carousel-caption">
+                <h3>The Beautiful Sahara Journal</h3>
+                <p>The Beautiful Sahara Journal</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="carousel-nav">
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+    </div>
+
+    <div class="image-info">
+        <p>Current slide: <span id="current-slide">1</span> of 5</p>
+    </div>
+
+    <script>
+        // Simple carousel functionality
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const currentSlideText = document.getElementById('current-slide');
+        let currentSlide = 0;
+
+        // Log image loading status
+        document.querySelectorAll('img').forEach((img, index) => {
+            img.onload = () => {
+                console.log(`Image ${index + 1} loaded successfully`);
+                console.log(`Image ${index + 1} dimensions:`, {
+                    naturalWidth: img.naturalWidth,
+                    naturalHeight: img.naturalHeight,
+                    clientWidth: img.clientWidth,
+                    clientHeight: img.clientHeight
+                });
+            };
+            img.onerror = () => console.error(`Image ${index + 1} failed to load`);
+        });
+
+        // Update slide display
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            currentSlideText.textContent = index + 1;
+        }
+
+        // Event listeners for navigation
+        prevButton.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        });
+
+        // Auto-advance slides
+        setInterval(() => {
+            if (!document.hidden) {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

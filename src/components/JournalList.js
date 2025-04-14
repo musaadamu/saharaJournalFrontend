@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import './JournalList.css';
 
 // Import the API service and utilities
@@ -59,14 +58,12 @@ const JournalList = () => {
 
             if (err.response) {
                 errorMsg = err.response.data?.message ||
-                         (err.response.status === 401 ? 'Please login to view journals' :
+                         (err.response.status === 401 ? 'Unable to fetch all journals. Some features may require login.' :
                          err.response.status === 404 ? 'Journal endpoint not found' :
                          'Server error occurred');
 
-                // Redirect to login if unauthorized
-                if (err.response.status === 401) {
-                    navigate('/login');
-                }
+                // Don't redirect to login for unauthorized errors
+                // This allows public access to the home page
             } else if (err.request) {
                 errorMsg = 'Network error - unable to reach server';
             } else {
@@ -86,13 +83,87 @@ const JournalList = () => {
 
     const handleDownload = async (id, fileType) => {
         console.log(`Downloading ${fileType} file for journal ID:`, id);
-        const journal = journals.find(j => j._id === id);
-        await downloadJournalFile(
-            api.defaults.baseURL,
-            id,
-            fileType,
-            journal?.title || 'journal'
-        );
+        try {
+            // Show loading toast
+            const toastId = toast.loading(`Preparing ${fileType.toUpperCase()} download...`);
+
+            // Find the journal in our list
+            const journal = journals.find(j => j._id === id);
+
+            // Determine if we're in production or development
+            const isProduction = process.env.NODE_ENV === 'production';
+
+            // Get the backend URL
+            const backendUrl = isProduction
+                ? 'https://saharabackend-v190.onrender.com'
+                : 'http://localhost:5000';
+
+            console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV });
+            console.log('Using backend URL:', backendUrl);
+            console.log('API base URL:', api.defaults.baseURL);
+
+            try {
+                // First try using the API service directly
+                if (!isProduction) {
+                    try {
+                        console.log('Trying direct API download...');
+                        const response = await api.journals.download(id, fileType);
+
+                        // Create a download link
+                        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.setAttribute('download', `${journal?.title || 'journal'}.${fileType}`);
+                        document.body.appendChild(link);
+                        link.click();
+
+                        // Clean up
+                        setTimeout(() => {
+                            window.URL.revokeObjectURL(blobUrl);
+                            link.remove();
+                        }, 100);
+
+                        toast.dismiss(toastId);
+                        toast.success(`File downloaded as ${fileType.toUpperCase()}`);
+                        return;
+                    } catch (apiError) {
+                        console.error('API download failed:', apiError);
+                        // Continue to fallback methods
+                    }
+                }
+
+                // Use the downloadJournalFile utility as fallback
+                const success = await downloadJournalFile(
+                    api.defaults.baseURL,
+                    id,
+                    fileType,
+                    journal?.title || 'journal'
+                );
+
+                // If the utility function didn't handle the toast, dismiss it
+                if (!success) {
+                    toast.dismiss(toastId);
+                    toast.error(`Failed to download ${fileType.toUpperCase()} file. Please try again.`);
+                }
+            } catch (downloadError) {
+                // If the utility fails, try a direct approach
+                toast.dismiss(toastId);
+                toast.info(`Trying alternative download method...`);
+
+                // Create a direct download link with the correct API path
+                const directUrl = isProduction
+                    ? `https://saharabackend-v190.onrender.com/api/journals/${id}/download/${fileType}`
+                    : `http://localhost:5000/api/journals/${id}/download/${fileType}`;
+
+                console.log('Trying direct URL:', directUrl);
+
+                // Open in a new tab as a fallback
+                window.open(directUrl, '_blank');
+            }
+        } catch (error) {
+            console.error('Download error:', error);
+            toast.error(`Error downloading file: ${error.message}`);
+        }
     };
 
     if (loading) return <div className="loading-spinner">Loading journals...</div>;

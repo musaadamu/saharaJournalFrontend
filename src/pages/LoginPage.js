@@ -14,14 +14,10 @@ const LoginPage = () => {
     useEffect(() => {
         if (user) {
             console.log('User logged in:', user);
-            // Redirect admin users to the manage-journals page
-            if (user.role === 'admin') {
-                console.log('Admin user detected, redirecting to manage-journals');
-                navigate("/manage-journals", { replace: true });
-            } else {
-                // Redirect regular users to dashboard
-                navigate("/dashboard", { replace: true });
-            }
+            // Redirect to dashboard for all users
+            // Users can navigate to other pages from there
+            navigate("/dashboard", { replace: true });
+            toast.success(`Welcome back, ${user.name || user.email}!`);
         }
     }, [user, navigate]);
 

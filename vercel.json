@@ -20,7 +20,17 @@
     {
       "src": "/images/(.*)",
       "headers": {
-        "cache-control": "public, max-age=31536000, immutable"
+        "cache-control": "public, max-age=31536000, immutable",
+        "Access-Control-Allow-Origin": "*"
+      },
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/images/(.*)\.(?:jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "Content-Type": "image/$1",
+        "Access-Control-Allow-Origin": "*"
       },
       "dest": "/images/$1"
     },
@@ -56,6 +66,8 @@
     }
   ],
   "env": {
-    "REACT_APP_API_URL": "https://saharabackend-v190.onrender.com/api"
+    "REACT_APP_API_URL": "https://saharabackend-v190.onrender.com/api",
+    "PUBLIC_URL": "https://sahara-journal-frontend.vercel.app",
+    "NODE_ENV": "production"
   }
 }

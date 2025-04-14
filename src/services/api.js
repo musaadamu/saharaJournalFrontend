@@ -46,9 +46,32 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Check if the error is a 401 Unauthorized
     if (error.response?.status === 401) {
+      // Clear the token if it's invalid
       localStorage.removeItem('authToken');
-      window.location.href = '/login';
+
+      // Get the current path
+      const currentPath = window.location.pathname;
+
+      // List of protected paths that should redirect to login
+      const protectedPaths = [
+        '/dashboard',
+        '/updateprofile',
+        '/submission',
+        '/journals/uploads',
+        '/manage-journals'
+      ];
+
+      // Only redirect to login for protected routes
+      const shouldRedirect = protectedPaths.some(path => currentPath.startsWith(path));
+
+      if (shouldRedirect) {
+        console.log('Unauthorized access to protected route, redirecting to login');
+        window.location.href = '/login';
+      } else {
+        console.log('Unauthorized access to public route, not redirecting');
+      }
     }
     return Promise.reject(error);
   }
@@ -120,14 +143,29 @@ api.auth = {
 api.journals = {
   getAll: (params) => api.get('/journals', { params }),
   getById: (id) => api.get(`/journals/${id}`),
-  download: (id, fileType) => api.get(`/journals/${id}/download/${fileType}`, {
-    responseType: 'blob',
-    headers: {
-      'Accept': '*/*',
-      'Content-Type': 'application/octet-stream'
-    },
-    timeout: 60000 // 60 seconds timeout for downloads
-  }),
+  download: (id, fileType) => {
+    // Create headers without problematic CORS headers
+    const headers = {
+      'Accept': '*/*'
+    };
+
+    // Determine the correct base URL based on environment
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? 'https://saharabackend-v190.onrender.com'
+      : 'http://localhost:5000';
+
+    console.log('Using base URL for download:', baseUrl);
+
+    // Use axios directly instead of the api instance to bypass baseURL
+    return axios({
+      method: 'GET',
+      url: `${baseUrl}/api/journals/${id}/download/${fileType}`,
+      responseType: 'blob',
+      headers,
+      timeout: 60000, // 60 seconds timeout for downloads
+      withCredentials: false // Disable cookies for cross-origin requests
+    });
+  },
   upload: (formData) => {
     return api.post('/journals', formData, {
       headers: {

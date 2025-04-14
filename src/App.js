@@ -55,12 +55,24 @@ function App() {
                         <Route path="/journals/:id" element={<JournalDetail />} />
                         <Route path="/unauthorized" element={<Unauthorized />} />
 
-                        {/* Protected Routes */}
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/updateprofile" element={<UpdateProfile />} />
-                        <Route path="/submission" element={<JournalSubmission />} />
+                        {/* Protected Routes - Only require login, not admin */}
+                        <Route path="/dashboard" element={
+                            <ProtectedRoute allowedRoles={["admin", "author", "user"]}>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/updateprofile" element={
+                            <ProtectedRoute allowedRoles={["admin", "author", "user"]}>
+                                <UpdateProfile />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/submission" element={
+                            <ProtectedRoute allowedRoles={["admin", "author", "user"]}>
+                                <JournalSubmission />
+                            </ProtectedRoute>
+                        } />
 
-                        {/* Admin-only Routes */}
+                        {/* Admin-only Routes - Only accessible to admin users */}
                         <Route path="/journals/uploads" element={
                             <ProtectedRoute allowedRoles={["admin"]}>
                                 <JournalUpload />

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../services/api';
 import "./Sidebar.css";
 
 const Sidebar = () => {
-  const [userName, setUserName] = useState("Tagans Yohanna");
-  const [userJournals, setUserJournals] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Check if user is logged in by checking for token - no API calls
+  const isLoggedIn = localStorage.getItem('authToken') ? true : false;
+  const storedUser = localStorage.getItem('authUser');
+  const userName = storedUser ? JSON.parse(storedUser)?.name || 'User' : 'Guest';
 
   useEffect(() => {
     const handleResize = () => {
@@ -17,24 +19,6 @@ const Sidebar = () => {
     };
 
     window.addEventListener('resize', handleResize);
-
-    const fetchUserData = async () => {
-      try {
-        const userResponse = await api.get('/auth/me');
-        setUserName(userResponse.data?.name || "User");
-
-        const journalsResponse = await api.get('/journals/user');
-        setUserJournals(Array.isArray(journalsResponse.data) ? journalsResponse.data : []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setUserJournals([]); // Set empty array on error
-        if (error.response?.status === 401) {
-          localStorage.removeItem('authToken');
-        }
-      }
-    };
-
-    fetchUserData();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -54,49 +38,47 @@ const Sidebar = () => {
           <img src="/path/to/avatar.jpg" alt="Avatar" className="avatar" onClick={closeSidebar} />
           <div className="user-info">
             <p className="user-name">{userName}</p>
-            <p className="user-role">Researcher</p>
+            {isLoggedIn ? (
+              <p className="user-role">Researcher</p>
+            ) : (
+              <p className="user-role">Welcome, Guest</p>
+            )}
           </div>
-        </div>
-
-        <div className="user-journals">
-          <h3>Your Journals</h3>
-          {Array.isArray(userJournals) && userJournals.length > 0 ? (
-            <ul>
-              {userJournals.map(journal => (
-                <li key={journal._id || Math.random()}>
-                  <Link to={`/journals/${journal._id}`} onClick={closeSidebar}>
-                    {journal.title || 'Untitled Journal'}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="no-journals-message">
-              You haven't submitted any journals yet.
-            </p>
-          )}
         </div>
 
         <nav className="sidebar-nav">
           <ul>
+            {/* Always visible links */}
             <li><Link to="/" onClick={closeSidebar}>Home</Link></li>
-            <li><Link to="/dashboard" onClick={closeSidebar}>Dashboard</Link></li>
             <li><Link to="/journals" onClick={closeSidebar}>View Journals</Link></li>
-            <li><Link to="/journals/uploads" onClick={closeSidebar}>Upload Journal</Link></li>
-            <li><Link to="/submission" onClick={closeSidebar}>Submit Journal</Link></li>
-            <li><Link to="/updateprofile" onClick={closeSidebar}>Update Profile</Link></li>
-            <li><Link to="/manage-journals" onClick={closeSidebar}>Manage Journals</Link></li>
-            <li><Link to="/register" onClick={closeSidebar}>Register</Link></li>
-            <li><Link to="/login" onClick={closeSidebar}>Login</Link></li>
+            <li><Link to="/about" onClick={closeSidebar}>About</Link></li>
+            <li><Link to="/contact" onClick={closeSidebar}>Contact</Link></li>
+            <li><Link to="/guide" onClick={closeSidebar}>Author's Guide</Link></li>
             <li><Link to="/logout" onClick={closeSidebar}>Logout</Link></li>
+
+            {/* Links for logged-in users */}
+            {isLoggedIn ? (
+              <>
+                <li><Link to="/dashboard" onClick={closeSidebar}>Dashboard</Link></li>
+                <li><Link to="/submission" onClick={closeSidebar}>Submit Journal</Link></li>
+                <li><Link to="/updateprofile" onClick={closeSidebar}>Update Profile</Link></li>
+              </>
+            ) : (
+              <>
+                <li><Link to="/register" onClick={closeSidebar}>Register</Link></li>
+                <li><Link to="/login" onClick={closeSidebar}>Login</Link></li>
+              </>
+            )}
           </ul>
         </nav>
 
         <div className="sidebar-utilities">
           <input className="sidebar-search" type="text" placeholder="Search..." />
-          <Link to="/journals/uploads" className="create-action" onClick={closeSidebar}>
-            Create New Journal
-          </Link>
+          {isLoggedIn && (
+            <Link to="/journals/uploads" className="create-action" onClick={closeSidebar}>
+              Create New Journal
+            </Link>
+          )}
         </div>
       </div>
     </>

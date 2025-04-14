@@ -39,8 +39,8 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     console.log('Protected Route - Allowed Roles:', allowedRoles);
 
     const isAuthorized = useMemo(() => {
-        // If no roles are specified, allow access
-        if (!allowedRoles) return true;
+        // If no roles are specified, allow access to authenticated users
+        if (!allowedRoles || allowedRoles.length === 0) return true;
 
         // If user has no role, deny access to role-restricted routes
         if (!user || !user.role) return false;
@@ -55,14 +55,20 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         return <LoadingSpinner />;
     }
 
+    // If user is not logged in, redirect to login
     if (!user) {
+        console.log('User not logged in, redirecting to login');
         return <Navigate to="/login" replace />;
     }
 
+    // If user doesn't have the required role, redirect to unauthorized
     if (!isAuthorized) {
+        console.log('User not authorized, redirecting to unauthorized');
         return <Navigate to="/unauthorized" replace />;
     }
 
+    // User is logged in and has the required role
+    console.log('User authorized, rendering protected content');
     return children;
 };
 

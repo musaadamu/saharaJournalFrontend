@@ -36,12 +36,20 @@ export default function ImprovedCarousel({
     if (isProduction) {
       // Use the public URL from environment or default to empty string
       const publicUrl = process.env.PUBLIC_URL || '';
+      // For Vercel, we need to ensure we're using the correct path format
       return `${publicUrl}/${pathWithExtension}`;
     }
 
     // For local development
     return `/${pathWithExtension}`;
   };
+
+  // Log environment information for debugging
+  console.log('Environment:', {
+    NODE_ENV: process.env.NODE_ENV,
+    PUBLIC_URL: process.env.PUBLIC_URL,
+    isProduction: process.env.NODE_ENV === 'production'
+  });
 
   // Process all image paths and structure
   const processedImages = images.map((image) => {
@@ -100,6 +108,27 @@ export default function ImprovedCarousel({
   // Image load handlers
   const handleImageLoad = (index) => {
     console.log(`Image ${index} loaded successfully`);
+
+    // Log image dimensions for debugging
+    setTimeout(() => {
+      const imgElement = document.querySelector(`img[src="${processedImages[index].src}"]`);
+      if (imgElement) {
+        console.log(`Image ${index} dimensions:`, {
+          naturalWidth: imgElement.naturalWidth,
+          naturalHeight: imgElement.naturalHeight,
+          clientWidth: imgElement.clientWidth,
+          clientHeight: imgElement.clientHeight,
+          offsetWidth: imgElement.offsetWidth,
+          offsetHeight: imgElement.offsetHeight,
+          style: imgElement.getAttribute('style'),
+          className: imgElement.className,
+          visibility: window.getComputedStyle(imgElement).visibility,
+          display: window.getComputedStyle(imgElement).display,
+          opacity: window.getComputedStyle(imgElement).opacity
+        });
+      }
+    }, 100);
+
     setImageStatus(prev => ({
       ...prev,
       [index]: 'loaded'
@@ -132,6 +161,13 @@ export default function ImprovedCarousel({
           statusText: response.statusText,
           headers: [...response.headers.entries()]
         });
+        return response.blob();
+      })
+      .then(blob => {
+        console.log(`Image ${index} blob:`, {
+          size: blob.size,
+          type: blob.type
+        });
       })
       .catch(fetchError => {
         console.error(`Fetch error for image ${index}:`, fetchError);
@@ -152,7 +188,12 @@ export default function ImprovedCarousel({
       {/* Main carousel container */}
       <div
         className="relative overflow-hidden rounded-lg bg-gray-900 w-full border border-gray-200"
-        style={{ height: `${height}px` }}
+        style={{
+          height: `${height}px`,
+          position: 'relative',
+          zIndex: 1,
+          backgroundColor: '#111827'
+        }}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
@@ -164,12 +205,31 @@ export default function ImprovedCarousel({
               className={`absolute w-full h-full transition-opacity duration-700 ${
                 index === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: index === activeIndex ? 10 : 0,
+                opacity: index === activeIndex ? 1 : 0,
+                transition: 'opacity 0.7s ease-in-out',
+                backgroundColor: '#111827'
+              }}
             >
               {/* Image with error handling */}
               <img
                 src={image.src}
                 alt={image.alt}
-                className="w-full h-full object-contain bg-gray-900"
+                className="w-full h-full object-contain"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  display: 'block', // Ensure image is displayed as block
+                  position: 'relative', // Create a new stacking context
+                  zIndex: 5 // Ensure image is above any potential overlays
+                }}
                 onLoad={() => handleImageLoad(index)}
                 onError={(e) => handleImageError(index, e)}
                 loading="lazy" /* Add lazy loading */
@@ -195,12 +255,37 @@ export default function ImprovedCarousel({
               )}
 
               {/* Caption */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 text-white">
-                <h3 className="text-xl font-bold">
+              <div
+                className="absolute bottom-0 left-0 right-0 p-4 text-white"
+                style={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                  backdropFilter: 'blur(5px)',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+                  zIndex: 10,
+                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)'
+                }}
+              >
+                <h3
+                  className="text-xl font-bold"
+                  style={{
+                    color: '#ffffff',
+                    marginBottom: '8px',
+                    fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                  }}
+                >
                   {image.title || `Image ${index + 1}`}
                 </h3>
                 {image.description && (
-                  <p className="text-sm">{image.description}</p>
+                  <p
+                    className="text-sm"
+                    style={{
+                      color: '#e0e0e0',
+                      lineHeight: '1.4',
+                      fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                    }}
+                  >
+                    {image.description}
+                  </p>
                 )}
               </div>
             </div>

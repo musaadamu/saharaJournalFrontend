@@ -1,9 +1,27 @@
 /* Home Page Styles */
+/* Prevent horizontal scrolling on body */
+body {
+  overflow-x: hidden !important; /* Prevent horizontal scrolling */
+  width: 100%;
+  position: relative;
+}
+
+/* Fix for horizontal scroll issue */
+html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 .min-h-screen {
   min-height: 100vh;
   background-color: #f4f4f9; /* Softer light gray background */
   display: flex;
   flex-direction: column;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  width: 100%;
 }
 
 .text-gray-900 {
@@ -15,7 +33,8 @@
   flex-direction: column; /* Default to column layout */
   width: calc(100% - 250px); /* Subtract sidebar width */
   margin-left: 250px; /* Match sidebar width exactly */
-  overflow-x: hidden; /* Prevent horizontal overflow */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  max-width: calc(100% - 250px); /* Ensure content doesn't overflow */
 }
 
 /* Main Content Styles - Important for sidebar offset */
@@ -24,7 +43,9 @@
   padding: 20px 30px; /* Reduced horizontal padding to better utilize space */
   margin-left: 0; /* Default for mobile - will be overridden for larger screens */
   transition: margin-left 0.3s ease;
-  max-width: 100%; /* Ensure content doesn't overflow */
+  width: 100%; /* Set explicit width */
+  max-width: 100%; /* Prevent overflow */
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 /* Header Styles */
@@ -150,12 +171,16 @@ footer a:hover {
 @media (min-width: 1024px) {
   .main-container {
     flex-direction: row; /* Row layout for large screens */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    max-width: calc(100% - 250px); /* Ensure content doesn't overflow */
   }
 
   /* This is the key fix - offset the main content by the sidebar width */
   .main-content {
     margin-left: 0; /* No need for margin since container is already offset */
-    max-width: 100%; /* Ensure content uses full width */
+    width: 100%; /* Set explicit width */
+    max-width: 100%; /* Prevent overflow */
+    box-sizing: border-box; /* Include padding in width calculation */
   }
 
   header {
@@ -180,6 +205,8 @@ footer a:hover {
   .main-container {
     width: 100%; /* Full width on mobile */
     margin-left: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling on mobile */
+    max-width: 100%; /* Ensure content doesn't overflow */
   }
 
   .main-content {
@@ -214,7 +241,65 @@ footer a:hover {
 /* Fix for the Carousel to not overflow */
 .carousel-container {
   max-width: 100%;
-  overflow: hidden;
+  overflow: hidden; /* Prevent content from overflowing */
   padding: 0; /* Remove padding to maximize width */
-  margin: 0 -10px; /* Negative margin to counteract parent padding */
+  margin: 0 auto; /* Center the carousel */
+  position: relative;
+  z-index: 1; /* Ensure proper stacking context */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Ensure images in carousel are visible */
+.carousel-container img {
+  display: block !important;
+  max-width: 100%;
+  height: auto;
+  z-index: 5 !important; /* Higher z-index than container */
+  position: relative !important; /* Create stacking context */
+  opacity: 1 !important; /* Force opacity */
+  visibility: visible !important; /* Force visibility */
+}
+
+/* Fix for carousel images */
+.carousel-container .bg-gray-900 {
+  background-color: #111827 !important;
+}
+
+/* Ensure carousel slides are visible */
+.carousel-container [class*="opacity-100"] {
+  opacity: 1 !important;
+  z-index: 10 !important;
+}
+
+/* Fix for image container */
+.carousel-container .h-full.relative {
+  position: relative;
+  height: 100%;
+  z-index: 2;
+}
+
+/* Enhanced caption styling for carousel */
+.carousel-container .absolute.bottom-0 {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(5px) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+  z-index: 20 !important;
+  padding: 16px !important;
+}
+
+.carousel-container .absolute.bottom-0 h3 {
+  color: #ffffff !important;
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  margin-bottom: 8px !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+.carousel-container .absolute.bottom-0 p {
+  color: #e0e0e0 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.4 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }

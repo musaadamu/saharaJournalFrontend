@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .image-container {
+            margin-bottom: 30px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .image-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sahara Journal Image Test</h1>
+    <p>This page tests if images are loading correctly from the public directory.</p>
+    
+    <div class="image-container">
+        <h2>Image 1</h2>
+        <img src="/images/image1.JPG" alt="Image 1">
+        <div class="image-info">Path: /images/image1.JPG</div>
+    </div>
+    
+    <div class="image-container">
+        <h2>Image 2</h2>
+        <img src="/images/image2.JPG" alt="Image 2">
+        <div class="image-info">Path: /images/image2.JPG</div>
+    </div>
+    
+    <div class="image-container">
+        <h2>Image 3</h2>
+        <img src="/images/image3.JPG" alt="Image 3">
+        <div class="image-info">Path: /images/image3.JPG</div>
+    </div>
+    
+    <div class="image-container">
+        <h2>Image 4</h2>
+        <img src="/images/image4.JPG" alt="Image 4">
+        <div class="image-info">Path: /images/image4.JPG</div>
+    </div>
+    
+    <div class="image-container">
+        <h2>Image 5</h2>
+        <img src="/images/image5.JPG" alt="Image 5">
+        <div class="image-info">Path: /images/image5.JPG</div>
+    </div>
+    
+    <script>
+        // Log image loading status
+        document.querySelectorAll('img').forEach((img, index) => {
+            img.onload = () => console.log(`Image ${index + 1} loaded successfully`);
+            img.onerror = () => console.error(`Image ${index + 1} failed to load`);
+        });
+    </script>
+</body>
+</html>

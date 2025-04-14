@@ -11,23 +11,44 @@ import { toast } from 'react-toastify';
 export const downloadFile = async (url, filename, fileType) => {
     // Show loading toast
     const toastId = toast.loading(`Downloading ${fileType.toUpperCase()} file...`);
-    
+
     try {
         // Get auth token
         const token = localStorage.getItem('authToken');
-        
+
+        // Log the download attempt
+        console.log('Downloading file:', {
+            url,
+            filename,
+            fileType,
+            hasToken: !!token
+        });
+
         // Make the request with axios
+        // Remove problematic headers for CORS requests
+        const headers = {
+            'Authorization': token ? `Bearer ${token}` : '',
+            'Accept': '*/*'
+        };
+
+        // Only add cache control headers for same-origin requests to avoid CORS issues
+        const isSameOrigin = url.startsWith(window.location.origin);
+        if (isSameOrigin) {
+            headers['Cache-Control'] = 'no-cache';
+            headers['Pragma'] = 'no-cache';
+        }
+
+        console.log('Request headers:', headers);
+
         const response = await axios({
             method: 'GET',
             url,
             responseType: 'blob',
-            headers: {
-                'Authorization': token ? `Bearer ${token}` : '',
-                'Accept': '*/*'
-            },
-            timeout: 30000 // 30 seconds timeout
+            headers,
+            timeout: 60000, // 60 seconds timeout
+            withCredentials: false // Disable sending cookies for cross-origin requests
         });
-        
+
         // Log response details for debugging
         console.log('Download response:', {
             status: response.status,
@@ -35,31 +56,31 @@ export const downloadFile = async (url, filename, fileType) => {
             contentType: response.headers['content-type'],
             contentLength: response.headers['content-length']
         });
-        
+
         // Check if we got a valid response
         if (response.status !== 200) {
             throw new Error(`Server returned status ${response.status}`);
         }
-        
+
         // Check if we got a valid blob
         if (!response.data || response.data.size === 0) {
             throw new Error('Received empty file');
         }
-        
+
         // Create a download link
-        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
-        link.href = url;
+        link.href = blobUrl;
         link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
-        
+
         // Clean up
         setTimeout(() => {
-            window.URL.revokeObjectURL(url);
+            window.URL.revokeObjectURL(blobUrl);
             link.remove();
         }, 100);
-        
+
         // Update toast
         toast.update(toastId, {
             render: `File downloaded as ${fileType.toUpperCase()}`,
@@ -67,14 +88,14 @@ export const downloadFile = async (url, filename, fileType) => {
             isLoading: false,
             autoClose: 3000
         });
-        
+
         return true;
     } catch (err) {
         console.error(`Error downloading ${fileType} file:`, err);
-        
+
         // Provide more detailed error message
         let errorMessage = `Failed to download ${fileType.toUpperCase()} file`;
-        
+
         if (err.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
@@ -89,7 +110,7 @@ export const downloadFile = async (url, filename, fileType) => {
             console.error('Error request:', err.request);
             errorMessage = 'No response from server. Check your network connection.';
         }
-        
+
         // Update toast
         toast.update(toastId, {
             render: errorMessage,
@@ -97,7 +118,7 @@ export const downloadFile = async (url, filename, fileType) => {
             isLoading: false,
             autoClose: 5000
         });
-        
+
         return false;
     }
 };
@@ -111,9 +132,80 @@ export const downloadFile = async (url, filename, fileType) => {
  * @returns {Promise<boolean>} - True if download was successful, false otherwise
  */
 export const downloadJournalFile = async (baseUrl, journalId, fileType, title) => {
-    const url = `${baseUrl}/journals/${journalId}/download/${fileType}`;
+    // Log the download attempt
+    console.log('Attempting to download journal file:', {
+        baseUrl,
+        journalId,
+        fileType,
+        title
+    });
+
+    // Determine if we're in production
+    const isProduction = process.env.NODE_ENV === 'production' || baseUrl.includes('render.com');
+    console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV });
+
+    // Create a filename for the download
     const filename = `${title || 'journal'}.${fileType}`;
-    return downloadFile(url, filename, fileType);
+
+    // Generate multiple URLs to try in order
+    const urlsToTry = [];
+
+    // Clean the base URL to get the backend root
+    const backendRoot = baseUrl.replace('/api', '');
+    const backendUrl = isProduction ? 'https://saharabackend-v190.onrender.com' : 'http://localhost:5000';
+
+    // Determine if we're running locally or accessing the deployed backend
+    const isLocalBackend = backendUrl.includes('localhost');
+
+    console.log('Environment details:', {
+        isProduction,
+        isLocalBackend,
+        backendUrl,
+        baseUrl,
+        backendRoot
+    });
+
+    // Add URLs in order of preference based on environment
+    if (isProduction) {
+        // For production (Render backend)
+        urlsToTry.push(
+            // Primary endpoint for production
+            `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`
+        );
+    } else {
+        // For local development
+        urlsToTry.push(
+            // Primary endpoint for local development
+            `http://localhost:5000/api/journals/${journalId}/download/${fileType}`
+        );
+    }
+
+    // Log the URLs we're going to try
+    console.log('Download URLs to try:', urlsToTry);
+
+    // Try each URL in sequence until one works
+    let lastError = null;
+    for (const url of urlsToTry) {
+        try {
+            console.log('Trying URL:', url);
+            const success = await downloadFile(url, filename, fileType);
+            if (success) {
+                console.log('Download successful with URL:', url);
+                return true;
+            }
+        } catch (error) {
+            console.error(`Failed with URL ${url}:`, error);
+            lastError = error;
+            // Continue to the next URL
+        }
+    }
+
+    // If we get here, all URLs failed
+    console.error('All download attempts failed');
+    if (lastError) {
+        throw lastError;
+    }
+    return false;
 };
 
 export default {

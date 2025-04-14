@@ -368,32 +368,35 @@ export default function HomePage() {
     // Define carousel images with explicit paths for better compatibility
     const carouselImages = [
         {
-            src: "/images/image3.jpg",  // Use full path with extension
+            src: "images/image3.JPG",  // Use correct case for extension
             title: "Amazing Sahara Journal Back Cover",
             description: "Discover the beautiful and seasoned journal"
         },
         {
-            src: "/images/image4.jpg",
+            src: "images/image4.JPG",
             alt: "The Sahara Journal Frontend Page",
             title: "Stunning Design of a Journal of the Sahara",
             description: "Discover more creative and stunning contents at Sahara Journal"
         },
         {
-            src: "/images/image5.jpg",
+            src: "images/image5.JPG",
             title: "The Beautiful Sahara Journal",
             description: "The Beautiful Sahara Journal"
         },
         {
-            src: "/images/image1.jpg",
+            src: "images/image1.JPG",
             title: "Sahara Journal Publication",
             description: "Quality research publications"
         },
         {
-            src: "/images/image2.jpg",
+            src: "images/image2.JPG",
             title: "International Journal of Teacher Education",
             description: "Advancing education research globally"
         }
     ];
+
+    // Log image paths for debugging
+    console.log('Carousel images:', carouselImages);
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900">

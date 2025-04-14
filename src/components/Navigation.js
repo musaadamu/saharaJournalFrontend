@@ -250,6 +250,25 @@ const Navigation = ({ user, toggleSidebar }) => {
     return labelMap[shortLabel] || shortLabel;
   };
 
+  // Function to format the label based on screen size
+  const formatLabel = (label, isMobile) => {
+    // For mobile, always show the full label
+    if (isMobile) {
+      return getFullLabel(label);
+    }
+
+    // For desktop, use shortened labels for certain items
+    const shortLabels = {
+      'Dashboard': 'Dash',
+      'Manage Journals': 'Manage',
+      'Submit': 'Submit',
+      'Contact': 'Contact'
+    };
+
+    // Return the shortened label if available, otherwise use the original
+    return shortLabels[label] || label;
+  };
+
   // Updated main navigation links with role-based items
   const mainNavLinks = [
     { to: "/", label: "Home" },
@@ -258,7 +277,9 @@ const Navigation = ({ user, toggleSidebar }) => {
     { to: "/archive", label: "Archive" },
     { to: "/guide", label: "Guide" },
     { to: "/submission", label: "Submit" },
-    { to: "/contact", label: "Contact" }
+    { to: "/contact", label: "Contact" },
+    { to: "/login", label: "Login" },
+    { to: "/logout", label: "Logout" }
   ];
 
   // Updated user navigation links with role-based items
@@ -266,10 +287,8 @@ const Navigation = ({ user, toggleSidebar }) => {
     { to: "/dashboard", label: "Dashboard" },
     // Explicitly check for admin role and add the Manage Journals link
     ...(user.role === "admin" ? [{ to: "/manage-journals", label: "Manage Journals" }] : []),
-    { to: "/updateprofile", label: "Profile" },
-    { to: "/logout", label: "Logout" }
+    { to: "/updateprofile", label: "Profile" }
   ] : [
-    { to: "/login", label: "Login" },
     { to: "/register", label: "Register" }
   ];
 
@@ -286,7 +305,16 @@ const Navigation = ({ user, toggleSidebar }) => {
           aria-label="Toggle Navigation Menu"
           aria-expanded={menuOpen}
         >
-          <span className="hamburger-icon" style={{ fontSize: '1.5rem' }}>{menuOpen ? "✖" : "☰"}</span>
+          <span className="hamburger-icon" style={{
+            fontSize: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%'
+          }}>
+            {menuOpen ? "✖" : "☰"}
+          </span>
         </button>
 
         <div className="nav-brand">
@@ -298,7 +326,16 @@ const Navigation = ({ user, toggleSidebar }) => {
           onClick={toggleSidebar}
           aria-label="Toggle Sidebar"
         >
-          <span className="hamburger-icon" style={{ fontSize: '1.5rem' }}>☰</span>
+          <span className="hamburger-icon" style={{
+            fontSize: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%'
+          }}>
+            ☰
+          </span>
         </button>
 
         <div className={`nav-menu-container ${menuOpen ? "open" : ""}`}>
@@ -312,7 +349,8 @@ const Navigation = ({ user, toggleSidebar }) => {
                   onClick={closeMenu}
                   title={getFullLabel(link.label)} // Add tooltip for shortened labels
                 >
-                  {link.label}
+                  {/* Use formatLabel to show appropriate label based on screen size */}
+                  {formatLabel(link.label, menuOpen)}
                 </NavLink>
               </li>
             ))}
@@ -330,7 +368,8 @@ const Navigation = ({ user, toggleSidebar }) => {
                   onClick={closeMenu}
                   title={getFullLabel(link.label)} // Add tooltip for shortened labels
                 >
-                  {link.label}
+                  {/* Use formatLabel to show appropriate label based on screen size */}
+                  {formatLabel(link.label, menuOpen)}
                 </NavLink>
               </li>
             ))}
