@@ -7,6 +7,7 @@ set -e
 export NODE_ENV=production
 export PUBLIC_URL=https://sahara-journal-frontend.vercel.app
 export REACT_APP_API_URL=https://saharabackend-v190.onrender.com/api
+export CI=false
 
 # Install dependencies
 echo "Installing dependencies..."

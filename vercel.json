@@ -1,73 +1,38 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
-    }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
-  "routes": [
+  "headers": [
     {
-      "src": "/static/(.*)",
-      "headers": {
-        "cache-control": "public, max-age=31536000, immutable"
-      },
-      "dest": "/static/$1"
+      "source": "/static/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
     },
     {
-      "src": "/images/(.*)",
-      "headers": {
-        "cache-control": "public, max-age=31536000, immutable",
-        "Access-Control-Allow-Origin": "*"
-      },
-      "dest": "/images/$1"
+      "source": "/images/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
     },
     {
-      "src": "/images/(.*)\.(?:jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG)",
-      "headers": {
-        "cache-control": "public, max-age=31536000, immutable",
-        "Content-Type": "image/$1",
-        "Access-Control-Allow-Origin": "*"
-      },
-      "dest": "/images/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/asset-manifest.json",
-      "dest": "/asset-manifest.json"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/precache-manifest.(.*)",
-      "dest": "/precache-manifest.$1"
-    },
-    {
-      "src": "/service-worker.js",
-      "headers": {
-        "cache-control": "no-cache, no-store, must-revalidate"
-      },
-      "dest": "/service-worker.js"
-    },
-    {
-      "src": "/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" }
+      ]
     }
   ],
   "env": {
     "REACT_APP_API_URL": "https://saharabackend-v190.onrender.com/api",
     "PUBLIC_URL": "https://sahara-journal-frontend.vercel.app",
     "NODE_ENV": "production"
+  },
+  "build": {
+    "env": {
+      "CI": "false"
+    }
   }
 }
