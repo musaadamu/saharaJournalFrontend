@@ -541,8 +541,45 @@ const JournalDetail = () => {
 
                 console.log('Trying direct URL:', directUrl);
 
-                // Open in a new tab as a fallback
-                window.open(directUrl, '_blank');
+                try {
+                    // Try using fetch API as another approach
+                    toast.info(`Attempting direct download...`);
+
+                    const response = await fetch(directUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': '*/*',
+                        },
+                        credentials: 'omit' // Don't send cookies
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+                    }
+
+                    const blob = await response.blob();
+                    const blobUrl = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.setAttribute('download', `${journal?.title || 'journal'}.${fileType}`);
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Clean up
+                    setTimeout(() => {
+                        window.URL.revokeObjectURL(blobUrl);
+                        link.remove();
+                    }, 100);
+
+                    toast.success(`File downloaded successfully`);
+                } catch (fetchError) {
+                    console.error('Fetch download failed:', fetchError);
+                    toast.error(`Direct download failed: ${fetchError.message}`);
+
+                    // As a last resort, open in a new tab
+                    toast.info(`Opening download in new tab as last resort...`);
+                    window.open(directUrl, '_blank');
+                }
             }
         } catch (error) {
             console.error('Download error:', error);
