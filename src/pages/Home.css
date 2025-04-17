@@ -115,8 +115,9 @@ body {
   flex-direction: column; /* Default to column layout */
   width: calc(100% - 250px); /* Subtract sidebar width */
   margin-left: 250px; /* Add margin to offset the fixed sidebar */
-  margin-right: 20px; /* Add right margin for spacing */
+  margin-right: 40px; /* Increased right margin for vertical scrollbar */
   overflow-x: auto; /* Allow horizontal scrolling for the fixed scrollbar to work */
+  overflow-y: auto; /* Allow vertical scrolling */
   box-sizing: border-box; /* Include padding in width calculation */
   position: relative; /* Create stacking context */
   min-height: 100vh; /* Ensure it's at least the full viewport height */
