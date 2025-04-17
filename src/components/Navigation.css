@@ -1,0 +1,410 @@
+/* Main Navigation Styles */
+.main-navigation {
+  background-color: #1e3a8a;
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  transition: margin-left 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Apply margin for sidebar when sidebar is present */
+@media (min-width: 768px) {
+  .main-navigation {
+    margin-left: 256px;
+    transition: margin-left 0.3s ease;
+  }
+
+  .sidebar-open .main-navigation {
+    margin-left: 0;
+  }
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem; /* Reduced padding */
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 64px;
+  width: 100%; /* Ensure full width */
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 1.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.nav-menu-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  overflow-x: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  width: 100%; /* Ensure full width */
+  justify-content: space-between; /* Better space distribution */
+}
+
+.nav-menu-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.main-links {
+  flex: 1;
+  margin-left: 0.75rem;
+  margin-right: 0.5rem; /* Add right margin */
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+}
+
+.user-links {
+  justify-content: flex-end;
+  padding-left: 0.5rem; /* Reduced padding */
+  min-width: max-content; /* Ensure all items are visible */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.nav-divider {
+  height: 50%;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 0.5rem;
+}
+
+.nav-links li {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Special class for user menu items to ensure they have enough space */
+.user-links li {
+  min-width: max-content;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0 0.6rem; /* Reduced horizontal padding */
+  height: 100%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  position: relative;
+  font-size: 0.9rem; /* Slightly smaller font size */
+  white-space: nowrap; /* Prevent text from wrapping */
+  min-width: max-content; /* Ensure the full text is visible */
+  letter-spacing: -0.01em; /* Slightly reduce letter spacing */
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-links a.active {
+  color: #ffffff;
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: #2563eb;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none; /* Hide by default on larger screens */
+  background: rgba(255, 255, 255, 0.1); /* Slight background for better visibility */
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  z-index: 100;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  border-radius: 4px; /* Rounded corners */
+}
+
+.hamburger:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.main-menu-toggle {
+  order: 1;
+}
+
+.sidebar-toggle {
+  order: 3;
+}
+
+.menu-placeholder {
+  width: 48px;
+  display: none;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0;
+    height: 56px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    align-items: center;
+  }
+
+  .nav-brand {
+    grid-column: 2;
+    justify-content: center;
+    border-right: none;
+    padding-right: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden; /* Prevent overflow */
+  }
+
+  .nav-logo {
+    width: 100%;
+    text-align: center;
+    font-size: 1.1rem; /* Slightly smaller font size on mobile */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Prevent overflow */
+    text-overflow: ellipsis; /* Add ellipsis if needed */
+  }
+
+  .hamburger {
+    display: flex; /* Show and use flex layout on mobile */
+  }
+
+  .main-menu-toggle {
+    grid-column: 1;
+  }
+
+  .sidebar-toggle {
+    grid-column: 3;
+  }
+
+  .menu-placeholder {
+    display: none;
+  }
+
+  .nav-menu-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: #1e3a8a;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    align-items: flex-start;
+    z-index: 1001; /* Higher than the main navigation */
+    height: auto;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .nav-menu-container.open {
+    max-height: 80vh; /* Limit height to 80% of viewport height */
+    overflow-y: auto;
+    opacity: 1;
+    visibility: visible;
+    animation: slideDown 0.3s ease-out;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow for better visibility */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+  }
+
+  .main-links, .user-links {
+    margin: 0;
+    padding: 0.5rem 0;
+    width: 100%;
+  }
+
+  .nav-divider {
+    width: 90%;
+    height: 1px;
+    margin: 0.5rem auto;
+  }
+
+  .nav-links li {
+    width: 100%;
+    height: auto;
+  }
+
+  .nav-links a {
+    padding: 0.85rem 1.5rem;
+    height: auto;
+    width: 100%;
+    justify-content: flex-start;
+    white-space: normal; /* Allow text to wrap on mobile */
+    line-height: 1.3; /* Improve line spacing */
+    font-size: 1rem; /* Slightly larger font for better readability */
+    display: block; /* Ensure proper display */
+    text-align: left; /* Left align text */
+    min-width: auto; /* Reset min-width for mobile */
+  }
+
+  .nav-links a.active::after {
+    display: none;
+  }
+
+  .nav-links a.active {
+    background-color: #2563eb;
+    position: relative;
+  }
+
+  .nav-links a.active::before {
+    content: '•';
+    position: absolute;
+    left: 0.5rem;
+    color: white;
+  }
+}
+
+/* Medium-sized devices */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nav-links a {
+    padding: 0 0.5rem; /* Further reduced padding */
+    font-size: 0.85rem; /* Smaller font size */
+    white-space: nowrap; /* Ensure no wrapping on medium screens */
+    letter-spacing: -0.02em; /* Further reduce letter spacing */
+  }
+
+  .nav-container {
+    padding: 0 0.75rem; /* Reduced container padding */
+  }
+
+  .nav-brand {
+    padding-right: 0.75rem; /* Reduced padding */
+  }
+
+  /* Hide hamburger on medium screens */
+  .hamburger {
+    display: none;
+  }
+
+  /* Reduce margins to fit more items */
+  .main-links {
+    margin-left: 0.5rem;
+    margin-right: 0.25rem;
+  }
+
+  .nav-divider {
+    margin: 0 0.2rem;
+  }
+
+  /* Ensure user links have enough space */
+  .user-links {
+    min-width: max-content;
+    padding-left: 0.25rem;
+  }
+}
+
+/* Large devices */
+@media (min-width: 1025px) {
+  .nav-container {
+    padding: 0 2rem;
+  }
+
+  .nav-brand {
+    padding-right: 2rem;
+  }
+
+  .main-links {
+    margin-left: 1.5rem;
+  }
+
+  .nav-divider {
+    margin: 0 1rem;
+  }
+
+  /* Explicitly hide hamburger on large screens */
+  .hamburger {
+    display: none;
+  }
+
+  /* Ensure links don't wrap and have enough space */
+  .nav-links a {
+    white-space: nowrap;
+    font-size: 0.95rem;
+    padding: 0 0.8rem; /* Reduced padding */
+    font-weight: 500;
+    letter-spacing: -0.01em; /* Slightly reduce letter spacing */
+  }
+
+  /* Add more space between items */
+  .nav-links li {
+    margin: 0 0.05rem; /* Reduced margin */
+  }
+
+  /* Ensure user links have enough space */
+  .user-links {
+    min-width: max-content;
+    padding-left: 0.3rem;
+  }
+
+  /* Adjust main links to give more space to user links */
+  .main-links {
+    margin-right: 0.3rem;
+  }
+}

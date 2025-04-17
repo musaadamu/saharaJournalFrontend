@@ -1,0 +1,100 @@
+/* ImprovedCarousel.css */
+.carousel-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  position: relative;
+  z-index: 1; /* Ensure container has a z-index */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .carousel-container {
+    padding: 0.5rem;
+  }
+}
+
+/* Fade animation for slides */
+.carousel-slide {
+  transition: opacity 0.7s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Improve image display */
+.carousel-image {
+  object-fit: contain;
+  background-color: #111;
+  width: 100%;
+  height: 100%;
+  display: block; /* Ensure image is displayed as block */
+}
+
+/* Caption styling */
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 1rem;
+  border-radius: 0 0 4px 4px;
+  backdrop-filter: blur(5px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 10;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.carousel-caption h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.carousel-caption p {
+  color: #e0e0e0;
+  line-height: 1.4;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Navigation buttons */
+.carousel-nav-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.carousel-nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Indicator dots */
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.carousel-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.carousel-indicator.active {
+  background-color: white;
+}
