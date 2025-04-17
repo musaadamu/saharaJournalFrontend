@@ -150,41 +150,52 @@ const JournalList = () => {
                 toast.dismiss(toastId);
                 toast.info(`Trying alternative download method...`);
 
-                // Create a direct download link with the correct API path
-                const directUrl = isProduction
+                // Determine if we're in production based on hostname
+                const isLocalhost = window.location.hostname === 'localhost';
+                const isProduction = !isLocalhost;
+
+                console.log('Environment detection:', { isProduction, hostname: window.location.hostname });
+
+                // Try the direct file endpoint first (more reliable on Render)
+                const directFileUrl = isProduction
+                    ? `https://saharabackend-v190.onrender.com/direct-file/journals/${id}.${fileType}`
+                    : `http://localhost:5000/direct-file/journals/${id}.${fileType}`;
+
+                // Then the API endpoint as fallback
+                const apiUrl = isProduction
                     ? `https://saharabackend-v190.onrender.com/api/journals/${id}/download/${fileType}`
                     : `http://localhost:5000/api/journals/${id}/download/${fileType}`;
 
-                console.log('Trying direct URL:', directUrl);
+                console.log('URLs to try:', { directFileUrl, apiUrl });
 
                 try {
                     // Try using fetch API as another approach
-                    toast.info(`Attempting direct download...`);
+                    toast.info(`Attempting direct file download...`);
 
-                    // Try the standard API endpoint first
-                    let response = await fetch(directUrl, {
+                    // Try the direct file endpoint first for production (more reliable on Render)
+                    let response = await fetch(directFileUrl, {
                         method: 'GET',
                         headers: {
                             'Accept': '*/*',
                         },
-                        credentials: 'omit' // Don't send cookies
+                        credentials: 'omit', // Don't send cookies
+                        mode: 'cors', // Explicitly set CORS mode
+                        cache: 'no-cache' // Don't use cached response
                     });
 
-                    // If that fails, try the direct file endpoint
+                    // If that fails, try the API endpoint
                     if (!response.ok) {
-                        toast.info(`Trying alternative endpoint...`);
-                        const alternativeUrl = isProduction
-                            ? `https://saharabackend-v190.onrender.com/direct-file/journals/${id}.${fileType}`
-                            : `http://localhost:5000/direct-file/journals/${id}.${fileType}`;
+                        toast.info(`Trying API endpoint...`);
+                        console.log('Direct file endpoint failed, trying API endpoint:', apiUrl);
 
-                        console.log('Trying alternative URL:', alternativeUrl);
-
-                        response = await fetch(alternativeUrl, {
+                        response = await fetch(apiUrl, {
                             method: 'GET',
                             headers: {
                                 'Accept': '*/*',
                             },
-                            credentials: 'omit' // Don't send cookies
+                            credentials: 'omit', // Don't send cookies
+                            mode: 'cors', // Explicitly set CORS mode
+                            cache: 'no-cache' // Don't use cached response
                         });
 
                         if (!response.ok) {
@@ -211,9 +222,17 @@ const JournalList = () => {
                     console.error('Fetch download failed:', fetchError);
                     toast.error(`Direct download failed: ${fetchError.message}`);
 
-                    // As a last resort, open in a new tab
+                    // As a last resort, try both URLs in a new tab
                     toast.info(`Opening download in new tab as last resort...`);
-                    window.open(directUrl, '_blank');
+
+                    // Try direct file URL first (more reliable on Render)
+                    window.open(directFileUrl, '_blank');
+
+                    // After a short delay, also try the API URL as a backup
+                    setTimeout(() => {
+                        toast.info(`Trying alternative URL in new tab...`);
+                        window.open(apiUrl, '_blank');
+                    }, 2000);
                 }
             }
         } catch (error) {

@@ -51,26 +51,6 @@ html::-webkit-scrollbar,
   background: #1a237e; /* Thumb hover color - darker */
 }
 
-/* Custom scrollbar styles for the fixed scrollbar */
-.fixed-scrollbar::-webkit-scrollbar {
-  height: 20px; /* Increased height of horizontal scrollbar */
-}
-
-.fixed-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.3); /* More visible track */
-  border-radius: 10px; /* Rounded corners */
-}
-
-.fixed-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.8); /* Much more visible thumb */
-  border-radius: 10px; /* Rounded corners */
-  border: 2px solid #ff5722; /* Border matching the scrollbar background */
-}
-
-.fixed-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #ffffff; /* Fully white on hover for maximum visibility */
-}
-
 /* Fixed horizontal scrollbar at the bottom of the viewport */
 .fixed-scrollbar {
   position: fixed;
@@ -135,12 +115,12 @@ body {
   flex-direction: column; /* Default to column layout */
   width: calc(100% - 250px); /* Subtract sidebar width */
   margin-left: 250px; /* Add margin to offset the fixed sidebar */
+  margin-right: 20px; /* Add right margin for spacing */
   overflow-x: auto; /* Allow horizontal scrolling for the fixed scrollbar to work */
   box-sizing: border-box; /* Include padding in width calculation */
   position: relative; /* Create stacking context */
   min-height: 100vh; /* Ensure it's at least the full viewport height */
   padding: 0; /* Remove all padding */
-  margin-right: 0; /* Remove right margin */
   min-width: 950px; /* Set minimum width to ensure content is wide enough */
   scrollbar-width: none; /* Hide scrollbar for Firefox */
   -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
@@ -170,24 +150,6 @@ body {
 .main-content::-webkit-scrollbar {
   width: 8px; /* Width of vertical scrollbar */
   height: 0; /* Hide horizontal scrollbar */
-}
-
-.main-content::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Track color */
-}
-
-.main-content::-webkit-scrollbar-thumb {
-  background: #888; /* Thumb color */
-  border-radius: 4px;
-}
-
-.main-content::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Thumb hover color */
-}
-
-/* Hide horizontal scrollbar but keep vertical scrollbar */
-.main-content::-webkit-scrollbar:horizontal {
-  display: none;
 }
 
 /* Header Styles */
@@ -247,62 +209,6 @@ section p {
   font-size: 1rem;
 }
 
-/* Stats Section */
-section.bg-blue-100 {
-  background-color: #ebf8ff; /* Softer light blue */
-}
-
-.stats-item {
-  background-color: #ffffff;
-  padding: 2.5rem; /* Increased padding */
-  border-radius: 0.75rem; /* Slightly more rounded corners */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
-}
-
-.stats-item:hover {
-  transform: translateY(-5px); /* Lift effect */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Elevated shadow */
-}
-
-.stats-item h3 {
-  font-size: 2.5rem; /* Larger stats numbers */
-  color: #2c5282;
-  font-weight: 700;
-}
-
-.stats-item p {
-  color: #4a5568;
-  margin-top: 0.5rem;
-}
-
-/* Footer Styles */
-footer {
-  background-color: #2c5282;
-  padding: 3rem 0;
-  text-align: center;
-  width: 100%; /* Ensure full width */
-  min-width: 950px; /* Match the min-width of main-content */
-  box-sizing: border-box; /* Include padding in width calculation */
-  position: relative; /* Create stacking context */
-  z-index: 1; /* Ensure proper stacking */
-}
-
-footer p {
-  color: #e2e8f0;
-  font-size: 1rem;
-}
-
-footer a {
-  color: #ffffff;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
-
-footer a:hover {
-  color: #edf2f7; /* Softer hover effect */
-}
-
 /* Responsive design */
 @media (min-width: 640px) {
   header h1 {
@@ -312,43 +218,9 @@ footer a:hover {
   section h2 {
     font-size: 2.75rem; /* Larger headings */
   }
-
-  .stats-item h3 {
-    font-size: 3rem; /* Bigger stats numbers */
-  }
-}
-
-@media (min-width: 768px) {
-  .stats-item {
-    padding: 3rem; /* Increased padding for larger screens */
-  }
-
-  header p {
-    font-size: 1.5rem; /* Larger supporting text */
-  }
-}
-
-@media (min-width: 1024px) {
-  /* No special styles needed for large screens - flex layout handles it */
-  header {
-    padding: 80px 40px; /* More padding for larger screens */
-  }
-
-  section {
-    padding: 5rem 40px; /* More spacious sections */
-  }
-
-  footer {
-    padding: 4rem 0; /* Increased footer padding */
-  }
 }
 
 @media (max-width: 768px) {
-  /* For mobile, when sidebar is toggled open, push content down slightly */
-  .site-sidebar.open + .main-content {
-    margin-top: 60px; /* Give space for the toggle button */
-  }
-
   .main-container {
     width: 100%; /* Full width on mobile */
     margin-left: 0;
@@ -356,7 +228,6 @@ footer a:hover {
     padding: 0; /* Remove padding */
   }
 
-  /* Ensure content fits properly on mobile */
   .min-h-screen {
     overflow-x: visible; /* Allow content to be fully visible */
     flex-direction: column; /* Stack elements vertically on mobile */
@@ -380,89 +251,7 @@ footer a:hover {
     font-size: 1rem; /* Smaller supporting text */
   }
 
-  .stats-item {
-    padding: 1.5rem; /* Reduce padding */
-  }
-
-  .stats-item h3 {
-    font-size: 2rem; /* Smaller stats numbers */
-  }
-
   footer {
     padding: 2rem 0; /* Reduce footer padding */
   }
-
-  /* Ensure carousel fits properly on mobile */
-  .carousel-container {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: visible; /* Allow content to be fully visible */
-  }
-}
-
-/* Fix for the Carousel to not overflow */
-.carousel-container {
-  width: 100%;
-  overflow: visible; /* Allow content to be fully visible */
-  padding: 0; /* Remove padding to maximize width */
-  margin: 0; /* Remove margin */
-  position: relative;
-  z-index: 1; /* Ensure proper stacking context */
-  box-sizing: border-box; /* Include padding in width calculation */
-}
-
-/* Ensure images in carousel are visible */
-.carousel-container img {
-  display: block !important;
-  max-width: 100%;
-  height: auto;
-  z-index: 5 !important; /* Higher z-index than container */
-  position: relative !important; /* Create stacking context */
-  opacity: 1 !important; /* Force opacity */
-  visibility: visible !important; /* Force visibility */
-}
-
-/* Fix for carousel images */
-.carousel-container .bg-gray-900 {
-  background-color: #111827 !important;
-}
-
-/* Ensure carousel slides are visible */
-.carousel-container [class*="opacity-100"] {
-  opacity: 1 !important;
-  z-index: 10 !important;
-}
-
-/* Fix for image container */
-.carousel-container .h-full.relative {
-  position: relative;
-  height: 100%;
-  z-index: 2;
-}
-
-/* Enhanced caption styling for carousel */
-.carousel-container .absolute.bottom-0 {
-  background-color: rgba(0, 0, 0, 0.75) !important;
-  backdrop-filter: blur(5px) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
-  z-index: 20 !important;
-  padding: 16px !important;
-}
-
-.carousel-container .absolute.bottom-0 h3 {
-  color: #ffffff !important;
-  font-size: 1.25rem !important;
-  font-weight: bold !important;
-  margin-bottom: 8px !important;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
-}
-
-.carousel-container .absolute.bottom-0 p {
-  color: #e0e0e0 !important;
-  font-size: 0.875rem !important;
-  line-height: 1.4 !important;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }

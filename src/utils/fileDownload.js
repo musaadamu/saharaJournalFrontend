@@ -40,24 +40,32 @@ export const downloadFile = async (url, filename, fileType) => {
 
         // For Render backend, ensure we're not sending credentials
         const isRenderBackend = url.includes('saharabackend-v190.onrender.com');
+        const isDirectFileEndpoint = url.includes('/direct-file/');
 
         console.log('Request headers:', headers);
+        console.log('Request details:', { isRenderBackend, isDirectFileEndpoint });
 
-        const response = await axios({
+        // Configure axios request
+        const axiosConfig = {
             method: 'GET',
             url,
             responseType: 'blob',
             headers,
-            timeout: 60000, // 60 seconds timeout
+            timeout: isRenderBackend ? 120000 : 60000, // Longer timeout for Render
             withCredentials: false, // Disable sending cookies for cross-origin requests
-            // Additional options for Render backend
-            ...(isRenderBackend && {
-                // Explicitly disable credentials for Render backend
-                withCredentials: false,
-                // Increase timeout for Render backend
-                timeout: 120000 // 120 seconds timeout for Render
-            })
-        });
+            maxRedirects: 5, // Allow redirects
+            validateStatus: status => status < 400 // Accept any successful status
+        };
+
+        // For direct file endpoints, use simpler headers to avoid CORS issues
+        if (isDirectFileEndpoint) {
+            axiosConfig.headers = {
+                'Accept': '*/*'
+            };
+        }
+
+        console.log('Axios config:', axiosConfig);
+        const response = await axios(axiosConfig);
 
         // Log response details for debugging
         console.log('Download response:', {
@@ -151,8 +159,8 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
     });
 
     // Determine if we're in production
-    const isProduction = process.env.NODE_ENV === 'production' || baseUrl.includes('render.com');
-    console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV });
+    const isProduction = process.env.NODE_ENV === 'production' || baseUrl.includes('render.com') || window.location.hostname !== 'localhost';
+    console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV, hostname: window.location.hostname });
 
     // Create a filename for the download
     const filename = `${title || 'journal'}.${fileType}`;
@@ -165,24 +173,25 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
     const backendUrl = isProduction ? 'https://saharabackend-v190.onrender.com' : 'http://localhost:5000';
 
     // Determine if we're running locally or accessing the deployed backend
-    const isLocalBackend = backendUrl.includes('localhost');
+    const isLocalBackend = window.location.hostname === 'localhost';
 
     console.log('Environment details:', {
         isProduction,
         isLocalBackend,
         backendUrl,
         baseUrl,
-        backendRoot
+        backendRoot,
+        hostname: window.location.hostname
     });
 
     // Add URLs in order of preference based on environment
-    if (isProduction) {
+    if (!isLocalBackend) {
         // For production (Render backend)
         urlsToTry.push(
-            // Primary endpoint for production
-            `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`,
-            // Fallback direct API endpoint
-            `https://saharabackend-v190.onrender.com/direct-file/journals/${journalId}.${fileType}`
+            // Direct file endpoint first (more reliable on Render)
+            `https://saharabackend-v190.onrender.com/direct-file/journals/${journalId}.${fileType}`,
+            // Then try the API endpoint
+            `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`
         );
     } else {
         // For local development
