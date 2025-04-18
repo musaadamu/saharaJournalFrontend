@@ -545,12 +545,8 @@ const JournalDetail = () => {
                     // Try using fetch API as another approach
                     toast.info(`Attempting direct download...`);
 
-<<<<<<< HEAD
                     // Try the standard API endpoint first
                     let response = await fetch(directUrl, {
-=======
-                    const response = await fetch(directUrl, {
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
                         method: 'GET',
                         headers: {
                             'Accept': '*/*',
@@ -558,7 +554,6 @@ const JournalDetail = () => {
                         credentials: 'omit' // Don't send cookies
                     });
 
-<<<<<<< HEAD
                     // If that fails, try the direct file endpoint
                     if (!response.ok) {
                         toast.info(`Trying alternative endpoint...`);
@@ -579,10 +574,7 @@ const JournalDetail = () => {
                         if (!response.ok) {
                             throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
                         }
-=======
-                    if (!response.ok) {
-                        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
+
                     }
 
                     const blob = await response.blob();
