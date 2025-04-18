@@ -3,8 +3,13 @@
     width: 250px;
     background-color: #283593;
     color: white;
+<<<<<<< HEAD
     height: 100vh; /* Full viewport height */
     position: fixed; /* Fixed position so it stays in place */
+=======
+    height: 100vh;
+    position: fixed;
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
     top: 0;
     left: 0;
     display: flex;
@@ -12,11 +17,15 @@
     transition: all 0.3s ease;
     z-index: 1000;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+<<<<<<< HEAD
     overflow-y: auto; /* Allow vertical scrolling within sidebar if needed */
     flex-shrink: 0; /* Prevent sidebar from shrinking */
     margin-right: 0; /* Remove right margin */
     padding-right: 0; /* Remove right padding */
     right: 0; /* Align to the right edge */
+=======
+    overflow-y: auto;
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
 }
 
 /* Sidebar Toggle Button */
@@ -144,7 +153,10 @@
         overflow-y: auto;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
+<<<<<<< HEAD
         position: fixed; /* Change to fixed for mobile */
+=======
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
     }
 
     .site-sidebar.open {

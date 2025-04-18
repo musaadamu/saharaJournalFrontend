@@ -150,6 +150,7 @@ const JournalList = () => {
                 toast.dismiss(toastId);
                 toast.info(`Trying alternative download method...`);
 
+<<<<<<< HEAD
                 // Determine if we're in production based on hostname
                 const isLocalhost = window.location.hostname === 'localhost';
                 const isProduction = !isLocalhost;
@@ -174,10 +175,25 @@ const JournalList = () => {
 
                     // Try the direct file endpoint first for production (more reliable on Render)
                     let response = await fetch(directFileUrl, {
+=======
+                // Create a direct download link with the correct API path
+                const directUrl = isProduction
+                    ? `https://saharabackend-v190.onrender.com/api/journals/${id}/download/${fileType}`
+                    : `http://localhost:5000/api/journals/${id}/download/${fileType}`;
+
+                console.log('Trying direct URL:', directUrl);
+
+                try {
+                    // Try using fetch API as another approach
+                    toast.info(`Attempting direct download...`);
+
+                    const response = await fetch(directUrl, {
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
                         method: 'GET',
                         headers: {
                             'Accept': '*/*',
                         },
+<<<<<<< HEAD
                         credentials: 'omit', // Don't send cookies
                         mode: 'cors', // Explicitly set CORS mode
                         cache: 'no-cache' // Don't use cached response
@@ -201,6 +217,13 @@ const JournalList = () => {
                         if (!response.ok) {
                             throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
                         }
+=======
+                        credentials: 'omit' // Don't send cookies
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
                     }
 
                     const blob = await response.blob();
@@ -222,6 +245,7 @@ const JournalList = () => {
                     console.error('Fetch download failed:', fetchError);
                     toast.error(`Direct download failed: ${fetchError.message}`);
 
+<<<<<<< HEAD
                     // As a last resort, try both URLs in a new tab
                     toast.info(`Opening download in new tab as last resort...`);
 
@@ -233,6 +257,11 @@ const JournalList = () => {
                         toast.info(`Trying alternative URL in new tab...`);
                         window.open(apiUrl, '_blank');
                     }, 2000);
+=======
+                    // As a last resort, open in a new tab
+                    toast.info(`Opening download in new tab as last resort...`);
+                    window.open(directUrl, '_blank');
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
                 }
             }
         } catch (error) {

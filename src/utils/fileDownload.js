@@ -38,6 +38,7 @@ export const downloadFile = async (url, filename, fileType) => {
             headers['Pragma'] = 'no-cache';
         }
 
+<<<<<<< HEAD
         // For Render backend, ensure we're not sending credentials
         const isRenderBackend = url.includes('saharabackend-v190.onrender.com');
         const isDirectFileEndpoint = url.includes('/direct-file/');
@@ -47,10 +48,16 @@ export const downloadFile = async (url, filename, fileType) => {
 
         // Configure axios request
         const axiosConfig = {
+=======
+        console.log('Request headers:', headers);
+
+        const response = await axios({
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
             method: 'GET',
             url,
             responseType: 'blob',
             headers,
+<<<<<<< HEAD
             timeout: isRenderBackend ? 120000 : 60000, // Longer timeout for Render
             withCredentials: false, // Disable sending cookies for cross-origin requests
             maxRedirects: 5, // Allow redirects
@@ -66,6 +73,11 @@ export const downloadFile = async (url, filename, fileType) => {
 
         console.log('Axios config:', axiosConfig);
         const response = await axios(axiosConfig);
+=======
+            timeout: 60000, // 60 seconds timeout
+            withCredentials: false // Disable sending cookies for cross-origin requests
+        });
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
 
         // Log response details for debugging
         console.log('Download response:', {
@@ -159,8 +171,13 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
     });
 
     // Determine if we're in production
+<<<<<<< HEAD
     const isProduction = process.env.NODE_ENV === 'production' || baseUrl.includes('render.com') || window.location.hostname !== 'localhost';
     console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV, hostname: window.location.hostname });
+=======
+    const isProduction = process.env.NODE_ENV === 'production' || baseUrl.includes('render.com');
+    console.log('Environment:', { isProduction, NODE_ENV: process.env.NODE_ENV });
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
 
     // Create a filename for the download
     const filename = `${title || 'journal'}.${fileType}`;
@@ -173,13 +190,18 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
     const backendUrl = isProduction ? 'https://saharabackend-v190.onrender.com' : 'http://localhost:5000';
 
     // Determine if we're running locally or accessing the deployed backend
+<<<<<<< HEAD
     const isLocalBackend = window.location.hostname === 'localhost';
+=======
+    const isLocalBackend = backendUrl.includes('localhost');
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
 
     console.log('Environment details:', {
         isProduction,
         isLocalBackend,
         backendUrl,
         baseUrl,
+<<<<<<< HEAD
         backendRoot,
         hostname: window.location.hostname
     });
@@ -191,15 +213,29 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
             // Direct file endpoint first (more reliable on Render)
             `https://saharabackend-v190.onrender.com/direct-file/journals/${journalId}.${fileType}`,
             // Then try the API endpoint
+=======
+        backendRoot
+    });
+
+    // Add URLs in order of preference based on environment
+    if (isProduction) {
+        // For production (Render backend)
+        urlsToTry.push(
+            // Primary endpoint for production
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
             `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`
         );
     } else {
         // For local development
         urlsToTry.push(
             // Primary endpoint for local development
+<<<<<<< HEAD
             `http://localhost:5000/api/journals/${journalId}/download/${fileType}`,
             // Fallback direct API endpoint
             `http://localhost:5000/direct-file/journals/${journalId}.${fileType}`
+=======
+            `http://localhost:5000/api/journals/${journalId}/download/${fileType}`
+>>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
         );
     }
 
