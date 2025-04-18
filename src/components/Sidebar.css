@@ -117,10 +117,52 @@
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
+    width: 85%;
+    max-width: 300px;
+    min-width: 250px;
+    z-index: 1010; /* Higher than navigation */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   }
 
   .sidebar.open {
     transform: translateX(0);
+  }
+
+  /* Add overlay when sidebar is open */
+  .sidebar.open::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+
+  /* Adjust sidebar header for mobile */
+  .sidebar-header {
+    padding: 1.2rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Make menu items larger and more touch-friendly */
+  .sidebar-menu-link {
+    padding: 0.9rem 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  /* Add close button for mobile */
+  .sidebar-close {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
   }
 }
 

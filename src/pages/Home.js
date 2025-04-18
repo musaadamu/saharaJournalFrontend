@@ -11,6 +11,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function HomePage() {
     const [stats, setStats] = useState([]);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    // Function to toggle sidebar
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    };
+
+    // Function to close sidebar
+    const closeSidebar = () => {
+        setSidebarOpen(false);
+    };
 
     // Add useEffect to set the initial scroll position and handle layout
     useEffect(() => {
@@ -44,14 +55,14 @@ export default function HomePage() {
             const sidebar = document.querySelector('.site-sidebar');
             const mainContainer = document.querySelector('.main-container');
             const carouselContainer = document.querySelector('.carousel-container');
-            
+
             if (sidebar && mainContainer) {
                 // Ensure exact dimensions
                 const sidebarWidth = sidebar.getBoundingClientRect().width;
                 mainContainer.style.marginLeft = `${sidebarWidth}px`;
                 mainContainer.style.width = `calc(100% - ${sidebarWidth + 50}px)`; // Account for right margin
             }
-            
+
             // Center the carousel
             if (carouselContainer) {
                 carouselContainer.style.margin = '0 auto';
@@ -61,11 +72,11 @@ export default function HomePage() {
                 carouselContainer.style.maxWidth = '1200px';
             }
         };
-        
+
         // Apply the fixes
         setInitialScrollPosition();
         fixLayoutIssues();
-        
+
         // Set again after delays to ensure it works with dynamic content loading
         setTimeout(setInitialScrollPosition, 100);
         setTimeout(fixLayoutIssues, 100);
@@ -147,9 +158,53 @@ export default function HomePage() {
     return (
         <div>
             <div className="min-h-screen bg-gray-50 text-gray-900">
+                {/* Mobile sidebar toggle button */}
+                <button
+                    className="mobile-sidebar-toggle"
+                    onClick={toggleSidebar}
+                    aria-label="Toggle sidebar"
+                    style={{
+                        display: 'none', /* Hidden by default, shown in mobile CSS */
+                        position: 'fixed',
+                        top: '70px',
+                        left: '10px',
+                        zIndex: 1000,
+                        background: '#1e3a8a',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '40px',
+                        height: '40px',
+                        boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                        fontSize: '18px'
+                    }}
+                >
+                    <i className="fas fa-bars"></i>
+                </button>
                 {/* Apply specific styles to the Sidebar to eliminate gaps */}
-                <Sidebar className="site-sidebar" />
-                
+                <Sidebar
+                    className={`site-sidebar ${sidebarOpen ? 'open' : ''}`}
+                    onClose={closeSidebar}
+                />
+
+                {/* Backdrop overlay for mobile when sidebar is open */}
+                {sidebarOpen && (
+                    <div
+                        className="sidebar-backdrop"
+                        onClick={closeSidebar}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            zIndex: 40,
+                            display: 'none' /* Hidden by default, shown in mobile CSS */
+                        }}
+                    />
+                )}
+
                 {/* Add right margin container for vertical scrollbar */}
                 <div className="right-margin"></div>
 
@@ -201,7 +256,7 @@ export default function HomePage() {
                                 </Link>
                             </div>
                         </section>
-                        
+
                         {/* Include Footer inside the main-container */}
                         <Footer />
                     </main>

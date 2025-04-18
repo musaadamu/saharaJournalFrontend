@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
-const Sidebar = ({ className }) => {
+// Check if we're on a mobile device
+const isMobile = () => window.innerWidth <= 768;
+
+const Sidebar = ({ className, onClose }) => {
   const location = useLocation();
   const [activeLink, setActiveLink] = useState('');
   const [user, setUser] = useState(null);
+  const [mobile, setMobile] = useState(isMobile());
 
   useEffect(() => {
     // Set active link based on current path
@@ -16,6 +20,19 @@ const Sidebar = ({ className }) => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+
+    // Handle window resize for responsive behavior
+    const handleResize = () => {
+      setMobile(isMobile());
+    };
+
+    // Add event listener for resize
+    window.addEventListener('resize', handleResize);
+
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [location.pathname]);
 
   // Check if user is admin
@@ -28,6 +45,11 @@ const Sidebar = ({ className }) => {
           <img src="/images/logo.png" alt="Sahara Journal Logo" className="sidebar-logo-img" />
           <h2 className="sidebar-title">Sahara Journal</h2>
         </Link>
+        {mobile && (
+          <button className="sidebar-close" onClick={onClose} aria-label="Close sidebar">
+            <i className="fas fa-times"></i>
+          </button>
+        )}
       </div>
 
       <nav className="sidebar-nav">

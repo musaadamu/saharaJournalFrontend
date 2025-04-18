@@ -188,10 +188,12 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
     if (!isLocalBackend) {
         // For production (Render backend)
         urlsToTry.push(
-            // Direct file endpoint first (more reliable on Render)
+            // API endpoint first
+            `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`,
+            // Direct file endpoint as backup
             `https://saharabackend-v190.onrender.com/direct-file/journals/${journalId}.${fileType}`,
-            // Then try the API endpoint
-            `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`
+            // Try with uploads path as fallback (in case the file is stored with full path)
+            `https://saharabackend-v190.onrender.com/uploads/journals/${journalId}.${fileType}`
         );
     } else {
         // For local development
@@ -199,7 +201,9 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
             // Primary endpoint for local development
             `http://localhost:5000/api/journals/${journalId}/download/${fileType}`,
             // Fallback direct API endpoint
-            `http://localhost:5000/direct-file/journals/${journalId}.${fileType}`
+            `http://localhost:5000/direct-file/journals/${journalId}.${fileType}`,
+            // Try with uploads path as fallback
+            `http://localhost:5000/uploads/journals/${journalId}.${fileType}`
         );
     }
 
