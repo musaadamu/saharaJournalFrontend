@@ -192,10 +192,10 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
             `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`
         );
 
-        // Add a fallback without the /api prefix in case the server is configured differently
-        urlsToTry.push(
-            `https://saharabackend-v190.onrender.com/journals/${journalId}/download/${fileType}`
-        );
+        // Removed fallback without /api prefix to avoid 404 errors
+        // urlsToTry.push(
+        //     `https://saharabackend-v190.onrender.com/journals/${journalId}/download/${fileType}`
+        // );
     } else {
         // For local development - the known working path
         urlsToTry.push(
