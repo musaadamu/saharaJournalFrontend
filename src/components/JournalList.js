@@ -160,12 +160,12 @@ const JournalList = () => {
                 const urlsToTry = [];
 
                 if (isProduction) {
-                    // For production (Render backend)
-                    // Primary API endpoint - this is the path that works locally
-                    urlsToTry.push(`https://saharabackend-v190.onrender.com/api/journals/${id}/download/${fileType}`);
+                // For production (Render backend)
+                // Primary API endpoint - this is the path that works locally
+                urlsToTry.push(`https://saharabackend-v190.onrender.com/api/journals/${id}/download/${fileType}`);
 
-                    // Add a fallback without the /api prefix in case the server is configured differently
-                    urlsToTry.push(`https://saharabackend-v190.onrender.com/journals/${id}/download/${fileType}`);
+                // Removed fallback without /api prefix to avoid deployment issues
+                // urlsToTry.push(`https://saharabackend-v190.onrender.com/journals/${id}/download/${fileType}`);
                 } else {
                     // For local development - the known working path
                     urlsToTry.push(`http://localhost:5000/api/journals/${id}/download/${fileType}`);
