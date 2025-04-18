@@ -257,6 +257,54 @@
     border-bottom: 2px solid rgba(255, 255, 255, 0.1); /* Subtle border */
   }
 
+  /* Navigation.css */
+/* … all your existing styles … */
+
+/* ======= Custom scrollbar for .nav-menu-container ======= */
+
+/* WebKit (Chrome, Safari, Edge) */
+.nav-menu-container::-webkit-scrollbar {
+  height: 6px;               /* thin horizontal scrollbar */
+}
+
+.nav-menu-container::-webkit-scrollbar-track {
+  background: transparent;   /* no visible track */
+}
+
+.nav-menu-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.7); /* high‑contrast thumb */
+  border-radius: 3px;
+}
+
+.nav-menu-container::-webkit-scrollbar-button:single-button {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-menu-container::-webkit-scrollbar-button:horizontal:decrement {
+  width: 8px;
+  height: 100%;
+  /* optional: custom left arrow icon */
+  /* background-image: url("data:image/svg+xml;charset=UTF-8,..."); */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.nav-menu-container::-webkit-scrollbar-button:horizontal:increment {
+  width: 8px;
+  height: 100%;
+  /* optional: custom right arrow icon */
+  /* background-image: url("data:image/svg+xml;charset=UTF-8,..."); */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Firefox */
+.nav-menu-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.7) transparent;
+}
+
+
   @keyframes slideDown {
     from {
       transform: translateY(-10px);
