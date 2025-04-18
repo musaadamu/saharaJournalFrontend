@@ -156,95 +156,71 @@ const JournalList = () => {
 
                 console.log('Environment detection:', { isProduction, hostname: window.location.hostname });
 
-                // Create an array of URLs to try in order
+                // Use only the known working path with different base URLs
                 const urlsToTry = [];
 
                 if (isProduction) {
                     // For production (Render backend)
-                    // API endpoint first
+                    // Primary API endpoint - this is the path that works locally
                     urlsToTry.push(`https://saharabackend-v190.onrender.com/api/journals/${id}/download/${fileType}`);
 
-                    // Direct file endpoint with different patterns
-                    urlsToTry.push(`https://saharabackend-v190.onrender.com/direct-file/journals/${id}.${fileType}`);
-
-                    // Static file URLs with different patterns
-                    urlsToTry.push(`https://saharabackend-v190.onrender.com/uploads/journals/${id}.${fileType}`);
-                    urlsToTry.push(`https://saharabackend-v190.onrender.com/uploads/${id}.${fileType}`);
-
-                    // Try with the original filename pattern from error logs
-                    // This is a special case for the specific file we know is failing
-                    if (id === '67e3f4b941fce07f84b315b5') {
-                        urlsToTry.push(`https://saharabackend-v190.onrender.com/uploads/journals/1742992568931-Research%20Proposal.${fileType}`);
-                    }
-
-                    // Try with API prefix
-                    urlsToTry.push(`https://saharabackend-v190.onrender.com/api/direct-file/journals/${id}.${fileType}`);
-                    urlsToTry.push(`https://saharabackend-v190.onrender.com/api/uploads/journals/${id}.${fileType}`);
+                    // Add a fallback without the /api prefix in case the server is configured differently
+                    urlsToTry.push(`https://saharabackend-v190.onrender.com/journals/${id}/download/${fileType}`);
                 } else {
-                    // For local development
-                    // API endpoint first
+                    // For local development - the known working path
                     urlsToTry.push(`http://localhost:5000/api/journals/${id}/download/${fileType}`);
-
-                    // Direct file endpoint
-                    urlsToTry.push(`http://localhost:5000/direct-file/journals/${id}.${fileType}`);
-
-                    // Static file URLs
-                    urlsToTry.push(`http://localhost:5000/uploads/journals/${id}.${fileType}`);
-                    urlsToTry.push(`http://localhost:5000/uploads/${id}.${fileType}`);
                 }
 
                 // For convenience in the rest of the code
                 const apiUrl = urlsToTry[0];
-                const directFileUrl = urlsToTry[1];
-                const staticFileUrl = urlsToTry[2];
+                const directFileUrl = urlsToTry.length > 1 ? urlsToTry[1] : urlsToTry[0];
+                const staticFileUrl = urlsToTry.length > 1 ? urlsToTry[1] : urlsToTry[0];
 
                 console.log('URLs to try:', { apiUrl, directFileUrl, staticFileUrl });
 
                 try {
-                    // Try using fetch API to try all URLs in sequence
+                    // Try using fetch API with the primary URL
                     toast.info(`Attempting to download file...`);
+                    console.log(`Trying primary URL: ${apiUrl}`);
 
-                    let response = null;
-                    let successUrl = null;
+                    // Try the primary URL first
+                    let response = await fetch(apiUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': '*/*',
+                        },
+                        credentials: 'omit', // Don't send cookies
+                        mode: 'cors', // Explicitly set CORS mode
+                        cache: 'no-cache' // Don't use cached response
+                    });
 
-                    // Try each URL in sequence until one works
-                    for (let i = 0; i < urlsToTry.length; i++) {
-                        const url = urlsToTry[i];
-                        try {
-                            toast.info(`Trying URL ${i+1} of ${urlsToTry.length}...`);
-                            console.log(`Trying URL: ${url}`);
+                    // If the primary URL fails and we have a fallback, try it
+                    if (!response.ok && urlsToTry.length > 1) {
+                        console.log(`Primary URL failed, trying fallback: ${directFileUrl}`);
+                        toast.info(`Trying fallback URL...`);
 
-                            response = await fetch(url, {
-                                method: 'GET',
-                                headers: {
-                                    'Accept': '*/*',
-                                },
-                                credentials: 'omit', // Don't send cookies
-                                mode: 'cors', // Explicitly set CORS mode
-                                cache: 'no-cache' // Don't use cached response
-                            });
+                        response = await fetch(directFileUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': '*/*',
+                            },
+                            credentials: 'omit', // Don't send cookies
+                            mode: 'cors', // Explicitly set CORS mode
+                            cache: 'no-cache' // Don't use cached response
+                        });
 
-                            if (response.ok) {
-                                successUrl = url;
-                                console.log(`Success with URL: ${url}`);
-                                break; // Exit the loop if we found a working URL
-                            } else {
-                                console.log(`Failed with URL ${url}: ${response.status} ${response.statusText}`);
-                            }
-                        } catch (fetchError) {
-                            console.log(`Error with URL ${url}:`, fetchError.message);
-                            // Continue to the next URL
+                        if (!response.ok) {
+                            throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+                        } else {
+                            console.log(`Success with fallback URL`);
+                            toast.success(`Download successful`);
                         }
+                    } else if (response.ok) {
+                        console.log(`Success with primary URL`);
+                        toast.success(`Download successful`);
+                    } else {
+                        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
                     }
-
-                    // If none of the URLs worked, throw an error
-                    if (!response || !response.ok) {
-                        throw new Error(`All ${urlsToTry.length} download URLs failed`);
-                    }
-
-                    // If we got here, we have a successful response
-                    toast.success(`Found working URL: ${successUrl}`);
-                    console.log(`Download successful from: ${successUrl}`);
 
                     const blob = await response.blob();
                     const blobUrl = window.URL.createObjectURL(blob);
@@ -265,27 +241,21 @@ const JournalList = () => {
                     console.error('Fetch download failed:', fetchError);
                     toast.error(`Direct download failed: ${fetchError.message}`);
 
-                    // As a last resort, try all URLs in new tabs
+                    // As a last resort, try opening the URLs in new tabs
                     toast.info(`Opening download in new tab as last resort...`);
 
-                    // Try each URL in a new tab with increasing delays
-                    urlsToTry.forEach((url, index) => {
+                    // Open the primary URL in a new tab
+                    console.log(`Opening primary URL in new tab: ${apiUrl}`);
+                    window.open(apiUrl, '_blank');
+
+                    // If we have a fallback URL, open it after a short delay
+                    if (urlsToTry.length > 1) {
                         setTimeout(() => {
-                            toast.info(`Trying URL ${index+1} of ${urlsToTry.length} in new tab...`);
-                            console.log(`Opening in new tab: ${url}`);
-                            window.open(url, '_blank');
-                        }, index * 1000); // Stagger the openings by 1 second each
-                    });
-
-                    // Also try a diagnostic URL to help debug
-                    setTimeout(() => {
-                        const diagnosticUrl = isProduction
-                            ? `https://saharabackend-v190.onrender.com/check-file/${id}/${fileType}`
-                            : `http://localhost:5000/check-file/${id}/${fileType}`;
-
-                        toast.info(`Opening diagnostic URL in new tab...`);
-                        window.open(diagnosticUrl, '_blank');
-                    }, urlsToTry.length * 1000 + 1000);
+                            toast.info(`Trying fallback URL in new tab...`);
+                            console.log(`Opening fallback URL in new tab: ${directFileUrl}`);
+                            window.open(directFileUrl, '_blank');
+                        }, 1500);
+                    }
                 }
             }
         } catch (error) {

@@ -184,40 +184,22 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
         hostname: window.location.hostname
     });
 
-    // Add URLs in order of preference based on environment
+    // Use only the known working path with different base URLs
     if (!isLocalBackend) {
         // For production (Render backend)
         urlsToTry.push(
-            // API endpoint first
-            `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`,
+            // Primary API endpoint - this is the path that works locally
+            `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`
+        );
 
-            // Try direct file endpoints with different patterns
-            `https://saharabackend-v190.onrender.com/direct-file/journals/${journalId}.${fileType}`,
-
-            // Try with the original filename pattern (if it's stored in the database with the original filename)
-            // This is the format that appears in the error logs
-            `https://saharabackend-v190.onrender.com/uploads/journals/${journalId}.${fileType}`,
-
-            // Try with the MongoDB ID as filename
-            `https://saharabackend-v190.onrender.com/uploads/${journalId}.${fileType}`,
-
-            // Try with direct access to the file using the pattern from error logs
-            `https://saharabackend-v190.onrender.com/uploads/journals/1742992568931-Research%20Proposal.${fileType}`
+        // Add a fallback without the /api prefix in case the server is configured differently
+        urlsToTry.push(
+            `https://saharabackend-v190.onrender.com/journals/${journalId}/download/${fileType}`
         );
     } else {
-        // For local development
+        // For local development - the known working path
         urlsToTry.push(
-            // Primary endpoint for local development
-            `http://localhost:5000/api/journals/${journalId}/download/${fileType}`,
-
-            // Fallback direct API endpoint
-            `http://localhost:5000/direct-file/journals/${journalId}.${fileType}`,
-
-            // Try with uploads path as fallback
-            `http://localhost:5000/uploads/journals/${journalId}.${fileType}`,
-
-            // Try with the MongoDB ID as filename
-            `http://localhost:5000/uploads/${journalId}.${fileType}`
+            `http://localhost:5000/api/journals/${journalId}/download/${fileType}`
         );
     }
 
