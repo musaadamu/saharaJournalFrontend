@@ -206,12 +206,14 @@ import "./Navigation.css";
 
 const Navigation = ({ user, toggleSidebar }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  // Track if we're on a mobile device for responsive design
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-      if (window.innerWidth > 768) {
+      const mobileView = window.innerWidth <= 768;
+      setIsMobile(mobileView);
+      if (!mobileView) {
         setMenuOpen(false);
       }
     };
@@ -278,6 +280,7 @@ const Navigation = ({ user, toggleSidebar }) => {
     { to: "/guide", label: "Guide" },
     { to: "/submission", label: "Submit" },
     { to: "/contact", label: "Contact" },
+    { to: "/dashboard", label: "Dashboard" },
     { to: "/login", label: "Login" },
     { to: "/logout", label: "Logout" }
   ];
@@ -286,7 +289,7 @@ const Navigation = ({ user, toggleSidebar }) => {
   const userNavLinks = user ? [
     { to: "/dashboard", label: "Dashboard" },
     // Explicitly check for admin role and add the Manage Journals link
-    ...(user.role === "admin" ? [{ to: "/manage-journals", label: "Manage Journals" }] : []),
+    ...(user.role === "admin" ? [{ to: "/manage-journal", label: "Manage Journals" }] : []),
     { to: "/updateprofile", label: "Profile" }
   ] : [
     { to: "/register", label: "Register" }
@@ -350,7 +353,7 @@ const Navigation = ({ user, toggleSidebar }) => {
                   title={getFullLabel(link.label)} // Add tooltip for shortened labels
                 >
                   {/* Use formatLabel to show appropriate label based on screen size */}
-                  {formatLabel(link.label, menuOpen)}
+                  {formatLabel(link.label, isMobile || menuOpen)}
                 </NavLink>
               </li>
             ))}
@@ -369,7 +372,7 @@ const Navigation = ({ user, toggleSidebar }) => {
                   title={getFullLabel(link.label)} // Add tooltip for shortened labels
                 >
                   {/* Use formatLabel to show appropriate label based on screen size */}
-                  {formatLabel(link.label, menuOpen)}
+                  {formatLabel(link.label, isMobile || menuOpen)}
                 </NavLink>
               </li>
             ))}

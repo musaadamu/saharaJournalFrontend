@@ -1,87 +1,165 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import "./Sidebar.css";
+import { Link, useLocation } from 'react-router-dom';
+import './Sidebar.css';
 
-const Sidebar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-  // Check if user is logged in by checking for token - no API calls
-  const isLoggedIn = localStorage.getItem('authToken') ? true : false;
-  const storedUser = localStorage.getItem('authUser');
-  const userName = storedUser ? JSON.parse(storedUser)?.name || 'User' : 'Guest';
+const Sidebar = ({ className }) => {
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState('');
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-      if (!mobile) setIsSidebarOpen(false);
-    };
+    // Set active link based on current path
+    setActiveLink(location.pathname);
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    // Get user from localStorage if available
+    const storedUser = localStorage.getItem('authUser');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, [location.pathname]);
 
-  const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
-  const closeSidebar = () => isMobile && setIsSidebarOpen(false);
+  // Check if user is admin
+  const isAdmin = user && user.role === 'admin';
 
   return (
-    <>
-      {isMobile && (
-        <button className="sidebar-toggle" onClick={toggleSidebar} aria-label="Toggle Sidebar">
-          {isSidebarOpen ? "✖" : "☰"}
-        </button>
-      )}
-
-      <div className={`site-sidebar ${isSidebarOpen ? "open" : ""} ${isMobile ? "mobile" : ""}`}>
-        <div className="sidebar-profile">
-          <img src="/path/to/avatar.jpg" alt="Avatar" className="avatar" onClick={closeSidebar} />
-          <div className="user-info">
-            <p className="user-name">{userName}</p>
-            {isLoggedIn ? (
-              <p className="user-role">Researcher</p>
-            ) : (
-              <p className="user-role">Welcome, Guest</p>
-            )}
-          </div>
-        </div>
-
-        <nav className="sidebar-nav">
-          <ul>
-            {/* Always visible links */}
-            <li><Link to="/" onClick={closeSidebar}>Home</Link></li>
-            <li><Link to="/journals" onClick={closeSidebar}>View Journals</Link></li>
-            <li><Link to="/about" onClick={closeSidebar}>About</Link></li>
-            <li><Link to="/contact" onClick={closeSidebar}>Contact</Link></li>
-            <li><Link to="/guide" onClick={closeSidebar}>Author's Guide</Link></li>
-            <li><Link to="/logout" onClick={closeSidebar}>Logout</Link></li>
-
-            {/* Links for logged-in users */}
-            {isLoggedIn ? (
-              <>
-                <li><Link to="/dashboard" onClick={closeSidebar}>Dashboard</Link></li>
-                <li><Link to="/submission" onClick={closeSidebar}>Submit Journal</Link></li>
-                <li><Link to="/updateprofile" onClick={closeSidebar}>Update Profile</Link></li>
-              </>
-            ) : (
-              <>
-                <li><Link to="/register" onClick={closeSidebar}>Register</Link></li>
-                <li><Link to="/login" onClick={closeSidebar}>Login</Link></li>
-              </>
-            )}
-          </ul>
-        </nav>
-
-        <div className="sidebar-utilities">
-          <input className="sidebar-search" type="text" placeholder="Search..." />
-          {isLoggedIn && (
-            <Link to="/journals/uploads" className="create-action" onClick={closeSidebar}>
-              Create New Journal
-            </Link>
-          )}
-        </div>
+    <div className={`sidebar ${className || ''}`}>
+      <div className="sidebar-header">
+        <Link to="/" className="sidebar-logo">
+          <img src="/images/logo.png" alt="Sahara Journal Logo" className="sidebar-logo-img" />
+          <h2 className="sidebar-title">Sahara Journal</h2>
+        </Link>
       </div>
-    </>
+
+      <nav className="sidebar-nav">
+        <ul className="sidebar-menu">
+          <li className="sidebar-menu-item">
+            <Link
+              to="/"
+              className={`sidebar-menu-link ${activeLink === '/' ? 'active' : ''}`}
+            >
+              <i className="fas fa-home sidebar-icon"></i>
+              <span>Home</span>
+            </Link>
+          </li>
+
+          <li className="sidebar-menu-item">
+            <Link
+              to="/journals"
+              className={`sidebar-menu-link ${activeLink.includes('/journals') ? 'active' : ''}`}
+            >
+              <i className="fas fa-book-open sidebar-icon"></i>
+              <span>Journals</span>
+            </Link>
+          </li>
+
+          <li className="sidebar-menu-item">
+            <Link
+              to="/about"
+              className={`sidebar-menu-link ${activeLink === '/about' ? 'active' : ''}`}
+            >
+              <i className="fas fa-info-circle sidebar-icon"></i>
+              <span>About</span>
+            </Link>
+          </li>
+
+          <li className="sidebar-menu-item">
+            <Link
+              to="/guide"
+              className={`sidebar-menu-link ${activeLink === '/guide' ? 'active' : ''}`}
+            >
+              <i className="fas fa-question-circle sidebar-icon"></i>
+              <span>Author Guide</span>
+            </Link>
+          </li>
+
+          <li className="sidebar-menu-item">
+            <Link
+              to="/contact"
+              className={`sidebar-menu-link ${activeLink === '/contact' ? 'active' : ''}`}
+            >
+              <i className="fas fa-envelope sidebar-icon"></i>
+              <span>Contact</span>
+            </Link>
+          </li>
+
+          {/* Admin-only menu items */}
+          {isAdmin && (
+            <>
+              <li className="sidebar-menu-divider">Admin</li>
+              <li className="sidebar-menu-item">
+                <Link
+                  to="/manage-journal"
+                  className={`sidebar-menu-link ${activeLink === '/manage-journal' ? 'active' : ''}`}
+                >
+                  <i className="fas fa-tasks sidebar-icon"></i>
+                  <span>Manage Journals</span>
+                </Link>
+              </li>
+              <li className="sidebar-menu-item">
+                <Link
+                  to="/upload-journals"
+                  className={`sidebar-menu-link ${activeLink === '/upload-journals' ? 'active' : ''}`}
+                >
+                  <i className="fas fa-upload sidebar-icon"></i>
+                  <span>Upload Journals</span>
+                </Link>
+              </li>
+            </>
+          )}
+
+          {/* User menu items */}
+          {user ? (
+            <>
+              <li className="sidebar-menu-divider">Account</li>
+              <li className="sidebar-menu-item">
+                <Link
+                  to="/dashboard"
+                  className={`sidebar-menu-link ${activeLink === '/dashboard' ? 'active' : ''}`}
+                >
+                  <i className="fas fa-tachometer-alt sidebar-icon"></i>
+                  <span>Dashboard</span>
+                </Link>
+              </li>
+              <li className="sidebar-menu-item">
+                <Link
+                  to="/logout"
+                  className="sidebar-menu-link"
+                >
+                  <i className="fas fa-sign-out-alt sidebar-icon"></i>
+                  <span>Logout</span>
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="sidebar-menu-divider">Account</li>
+              <li className="sidebar-menu-item">
+                <Link
+                  to="/login"
+                  className={`sidebar-menu-link ${activeLink === '/login' ? 'active' : ''}`}
+                >
+                  <i className="fas fa-sign-in-alt sidebar-icon"></i>
+                  <span>Login</span>
+                </Link>
+              </li>
+              <li className="sidebar-menu-item">
+                <Link
+                  to="/register"
+                  className={`sidebar-menu-link ${activeLink === '/register' ? 'active' : ''}`}
+                >
+                  <i className="fas fa-user-plus sidebar-icon"></i>
+                  <span>Register</span>
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </nav>
+
+      <div className="sidebar-footer">
+        <p>&copy; {new Date().getFullYear()} Sahara Journal</p>
+      </div>
+    </div>
   );
 };
 

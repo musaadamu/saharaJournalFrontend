@@ -574,7 +574,6 @@ const JournalDetail = () => {
                         if (!response.ok) {
                             throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
                         }
-
                     }
 
                     const blob = await response.blob();

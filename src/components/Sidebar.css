@@ -1,186 +1,143 @@
-/* General Sidebar Styles */
-.site-sidebar {
-    width: 250px;
-    background-color: #283593;
-    color: white;
-<<<<<<< HEAD
-    height: 100vh; /* Full viewport height */
-    position: fixed; /* Fixed position so it stays in place */
-=======
-    height: 100vh;
-    position: fixed;
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s ease;
-    z-index: 1000;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-<<<<<<< HEAD
-    overflow-y: auto; /* Allow vertical scrolling within sidebar if needed */
-    flex-shrink: 0; /* Prevent sidebar from shrinking */
-    margin-right: 0; /* Remove right margin */
-    padding-right: 0; /* Remove right padding */
-    right: 0; /* Align to the right edge */
-=======
-    overflow-y: auto;
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
+/* Sidebar.css */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+  background-color: #1e3a8a;
+  color: #ffffff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 0.3s ease;
+  box-sizing: border-box;
+  border-right: none;
+  margin-right: 0;
+  padding-right: 0;
 }
 
-/* Sidebar Toggle Button */
-.sidebar-toggle {
-    display: none;
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 1100;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
+/* Sidebar Header */
+.sidebar-header {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Profile Styles */
-.sidebar-profile {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-    object-fit: cover;
+.sidebar-logo-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.user-info {
-    flex-grow: 1;
+.sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
 }
 
-.user-name {
-    margin: 0;
-    font-size: 1.1rem;
+/* Sidebar Navigation */
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0;
 }
 
-.user-role {
-    margin: 5px 0 0;
-    color: #d1d1d1;
-    font-size: 0.9rem;
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Navigation and Journal Styles */
-.sidebar-nav ul,
-.user-journals ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.sidebar-menu-item {
+  margin-bottom: 0.25rem;
 }
 
-.user-journals {
-    padding: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+.sidebar-menu-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
 }
 
-.user-journals h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
+.sidebar-menu-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-left-color: #ffffff;
 }
 
-.no-journals-message {
-    font-size: 0.9rem;
-    color: #d1d1d1;
+.sidebar-menu-link.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-left-color: #f59e0b;
+  font-weight: 600;
 }
 
-/* Common Link Styles */
-.sidebar-nav a,
-.user-journals a {
-    color: white;
-    text-decoration: none;
-    padding: 10px;
-    display: block;
-    transition: background-color 0.3s ease;
+.sidebar-icon {
+  width: 20px;
+  margin-right: 10px;
+  text-align: center;
 }
 
-.sidebar-nav a:hover,
-.user-journals a:hover {
-    background-color: rgba(255,255,255,0.1);
+.sidebar-menu-divider {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 1rem;
 }
 
-/* Utilities Block */
-.sidebar-utilities {
-    margin-top: auto;
-    padding: 20px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+/* Sidebar Footer */
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.75rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.sidebar-search {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: none;
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
-
-.create-action {
-    width: 100%;
-    padding: 10px;
-    background-color: #ff6f61;
-    border: none;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-}
-
-.create-action:hover {
-    background-color: #e55a50;
-}
-
-/* Responsive Design */
+/* Responsive Styles */
 @media (max-width: 768px) {
-    .site-sidebar {
-        width: 100%;
-        height: auto;
-        max-height: 90vh;
-        overflow-y: auto;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-<<<<<<< HEAD
-        position: fixed; /* Change to fixed for mobile */
-=======
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
-    }
+  .sidebar {
+    transform: translateX(-100%);
+  }
 
-    .site-sidebar.open {
-        transform: translateX(0);
-    }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
 
-    .sidebar-toggle {
-        display: block;
-        background-color: #283593;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    .sidebar-profile {
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .sidebar-nav ul {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .sidebar-nav li {
-        margin: 10px 0;
-    }
+/* Ensure the sidebar fills the entire height */
+.site-sidebar {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+  box-sizing: border-box;
+  z-index: 40;
+  border-right: none;
+  margin-right: 0;
+  padding-right: 0;
+  overflow-x: hidden;
 }

@@ -1,38 +1,29 @@
 /* Home Page Styles */
-<<<<<<< HEAD
 body {
   overflow-x: auto !important; /* Allow horizontal scrolling for the fixed scrollbar to work */
   width: 100%;
   position: relative;
   margin: 0;
   padding: 0;
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none; /* Hide default scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide default scrollbar for IE and Edge */
 }
 
 /* Hide default scrollbar for Chrome, Safari and Opera */
 body::-webkit-scrollbar {
   display: none;
-=======
-/* Prevent horizontal scrolling on body */
-body {
-  overflow-x: hidden !important; /* Prevent horizontal scrolling */
-  width: 100%;
-  position: relative;
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
 }
 
 /* Fix for horizontal scroll issue */
 html, body, #root {
   width: 100%;
   max-width: 100%;
-<<<<<<< HEAD
   overflow-x: auto; /* Allow horizontal scrolling for the fixed scrollbar to work */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none; /* Hide default scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide default scrollbar for IE and Edge */
 }
 
 /* Hide default scrollbar for Chrome, Safari and Opera */
@@ -58,6 +49,26 @@ html::-webkit-scrollbar,
 
 ::-webkit-scrollbar-thumb:hover {
   background: #1a237e; /* Thumb hover color - darker */
+}
+
+/* Custom scrollbar styles for the fixed scrollbar */
+.fixed-scrollbar::-webkit-scrollbar {
+  height: 20px; /* Increased height of horizontal scrollbar */
+}
+
+.fixed-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.3); /* More visible track */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.fixed-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.8); /* Much more visible thumb */
+  border-radius: 10px; /* Rounded corners */
+  border: 2px solid #ff5722; /* Border matching the scrollbar background */
+}
+
+.fixed-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #ffffff; /* Fully white on hover for maximum visibility */
 }
 
 /* Fixed horizontal scrollbar at the bottom of the viewport */
@@ -97,113 +108,186 @@ body {
   margin-bottom: 40px; /* Additional margin to ensure content doesn't overlap */
 }
 
+/* ====== SIDEBAR AND RIGHT MARGIN STYLING ====== */
+
+/* Ensure the sidebar has precise dimensions and no gap-causing properties */
+.site-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+  box-sizing: border-box;
+  z-index: 40;
+  border-right: none; /* Remove any border that might create a gap */
+  margin-right: 0; /* No right margin */
+  padding-right: 0; /* No right padding */
+  overflow-x: hidden;
+}
+
 .min-h-screen {
   min-height: calc(100vh - 40px); /* Subtract scrollbar height from viewport height */
   background-color: #f4f4f9; /* Softer light gray background */
   overflow-x: auto; /* Allow horizontal scrolling for the fixed scrollbar to work */
+  overflow-y: auto; /* Allow vertical scrolling */
   width: 100%;
   position: relative; /* Create stacking context */
   display: flex; /* Use flexbox for layout */
   min-width: 1200px; /* Set minimum width to ensure content is wide enough */
   margin-bottom: 40px; /* Add margin to make room for the fixed scrollbar */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  margin: 0; /* Remove any margin */
+  padding: 0; /* Remove any padding */
+  /* Show vertical scrollbar */
+  scrollbar-width: thin; /* Show thin scrollbar for Firefox */
+  -ms-overflow-style: auto; /* Show scrollbar for IE and Edge */
 }
 
-/* Hide default scrollbar for Chrome, Safari and Opera */
+/* Show vertical scrollbar for Chrome, Safari and Opera */
 .min-h-screen::-webkit-scrollbar {
-  display: none;
-=======
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+  width: 12px; /* Width of vertical scrollbar */
+  display: block; /* Show scrollbar */
 }
 
-.min-h-screen {
-  min-height: 100vh;
-  background-color: #f4f4f9; /* Softer light gray background */
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  width: 100%;
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
+.min-h-screen::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+.min-h-screen::-webkit-scrollbar-thumb {
+  background: #283593; /* Thumb color - match sidebar */
+  border-radius: 4px;
+}
+
+.min-h-screen::-webkit-scrollbar-thumb:hover {
+  background: #1a237e; /* Thumb hover color - darker */
 }
 
 .text-gray-900 {
   color: #2d3748; /* Neutral dark gray for text */
 }
 
+/* Modified main-container to include right margin and vertical scrollbar */
 .main-container {
   display: flex;
-  flex-direction: column; /* Default to column layout */
-  width: calc(100% - 250px); /* Subtract sidebar width */
-<<<<<<< HEAD
-  margin-left: 250px; /* Add margin to offset the fixed sidebar */
-  margin-right: 40px; /* Increased right margin for vertical scrollbar */
-  overflow-x: auto; /* Allow horizontal scrolling for the fixed scrollbar to work */
+  flex-direction: column;
+  width: calc(100% - 300px); /* Width calculation excluding sidebar AND right margin */
+  margin-left: 250px; /* Exactly match sidebar width */
+  margin-right: 50px; /* Right margin of 50px */
+  overflow-x: auto;
   overflow-y: auto; /* Allow vertical scrolling */
-  box-sizing: border-box; /* Include padding in width calculation */
-  position: relative; /* Create stacking context */
-  min-height: 100vh; /* Ensure it's at least the full viewport height */
-  padding: 0; /* Remove all padding */
-  min-width: 950px; /* Set minimum width to ensure content is wide enough */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
-}
-
-/* Hide default scrollbar for Chrome, Safari and Opera */
-.main-container::-webkit-scrollbar {
-  display: none;
-=======
-  margin-left: 250px; /* Match sidebar width exactly */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  max-width: calc(100% - 250px); /* Ensure content doesn't overflow */
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
-}
-
-/* Main Content Styles - Important for sidebar offset */
-.main-content {
-  flex: 1;
-<<<<<<< HEAD
-  padding: 0; /* Remove padding to maximize width */
-  margin: 0; /* Remove all margins */
-  transition: margin-left 0.3s ease;
-  width: 100%; /* Set explicit width */
-  box-sizing: border-box; /* Include padding in width calculation */
-  overflow-x: auto; /* Allow horizontal scrolling for the fixed scrollbar to work */
-  overflow-y: auto; /* Allow vertical scrolling */
-  min-width: 950px; /* Set minimum width to ensure content is wide enough */
+  box-sizing: border-box;
+  position: relative;
+  min-height: 100vh;
+  padding: 0; /* No padding */
+  min-width: 850px; /* Adjusted to account for right margin */
+  border-left: none; /* Remove any border */
+  /* Show vertical scrollbar */
   scrollbar-width: thin; /* Show thin scrollbar for Firefox */
   -ms-overflow-style: auto; /* Show scrollbar for IE and Edge */
 }
 
-/* Show vertical scrollbar but hide horizontal scrollbar */
-.main-content::-webkit-scrollbar {
-  width: 8px; /* Width of vertical scrollbar */
-  height: 0; /* Hide horizontal scrollbar */
-=======
-  padding: 20px 30px; /* Reduced horizontal padding to better utilize space */
-  margin-left: 0; /* Default for mobile - will be overridden for larger screens */
-  transition: margin-left 0.3s ease;
-  width: 100%; /* Set explicit width */
-  max-width: 100%; /* Prevent overflow */
-  box-sizing: border-box; /* Include padding in width calculation */
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
+/* Show vertical scrollbar for Chrome, Safari and Opera */
+.main-container::-webkit-scrollbar {
+  width: 12px; /* Width of vertical scrollbar */
+  display: block; /* Show scrollbar */
 }
 
-/* Header Styles */
+.main-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+.main-container::-webkit-scrollbar-thumb {
+  background: #283593; /* Thumb color - match sidebar */
+  border-radius: 4px;
+}
+
+.main-container::-webkit-scrollbar-thumb:hover {
+  background: #1a237e; /* Thumb hover color - darker */
+}
+
+/* Main Content Styles with right margin and vertical scrollbar */
+.main-content {
+  flex: 1;
+  padding: 0; /* Remove all padding */
+  margin: 0; /* Remove all margins */
+  transition: margin-left 0.3s ease;
+  width: 100%; /* Set explicit width */
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: auto; /* Allow vertical scrolling */
+  min-width: 850px; /* Adjusted to account for right margin */
+  border-left: none; /* Remove any border that might create a gap */
+  /* Show vertical scrollbar */
+  scrollbar-width: thin; /* Show thin scrollbar for Firefox */
+  -ms-overflow-style: auto; /* Show scrollbar for IE and Edge */
+}
+
+/* Show vertical scrollbar for Chrome, Safari and Opera */
+.main-content::-webkit-scrollbar {
+  width: 12px; /* Width of vertical scrollbar */
+  display: block; /* Show scrollbar */
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: #283593; /* Thumb color - match sidebar */
+  border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #1a237e; /* Thumb hover color - darker */
+}
+
+/* Right margin container - for the scrollbar to appear in */
+.right-margin {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 40px; /* Leave space for horizontal scrollbar */
+  width: 50px; /* Same as margin-right on main-container */
+  background-color: #f4f4f9; /* Match the background */
+  z-index: 30; /* Below the sidebar but above regular content */
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* Show thin scrollbar for Firefox */
+  -ms-overflow-style: auto; /* Show scrollbar for IE and Edge */
+}
+
+/* Style for right margin scrollbar */
+.right-margin::-webkit-scrollbar {
+  width: 12px; /* Width of vertical scrollbar */
+}
+
+.right-margin::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+.right-margin::-webkit-scrollbar-thumb {
+  background: #283593; /* Thumb color - match sidebar */
+  border-radius: 4px;
+}
+
+.right-margin::-webkit-scrollbar-thumb:hover {
+  background: #1a237e; /* Thumb hover color - darker */
+}
+
+/* Header Styles - Modified to work with right margin */
 header {
   background-color: #2c5282; /* Consistent dark blue */
   padding: 60px 20px; /* More padding for a professional look */
   text-align: center;
-<<<<<<< HEAD
   width: 100%; /* Ensure full width */
-  min-width: 950px; /* Match the min-width of main-content */
+  min-width: 850px; /* Adjusted for right margin */
   box-sizing: border-box; /* Include padding in width calculation */
   position: relative; /* Create stacking context */
   z-index: 1; /* Ensure proper stacking */
-=======
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
+  margin-left: 0; /* No left margin */
+  padding-left: 0; /* No left padding */
+  margin-right: 0; /* No right margin */
 }
 
 header h1 {
@@ -231,18 +315,18 @@ header .bg-white:hover {
   background-color: #edf2f7; /* Softer hover effect */
 }
 
-/* Featured Journals Section */
-<<<<<<< HEAD
+/* Featured Journals Section - Modified to work with right margin */
 section {
   width: 100%; /* Ensure full width */
-  min-width: 950px; /* Match the min-width of main-content */
+  min-width: 850px; /* Adjusted for right margin */
   box-sizing: border-box; /* Include padding in width calculation */
   position: relative; /* Create stacking context */
   z-index: 1; /* Ensure proper stacking */
+  margin-left: 0; /* No left margin */
+  padding-left: 0; /* No left padding */
+  margin-right: 0; /* No right margin */
 }
 
-=======
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
 section h2 {
   font-size: 2.25rem; /* Larger headings */
   color: #2c5282;
@@ -254,8 +338,6 @@ section p {
   font-size: 1rem;
 }
 
-<<<<<<< HEAD
-=======
 /* Stats Section */
 section.bg-blue-100 {
   background-color: #ebf8ff; /* Softer light blue */
@@ -285,11 +367,19 @@ section.bg-blue-100 {
   margin-top: 0.5rem;
 }
 
-/* Footer Styles */
+/* Footer Styles - Modified to work with right margin */
 footer {
   background-color: #2c5282;
   padding: 3rem 0;
   text-align: center;
+  width: 100%; /* Ensure full width */
+  min-width: 850px; /* Adjusted for right margin */
+  box-sizing: border-box; /* Include padding in width calculation */
+  position: relative; /* Create stacking context */
+  z-index: 1; /* Ensure proper stacking */
+  margin-left: 0; /* No left margin */
+  padding-left: 0; /* No left padding */
+  margin-right: 0; /* No right margin */
 }
 
 footer p {
@@ -307,138 +397,20 @@ footer a:hover {
   color: #edf2f7; /* Softer hover effect */
 }
 
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
-/* Responsive design */
-@media (min-width: 640px) {
-  header h1 {
-    font-size: 3.5rem; /* Larger font for larger screens */
-  }
-
-  section h2 {
-    font-size: 2.75rem; /* Larger headings */
-  }
-<<<<<<< HEAD
-}
-
-@media (max-width: 768px) {
-  .main-container {
-    width: 100%; /* Full width on mobile */
-    margin-left: 0;
-    overflow-x: visible; /* Allow content to be fully visible */
-    padding: 0; /* Remove padding */
-  }
-
-  .min-h-screen {
-    overflow-x: visible; /* Allow content to be fully visible */
-    flex-direction: column; /* Stack elements vertically on mobile */
-  }
-
-  .main-content {
-    padding: 0; /* Remove padding on mobile */
-    width: 100%;
-    overflow-x: visible; /* Allow content to be fully visible */
-=======
-
-  .stats-item h3 {
-    font-size: 3rem; /* Bigger stats numbers */
-  }
-}
-
-@media (min-width: 768px) {
-  .stats-item {
-    padding: 3rem; /* Increased padding for larger screens */
-  }
-
-  header p {
-    font-size: 1.5rem; /* Larger supporting text */
-  }
-}
-
-@media (min-width: 1024px) {
-  .main-container {
-    flex-direction: row; /* Row layout for large screens */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    max-width: calc(100% - 250px); /* Ensure content doesn't overflow */
-  }
-
-  /* This is the key fix - offset the main content by the sidebar width */
-  .main-content {
-    margin-left: 0; /* No need for margin since container is already offset */
-    width: 100%; /* Set explicit width */
-    max-width: 100%; /* Prevent overflow */
-    box-sizing: border-box; /* Include padding in width calculation */
-  }
-
-  header {
-    padding: 80px 40px; /* More padding for larger screens */
-  }
-
-  section {
-    padding: 5rem 40px; /* More spacious sections */
-  }
-
-  footer {
-    padding: 4rem 0; /* Increased footer padding */
-  }
-}
-
-@media (max-width: 768px) {
-  /* For mobile, when sidebar is toggled open, push content down slightly */
-  .site-sidebar.open + .main-content {
-    margin-top: 60px; /* Give space for the toggle button */
-  }
-
-  .main-container {
-    width: 100%; /* Full width on mobile */
-    margin-left: 0;
-    overflow-x: hidden; /* Prevent horizontal scrolling on mobile */
-    max-width: 100%; /* Ensure content doesn't overflow */
-  }
-
-  .main-content {
-    padding: 15px; /* Reduce padding further on mobile */
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
-  }
-
-  header {
-    padding: 40px 10px; /* Reduce padding */
-  }
-
-  header h1 {
-    font-size: 2rem; /* Smaller title */
-  }
-
-  header p {
-    font-size: 1rem; /* Smaller supporting text */
-  }
-
-<<<<<<< HEAD
-=======
-  .stats-item {
-    padding: 1.5rem; /* Reduce padding */
-  }
-
-  .stats-item h3 {
-    font-size: 2rem; /* Smaller stats numbers */
-  }
-
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
-  footer {
-    padding: 2rem 0; /* Reduce footer padding */
-  }
-}
-<<<<<<< HEAD
-=======
-
-/* Fix for the Carousel to not overflow */
+/* Fix for the Carousel to work with right margin and center it */
 .carousel-container {
-  max-width: 100%;
-  overflow: hidden; /* Prevent content from overflowing */
+  width: 100%;
+  max-width: 1200px;
+  overflow: visible; /* Allow content to be fully visible */
   padding: 0; /* Remove padding to maximize width */
   margin: 0 auto; /* Center the carousel */
   position: relative;
   z-index: 1; /* Ensure proper stacking context */
   box-sizing: border-box; /* Include padding in width calculation */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 850px; /* Adjusted for right margin */
 }
 
 /* Ensure images in carousel are visible */
@@ -495,4 +467,218 @@ footer a:hover {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
   font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
->>>>>>> 585bae4336280194b8ac37d23e375c5ca744a0ba
+
+/* Responsive design */
+@media (min-width: 640px) {
+  header h1 {
+    font-size: 3.5rem; /* Larger font for larger screens */
+  }
+
+  section h2 {
+    font-size: 2.75rem; /* Larger headings */
+  }
+
+  .stats-item h3 {
+    font-size: 3rem; /* Bigger stats numbers */
+  }
+}
+
+@media (min-width: 768px) {
+  .stats-item {
+    padding: 3rem; /* Increased padding for larger screens */
+  }
+
+  header p {
+    font-size: 1.5rem; /* Larger supporting text */
+  }
+}
+
+@media (min-width: 1024px) {
+  /* No special styles needed for large screens - flex layout handles it */
+  header {
+    padding: 80px 40px; /* More padding for larger screens */
+  }
+
+  section {
+    padding: 5rem 40px; /* More spacious sections */
+  }
+
+  footer {
+    padding: 4rem 0; /* Increased footer padding */
+  }
+}
+
+@media (max-width: 768px) {
+  /* For mobile, when sidebar is toggled open, push content down slightly */
+  .site-sidebar.open + .main-content {
+    margin-top: 60px; /* Give space for the toggle button */
+  }
+
+  .main-container {
+    width: 100%; /* Full width on mobile */
+    margin-left: 0;
+    margin-right: 0; /* No right margin on mobile */
+    overflow-x: visible; /* Allow content to be fully visible */
+    padding: 0; /* Remove padding */
+  }
+
+  /* Hide right margin on mobile */
+  .right-margin {
+    display: none;
+  }
+
+  /* Ensure content fits properly on mobile */
+  .min-h-screen {
+    overflow-x: visible; /* Allow content to be fully visible */
+    flex-direction: column; /* Stack elements vertically on mobile */
+  }
+
+  .main-content {
+    padding: 0; /* Remove padding on mobile */
+    width: 100%;
+    overflow-x: visible; /* Allow content to be fully visible */
+  }
+
+  header {
+    padding: 40px 10px; /* Reduce padding */
+  }
+
+  header h1 {
+    font-size: 2rem; /* Smaller title */
+  }
+
+  header p {
+    font-size: 1rem; /* Smaller supporting text */
+  }
+
+  .stats-item {
+    padding: 1.5rem; /* Reduce padding */
+  }
+
+  .stats-item h3 {
+    font-size: 2rem; /* Smaller stats numbers */
+  }
+
+  footer {
+    padding: 2rem 0; /* Reduce footer padding */
+  }
+
+  /* Ensure carousel fits properly on mobile */
+  .carousel-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    overflow: visible; /* Allow content to be fully visible */
+  }
+}
+
+/* Improved Vertical Scrollbar Styling */
+
+/* Ensure vertical scrollbars are always visible */
+html, body, #root, .min-h-screen, .main-container, .main-content, .right-margin {
+  scrollbar-width: auto !important; /* Show scrollbar for Firefox */
+  -ms-overflow-style: scrollbar !important; /* Show scrollbar for IE and Edge */
+}
+
+/* Clear the hide scrollbar rules that might be overriding */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#root::-webkit-scrollbar,
+.min-h-screen::-webkit-scrollbar,
+.main-container::-webkit-scrollbar,
+.main-content::-webkit-scrollbar,
+.right-margin::-webkit-scrollbar {
+  display: block !important; /* Force display scrollbar */
+  width: 14px !important; /* Wider for better visibility */
+}
+
+/* Enhanced vertical scrollbar track */
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+#root::-webkit-scrollbar-track,
+.min-h-screen::-webkit-scrollbar-track,
+.main-container::-webkit-scrollbar-track,
+.main-content::-webkit-scrollbar-track,
+.right-margin::-webkit-scrollbar-track {
+  background: #f1f1f1 !important; /* Light gray track */
+  border-radius: 8px !important;
+  margin: 2px !important;
+}
+
+/* Enhanced vertical scrollbar thumb */
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+#root::-webkit-scrollbar-thumb,
+.min-h-screen::-webkit-scrollbar-thumb,
+.main-container::-webkit-scrollbar-thumb,
+.main-content::-webkit-scrollbar-thumb,
+.right-margin::-webkit-scrollbar-thumb {
+  background: #283593 !important; /* Strong blue thumb - match sidebar */
+  border-radius: 8px !important;
+  border: 2px solid #f1f1f1 !important; /* Border for better visibility */
+  min-height: 40px !important; /* Ensure minimum height for visibility */
+}
+
+/* Enhanced vertical scrollbar thumb hover */
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+#root::-webkit-scrollbar-thumb:hover,
+.min-h-screen::-webkit-scrollbar-thumb:hover,
+.main-container::-webkit-scrollbar-thumb:hover,
+.main-content::-webkit-scrollbar-thumb:hover,
+.right-margin::-webkit-scrollbar-thumb:hover {
+  background: #1a237e !important; /* Darker blue on hover */
+  border: 2px solid #e0e0e0 !important;
+}
+
+/* Enhanced vertical scrollbar thumb active (being dragged) */
+html::-webkit-scrollbar-thumb:active,
+body::-webkit-scrollbar-thumb:active,
+#root::-webkit-scrollbar-thumb:active,
+.min-h-screen::-webkit-scrollbar-thumb:active,
+.main-container::-webkit-scrollbar-thumb:active,
+.main-content::-webkit-scrollbar-thumb:active,
+.right-margin::-webkit-scrollbar-thumb:active {
+  background: #0d1761 !important; /* Even darker when actively scrolling */
+}
+
+/* Fix right margin container to ensure scrollbar is visible */
+.right-margin {
+  background-color: #f4f4f9;
+  width: 50px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 40px;
+  z-index: 30;
+  overflow-y: scroll !important; /* Force vertical scrolling */
+  overflow-x: hidden;
+  pointer-events: auto !important; /* Ensure it's interactive */
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+/* Ensure the main content area allows scrolling */
+.main-content {
+  overflow-y: auto !important;
+  height: auto;
+  min-height: calc(100vh - 40px); /* Account for horizontal scrollbar */
+}
+
+/* Ensure the main container shows scrollbars when needed */
+.main-container {
+  overflow-y: auto !important;
+}
+
+/* Remove any potential interference from other styles */
+body {
+  overflow-y: auto !important; /* Allow vertical scrolling */
+}
+
+/* Fix for containers that might have overflow hidden */
+.min-h-screen,
+.main-container,
+.main-content {
+  overflow-y: auto !important;
+}
