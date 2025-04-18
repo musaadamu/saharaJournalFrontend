@@ -102,6 +102,33 @@ const JournalList = () => {
             console.log('Using backend URL:', backendUrl);
             console.log('API base URL:', api.defaults.baseURL);
 
+            // Diagnostic: Check if file exists before download
+            const checkFileUrl = `${api.defaults.baseURL}/check-file/${id}/${fileType}`;
+            try {
+                const checkResponse = await fetch(checkFileUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    credentials: 'omit',
+                    mode: 'cors',
+                    cache: 'no-cache'
+                });
+                if (!checkResponse.ok) {
+                    throw new Error(`File existence check failed with status ${checkResponse.status}`);
+                }
+                const checkData = await checkResponse.json();
+                console.log('File existence check response:', checkData);
+                if (!checkData.exists) {
+                    toast.dismiss(toastId);
+                    toast.error(`File not found on server: ${checkData.fileName || 'unknown'}`);
+                    return;
+                }
+            } catch (checkError) {
+                console.error('File existence check error:', checkError);
+                // Proceed with download attempt anyway
+            }
+
             try {
                 // First try using the API service directly
                 if (!isProduction) {
