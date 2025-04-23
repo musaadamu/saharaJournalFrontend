@@ -2,12 +2,16 @@ import axios from 'axios';
 
 // Determine the correct base URL based on environment
 const getBaseUrl = () => {
-  // For production (Vercel deployment)
-  if (process.env.NODE_ENV === 'production') {
-    return 'https://saharabackend-v190.onrender.com/api';
-  }
-  // For local development
-  return process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  // TEMPORARY: Always use local backend for testing
+  return 'http://localhost:5000/api';
+
+  // ORIGINAL CODE (commented out for testing)
+  // // For production (Vercel deployment)
+  // if (process.env.NODE_ENV === 'production') {
+  //   return 'https://saharabackend-v190.onrender.com/api';
+  // }
+  // // For local development
+  // return process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 };
 
 // Log the API base URL for debugging
@@ -25,7 +29,13 @@ const api = axios.create({
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   },
-  withCredentials: true // Enable sending cookies with cross-origin requests
+  withCredentials: false // Disable sending cookies with cross-origin requests to avoid CORS issues
+});
+
+// Log configuration for debugging
+console.log('API Configuration:', {
+  baseURL: apiBaseUrl,
+  withCredentials: false
 });
 
 // Request interceptor to inject token
@@ -58,7 +68,6 @@ api.interceptors.response.use(
       const protectedPaths = [
         '/dashboard',
         '/updateprofile',
-        '/submission',
         '/journals/uploads',
         '/manage-journals'
       ];
@@ -149,10 +158,14 @@ api.journals = {
       'Accept': '*/*'
     };
 
-    // Determine the correct base URL based on environment
-    const baseUrl = process.env.NODE_ENV === 'production'
-      ? 'https://saharabackend-v190.onrender.com'
-      : 'http://localhost:5000';
+    // TEMPORARY: Always use local backend for testing
+    const baseUrl = 'http://localhost:5000';
+
+    // ORIGINAL CODE (commented out for testing)
+    // // Determine the correct base URL based on environment
+    // const baseUrl = process.env.NODE_ENV === 'production'
+    //   ? 'https://saharabackend-v190.onrender.com'
+    //   : 'http://localhost:5000';
 
     console.log('Using base URL for download:', baseUrl);
 

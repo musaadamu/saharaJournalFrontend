@@ -110,8 +110,8 @@ const Sidebar = ({ className, onClose }) => {
               <li className="sidebar-menu-divider">Admin</li>
               <li className="sidebar-menu-item">
                 <Link
-                  to="/manage-journal"
-                  className={`sidebar-menu-link ${activeLink === '/manage-journal' ? 'active' : ''}`}
+                  to="/manage-journals"
+                  className={`sidebar-menu-link ${activeLink === '/manage-journals' ? 'active' : ''}`}
                 >
                   <i className="fas fa-tasks sidebar-icon"></i>
                   <span>Manage Journals</span>
@@ -119,8 +119,8 @@ const Sidebar = ({ className, onClose }) => {
               </li>
               <li className="sidebar-menu-item">
                 <Link
-                  to="/upload-journals"
-                  className={`sidebar-menu-link ${activeLink === '/upload-journals' ? 'active' : ''}`}
+                  to="/journals/uploads"
+                  className={`sidebar-menu-link ${activeLink === '/journals/uploads' ? 'active' : ''}`}
                 >
                   <i className="fas fa-upload sidebar-icon"></i>
                   <span>Upload Journals</span>

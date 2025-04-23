@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Journal Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #response {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Journal Upload to Local Backend</h1>
+    <p>This page will test uploading a journal to your local backend at <code>http://localhost:5000/api/journals</code>.</p>
+    
+    <form id="uploadForm">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="Test Journal Title" required>
+        
+        <label for="abstract">Abstract:</label>
+        <textarea id="abstract" name="abstract" rows="4" required>This is a test abstract for the journal.</textarea>
+        
+        <label for="authors">Authors (comma-separated):</label>
+        <input type="text" id="authors" name="authors" value="John Doe, Jane Smith" required>
+        
+        <label for="keywords">Keywords (comma-separated):</label>
+        <input type="text" id="keywords" name="keywords" value="test, journal, upload" required>
+        
+        <label for="file">DOCX File:</label>
+        <input type="file" id="file" name="file" accept=".docx" required>
+        
+        <button type="submit">Upload Journal</button>
+    </form>
+    
+    <h2>Response:</h2>
+    <div id="response">No response yet.</div>
+    
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const responseDiv = document.getElementById('response');
+            responseDiv.textContent = 'Uploading...';
+            
+            const formData = new FormData();
+            formData.append('title', document.getElementById('title').value);
+            formData.append('abstract', document.getElementById('abstract').value);
+            
+            // Handle authors as an array
+            const authors = document.getElementById('authors').value.split(',').map(author => author.trim());
+            authors.forEach(author => {
+                formData.append('authors', author);
+            });
+            
+            // Handle keywords as an array
+            const keywords = document.getElementById('keywords').value.split(',').map(keyword => keyword.trim());
+            keywords.forEach(keyword => {
+                formData.append('keywords', keyword);
+            });
+            
+            // Append the file
+            const fileInput = document.getElementById('file');
+            if (fileInput.files.length > 0) {
+                formData.append('file', fileInput.files[0]);
+            }
+            
+            // Log form data entries
+            console.log('Form data entries:');
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ':', value);
+            }
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/journals', {
+                    method: 'POST',
+                    body: formData,
+                    // Don't set Content-Type header, let the browser set it with the boundary
+                });
+                
+                const data = await response.json();
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+                
+                if (response.ok) {
+                    console.log('Upload successful:', data);
+                } else {
+                    console.error('Upload failed:', data);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                responseDiv.textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

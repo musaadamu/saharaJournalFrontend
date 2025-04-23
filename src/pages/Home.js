@@ -12,6 +12,34 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default function HomePage() {
     const [stats, setStats] = useState([]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Define carousel images
+    const carouselImages = [
+        {
+            src: 'images/image4.jpg',
+            alt: 'The Provost',
+            title: 'The Sahara Desert, the Great Symbol of the Sahara Journal',
+            description: 'The Desert'
+        },
+        {
+            src: 'images/image5.jpg',
+            alt: 'The Sahara Journal',
+            title: 'The Camel in the Sahara',
+            description: 'The Great Sahara International Journal of Teacher Education'
+        },
+        {
+            src: 'images/image3.jpg',
+            alt: 'The Sahara Journal',
+            title: 'The Sahara International Journal of Teacher Education',
+            description: 'The Sahara Journal'
+        }
+    ];
+
+    // Function to check if device is mobile
+    const checkMobile = () => {
+        setIsMobile(window.innerWidth <= 768);
+    };
 
     // Function to toggle sidebar
     const toggleSidebar = () => {
@@ -23,17 +51,61 @@ export default function HomePage() {
         setSidebarOpen(false);
     };
 
-    // Add useEffect to set the initial scroll position and handle layout
     useEffect(() => {
-        // Function to set the initial scroll position
-        const setInitialScrollPosition = () => {
-            // Get the fixed scrollbar
-            const fixedScrollbar = document.querySelector('.fixed-scrollbar');
-            if (fixedScrollbar) {
-                // Set its scroll position to 250px (sidebar width)
-                fixedScrollbar.scrollLeft = 250;
+        // Check mobile on mount and window resize
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
 
-                // Also update all scrollable elements
+        // Only apply horizontal scroll fixes on desktop
+        const handleScrollLayout = () => {
+            if (!isMobile) {
+                const fixedScrollbar = document.querySelector('.fixed-scrollbar');
+                if (fixedScrollbar) {
+                    fixedScrollbar.scrollLeft = 250;
+                }
+
+                // Fix for the sidebar gap issue and center carousel
+                const sidebar = document.querySelector('.site-sidebar');
+                const mainContainer = document.querySelector('.main-container');
+                const carouselContainer = document.querySelector('.carousel-container');
+
+                if (sidebar && mainContainer) {
+                    const sidebarWidth = sidebar.getBoundingClientRect().width;
+                    mainContainer.style.marginLeft = `${sidebarWidth}px`;
+                    mainContainer.style.width = `calc(100% - ${sidebarWidth + 50}px)`;
+                }
+
+                if (carouselContainer) {
+                    carouselContainer.style.margin = '0 auto';
+                    carouselContainer.style.display = 'flex';
+                    carouselContainer.style.justifyContent = 'center';
+                    carouselContainer.style.width = '100%';
+                    carouselContainer.style.maxWidth = '1200px';
+                }
+            } else {
+                // Reset styles for mobile
+                const mainContainer = document.querySelector('.main-container');
+                if (mainContainer) {
+                    mainContainer.style.marginLeft = '0';
+                    mainContainer.style.width = '100%';
+                }
+            }
+        };
+
+        handleScrollLayout();
+        window.addEventListener('resize', handleScrollLayout);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('resize', checkMobile);
+            window.removeEventListener('resize', handleScrollLayout);
+        };
+    }, [isMobile]);
+
+    // Function to handle scrollbar movement - only active on desktop
+    const handleScrollbarScroll = (e) => {
+        if (!isMobile) {
+            try {
                 const scrollableElements = [
                     document.documentElement,
                     document.body,
@@ -44,177 +116,58 @@ export default function HomePage() {
 
                 scrollableElements.forEach(element => {
                     if (element) {
-                        element.scrollLeft = 250;
+                        element.scrollLeft = e.target.scrollLeft;
                     }
                 });
+
+                window.scrollTo({
+                    left: e.target.scrollLeft,
+                    top: window.scrollY,
+                    behavior: 'auto'
+                });
+            } catch (error) {
+                console.error('Error in handleScrollbarScroll:', error);
             }
-        };
-
-        // Fix for the sidebar gap issue and center carousel
-        const fixLayoutIssues = () => {
-            const sidebar = document.querySelector('.site-sidebar');
-            const mainContainer = document.querySelector('.main-container');
-            const carouselContainer = document.querySelector('.carousel-container');
-
-            if (sidebar && mainContainer) {
-                // Ensure exact dimensions
-                const sidebarWidth = sidebar.getBoundingClientRect().width;
-                mainContainer.style.marginLeft = `${sidebarWidth}px`;
-                mainContainer.style.width = `calc(100% - ${sidebarWidth + 50}px)`; // Account for right margin
-            }
-
-            // Center the carousel
-            if (carouselContainer) {
-                carouselContainer.style.margin = '0 auto';
-                carouselContainer.style.display = 'flex';
-                carouselContainer.style.justifyContent = 'center';
-                carouselContainer.style.width = '100%';
-                carouselContainer.style.maxWidth = '1200px';
-            }
-        };
-
-        // Apply the fixes
-        setInitialScrollPosition();
-        fixLayoutIssues();
-
-        // Set again after delays to ensure it works with dynamic content loading
-        setTimeout(setInitialScrollPosition, 100);
-        setTimeout(fixLayoutIssues, 100);
-        setTimeout(setInitialScrollPosition, 500);
-        setTimeout(fixLayoutIssues, 500);
-
-        // Also set when the window is resized
-        window.addEventListener('resize', setInitialScrollPosition);
-        window.addEventListener('resize', fixLayoutIssues);
-
-        // Cleanup function
-        return () => {
-            window.removeEventListener('resize', setInitialScrollPosition);
-            window.removeEventListener('resize', fixLayoutIssues);
-        };
-    }, []);
-
-    // Define carousel images with explicit paths for better compatibility
-    const carouselImages = [
-        {
-            src: "images/image3.JPG",
-            title: "Amazing Sahara Journal Back Cover",
-            description: "Discover the beautiful and seasoned journal"
-        },
-        {
-            src: "images/image4.JPG",
-            alt: "The Sahara Journal Frontend Page",
-            title: "Stunning Design of a Journal of the Sahara",
-            description: "Discover more creative and stunning contents at Sahara Journal"
-        },
-        {
-            src: "images/image5.JPG",
-            title: "The Beautiful Sahara Journal",
-            description: "The Beautiful Sahara Journal"
-        },
-        {
-            src: "images/image1.JPG",
-            title: "Sahara Journal Publication",
-            description: "Quality research publications"
-        },
-        {
-            src: "images/image2.JPG",
-            title: "International Journal of Teacher Education",
-            description: "Advancing education research globally"
-        }
-    ];
-
-    // Function to handle scrollbar movement
-    const handleScrollbarScroll = (e) => {
-        try {
-            // Get all scrollable elements
-            const scrollableElements = [
-                document.documentElement,
-                document.body,
-                document.querySelector('.min-h-screen'),
-                document.querySelector('.main-container'),
-                document.querySelector('.main-content')
-            ];
-
-            // Sync all scrollable elements with the fixed scrollbar
-            scrollableElements.forEach(element => {
-                if (element) {
-                    // Set scrollLeft directly for maximum compatibility
-                    element.scrollLeft = e.target.scrollLeft;
-                }
-            });
-
-            // Also use window.scrollTo for maximum compatibility
-            window.scrollTo({
-                left: e.target.scrollLeft,
-                top: window.scrollY,
-                behavior: 'auto'
-            });
-        } catch (error) {
-            console.error('Error in handleScrollbarScroll:', error);
         }
     };
 
     return (
-        <div>
+        <div className={`home-container ${isMobile ? 'mobile' : ''}`}>
             <div className="min-h-screen bg-gray-50 text-gray-900">
-                {/* Mobile sidebar toggle button */}
-                <button
-                    className="mobile-sidebar-toggle"
-                    onClick={toggleSidebar}
-                    aria-label="Toggle sidebar"
-                    style={{
-                        display: 'none', /* Hidden by default, shown in mobile CSS */
-                        position: 'fixed',
-                        top: '70px',
-                        left: '10px',
-                        zIndex: 1000,
-                        background: '#1e3a8a',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '50%',
-                        width: '40px',
-                        height: '40px',
-                        boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-                        fontSize: '18px'
-                    }}
-                >
-                    <i className="fas fa-bars"></i>
-                </button>
-                {/* Apply specific styles to the Sidebar to eliminate gaps */}
+                {/* Mobile sidebar toggle button - only shown on mobile */}
+                {isMobile && (
+                    <button
+                        className="mobile-sidebar-toggle"
+                        onClick={toggleSidebar}
+                        aria-label="Toggle sidebar"
+                    >
+                        <i className="fas fa-bars"></i>
+                    </button>
+                )}
+
                 <Sidebar
                     className={`site-sidebar ${sidebarOpen ? 'open' : ''}`}
                     onClose={closeSidebar}
                 />
 
                 {/* Backdrop overlay for mobile when sidebar is open */}
-                {sidebarOpen && (
+                {isMobile && sidebarOpen && (
                     <div
                         className="sidebar-backdrop"
                         onClick={closeSidebar}
-                        style={{
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                            zIndex: 40,
-                            display: 'none' /* Hidden by default, shown in mobile CSS */
-                        }}
                     />
                 )}
 
-                {/* Add right margin container for vertical scrollbar */}
-                <div className="right-margin"></div>
+                {/* Right margin container - only shown on desktop */}
+                {!isMobile && <div className="right-margin"></div>}
 
                 <div className="main-container">
                     <main className="main-content">
-                        {/* Carousel Section - Centered */}
+                        {/* Carousel Section */}
                         <div className="carousel-container">
                             <ImprovedCarousel
                                 images={carouselImages}
-                                height={500}
+                                height={isMobile ? 300 : 500}
                                 autoplaySpeed={4000}
                                 title="Sahara International Journal of Teacher Education"
                             />
@@ -223,31 +176,31 @@ export default function HomePage() {
                         <JournalHero />
 
                         {/* Welcome Section */}
-                        <header className="relative bg-blue-900 text-white py-10 md:py-20 text-center">
+                        <header className="welcome-header">
                             <motion.h1
                                 initial={{ opacity: 0, y: -20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8 }}
-                                className="text-3xl md:text-5xl lg:text-6xl font-bold"
+                                className="welcome-title"
                             >
                                 Welcome to the Sahara International Journal of Teacher Education
                             </motion.h1>
-                            <p className="mt-4 text-base md:text-lg lg:text-xl max-w-xl md:max-w-3xl mx-auto">
+                            <p className="welcome-description">
                                 A global platform for scholars, researchers, and academics to publish and discover cutting-edge research.
                             </p>
                             <Link
                                 to="/submission"
-                                className="mt-6 inline-block bg-white text-blue-900 font-semibold px-4 md:px-6 py-2 md:py-3 rounded-lg shadow-lg hover:bg-gray-200 transition"
+                                className="submit-button"
                             >
                                 Submit Your Manuscript
                             </Link>
                         </header>
 
                         {/* Featured Journals Section */}
-                        <section className="py-10 md:py-16 px-2 md:px-10 text-center">
-                            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8">Featured Publications</h2>
+                        <section className="featured-section">
+                            <h2 className="featured-title">Featured Publications</h2>
                             <JournalList />
-                            <div className="mt-4 md:mt-6">
+                            <div className="view-all-link">
                                 <Link
                                     to="/journals"
                                     className="text-blue-600 font-medium hover:underline"
@@ -257,20 +210,21 @@ export default function HomePage() {
                             </div>
                         </section>
 
-                        {/* Include Footer inside the main-container */}
                         <Footer />
                     </main>
                 </div>
             </div>
 
-            {/* Fixed horizontal scrollbar at the bottom of the viewport */}
-            <div className="fixed-scrollbar" onScroll={handleScrollbarScroll}>
-                <div className="fixed-scrollbar-content">
-                    <div style={{ color: 'white', textAlign: 'center', fontSize: '14px', fontWeight: 'bold', marginTop: '-2px', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
-                        Scroll horizontally to see more content →
+            {/* Fixed horizontal scrollbar - only shown on desktop */}
+            {!isMobile && (
+                <div className="fixed-scrollbar" onScroll={handleScrollbarScroll}>
+                    <div className="fixed-scrollbar-content">
+                        <div className="scrollbar-text">
+                            Scroll horizontally to see more content →
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }

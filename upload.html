@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Google Drive Upload</title>
+</head>
+<body>
+    <h1>Test Google Drive Upload</h1>
+    <form action="http://localhost:5000/api/diagnostic/test-drive-upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".docx" required>
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
