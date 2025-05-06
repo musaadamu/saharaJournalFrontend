@@ -1,48 +1,108 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import "./JournalHero.css"; // Import the new CSS file
+import { useState, useEffect } from "react";
+import "./JournalHero.css";
 
 export default function JournalHero() {
+    // State for background image rotation
+    const [backgroundIndex, setBackgroundIndex] = useState(0);
+
+    // Array of background images
+    const backgroundImages = [
+        "images/image1.jpg",
+        "images/image3.jpg",
+        "images/image4.jpg"
+    ];
+
+    // Rotate background images every 8 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setBackgroundIndex((prevIndex) =>
+                (prevIndex + 1) % backgroundImages.length
+            );
+        }, 8000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    // Animation variants for staggered children
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: "easeOut" }
+        }
+    };
+
     return (
         <section className="journal-hero">
-            {/* Background Image */}
-            <div 
-                className="journal-hero__background" 
-                style={{ backgroundImage: "url('images/image1.jpg')" }}
-            ></div>
+            {/* Background Image with crossfade effect */}
+            {backgroundImages.map((image, index) => (
+                <div
+                    key={index}
+                    className="journal-hero__background"
+                    style={{
+                        backgroundImage: `url('${image}')`,
+                        opacity: index === backgroundIndex ? 1 : 0,
+                        transition: "opacity 1.5s ease-in-out"
+                    }}
+                />
+            ))}
 
             {/* Overlay */}
             <div className="journal-hero__overlay"></div>
 
-            {/* Hero Content */}
-            <motion.div 
-                initial={{ opacity: 0, y: 30 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ duration: 0.8 }}
+            {/* Hero Content with staggered animations */}
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
                 className="journal-hero__content"
             >
-                <h1 className="journal-hero__title">
+                <motion.h1
+                    variants={itemVariants}
+                    className="journal-hero__title"
+                >
                     Explore Cutting-Edge Research
-                </h1>
-                <p className="journal-hero__description">
-                    Stay informed with the latest academic breakthroughs and innovative discoveries that shape the future.
-                </p>
+                </motion.h1>
 
-                <div className="journal-hero__buttons">
-                    <Link 
+                <motion.p
+                    variants={itemVariants}
+                    className="journal-hero__description"
+                >
+                    Stay informed with the latest academic breakthroughs and innovative discoveries
+                    that shape the future of education and research.
+                </motion.p>
+
+                <motion.div
+                    variants={itemVariants}
+                    className="journal-hero__buttons"
+                >
+                    <Link
                         to="/journals"
                         className="journal-hero__button-primary"
                     >
                         Browse Journals
                     </Link>
-                    <Link 
+                    <Link
                         to="/submission"
                         className="journal-hero__button-secondary"
                     >
                         Submit Your Research
                     </Link>
-                </div>
-                
+                </motion.div>
+
                 <div className="journal-hero__badge">
                     Peer-Reviewed
                 </div>

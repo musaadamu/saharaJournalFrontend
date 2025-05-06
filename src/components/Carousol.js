@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './ImprovedCarousel.css';
-import './images'
 
 export default function ImprovedCarousel({
   images = [],
@@ -37,13 +36,13 @@ export default function ImprovedCarousel({
 
   // Navigation functions
   const nextSlide = () => {
-    setActiveIndex((current) => 
+    setActiveIndex((current) =>
       current === processedImages.length - 1 ? 0 : current + 1
     );
   };
 
   const prevSlide = () => {
-    setActiveIndex((current) => 
+    setActiveIndex((current) =>
       current === 0 ? processedImages.length - 1 : current - 1
     );
   };
@@ -74,80 +73,83 @@ export default function ImprovedCarousel({
 
   return (
     <div className="carousel-container">
-      <div className="carousel-image-container">
-        <div className="carousel-main-title">
-          <h1>{title}</h1>
-        </div>
-        
-        {processedImages.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute w-full h-full transition-all duration-700 ease-in-out ${
-              index === activeIndex ? "opacity-100 visible" : "opacity-0 invisible"
-            }`}
-            style={{
-              transform: index === activeIndex ? 'translateX(0)' : 'translateX(100%)'
-            }}
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-full object-cover"
-              style={{
-                opacity: index === activeIndex ? 1 : 0,
-                transition: 'opacity 0.7s ease-in-out'
-              }}
-              onLoad={() => handleImageLoad(index)}
-              onError={() => handleImageError(index)}
-            />
-
-            {imageStatus[index] === 'error' && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-80 text-white">
-                <div className="text-center p-4">
-                  <p className="text-xl font-bold">{image.title}</p>
-                  <p className="text-base mt-2">{image.description}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-
-        <button
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-2 z-20"
-          onClick={prevSlide}
-          aria-label="Previous slide"
-        >
-          <ChevronLeft size={24} />
-        </button>
-
-        <button
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-2 z-20"
-          onClick={nextSlide}
-          aria-label="Next slide"
-        >
-          <ChevronRight size={24} />
-        </button>
+      {/* Main title at the top */}
+      <div className="carousel-main-title">
+        <h1>{title}</h1>
       </div>
 
-      <div className="carousel-content">
-        <div className="carousel-caption">
-          <h3 className="carousel-caption-title text-base md:text-lg lg:text-xl font-medium mb-1">
-            {processedImages[activeIndex].title}
-          </h3>
-          <p className="carousel-caption-text text-sm md:text-base text-gray-200">
-            {processedImages[activeIndex].description}
-          </p>
+      <div className="carousel-inner-container">
+        {/* Image container on the left */}
+        <div className="carousel-image-container">
+          {processedImages.map((image, index) => (
+            <div
+              key={index}
+              className={`carousel-slide ${index === activeIndex ? "active" : ""}`}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="carousel-image"
+                onLoad={() => handleImageLoad(index)}
+                onError={() => handleImageError(index)}
+              />
+
+              {imageStatus[index] === 'error' && (
+                <div className="carousel-error-overlay">
+                  <div className="carousel-error-content">
+                    <p className="carousel-error-title">{image.title}</p>
+                    <p className="carousel-error-description">{image.description}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {/* Navigation buttons */}
+          <button
+            className="carousel-nav-button prev"
+            onClick={prevSlide}
+            aria-label="Previous slide"
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          <button
+            className="carousel-nav-button next"
+            onClick={nextSlide}
+            aria-label="Next slide"
+          >
+            <ChevronRight size={24} />
+          </button>
         </div>
 
-        <div className="carousel-dots">
-          {processedImages.map((_, index) => (
-            <button
-              key={index}
-              className={`carousel-dot ${index === activeIndex ? 'active' : ''}`}
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
+        {/* Content container on the right */}
+        <div className="carousel-content">
+          <div className="carousel-caption">
+            <h2 className="carousel-caption-title">
+              {processedImages[activeIndex].title}
+            </h2>
+            <p className="carousel-caption-text">
+              {processedImages[activeIndex].description}
+            </p>
+
+            {/* Call-to-action button */}
+            <button className="carousel-cta-button">
+              Learn More
+            </button>
+          </div>
+
+          {/* Indicator dots */}
+          <div className="carousel-dots">
+            {processedImages.map((_, index) => (
+              <button
+                key={index}
+                className={`carousel-dot ${index === activeIndex ? 'active' : ''}`}
+                onClick={() => setActiveIndex(index)}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

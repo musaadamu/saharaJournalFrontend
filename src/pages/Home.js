@@ -3,8 +3,6 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import JournalList from "../components/JournalList";
 import JournalHero from "../components/JournalHero";
-import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
 import './Home.css';
 import ImprovedCarousel from "../components/Carousol";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -145,26 +143,13 @@ export default function HomePage() {
                     </button>
                 )}
 
-                <Sidebar
-                    className={`site-sidebar ${sidebarOpen ? 'open' : ''}`}
-                    onClose={closeSidebar}
-                />
-
-                {/* Backdrop overlay for mobile when sidebar is open */}
-                {isMobile && sidebarOpen && (
-                    <div
-                        className="sidebar-backdrop"
-                        onClick={closeSidebar}
-                    />
-                )}
-
                 {/* Right margin container - only shown on desktop */}
                 {!isMobile && <div className="right-margin"></div>}
 
                 <div className="main-container">
                     <main className="main-content">
                         {/* Carousel Section */}
-                        <div className="carousel-container">
+                        <div className="home-carousel-wrapper">
                             <ImprovedCarousel
                                 images={carouselImages}
                                 height={isMobile ? 300 : 500}
@@ -209,8 +194,6 @@ export default function HomePage() {
                                 </Link>
                             </div>
                         </section>
-
-                        <Footer />
                     </main>
                 </div>
             </div>

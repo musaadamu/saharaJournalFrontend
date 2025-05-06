@@ -41,6 +41,7 @@ const Navigation = ({ user, toggleSidebar }) => {
       'Guide': 'Author\'s Guide',
       'Submit': 'Submit Article',
       'Contact': 'Contact Us',
+      'Archive': 'Journal Archive',
 
       // User navigation
       'Dashboard': 'User Dashboard',
