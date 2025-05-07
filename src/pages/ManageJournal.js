@@ -438,12 +438,6 @@ export default function ManageJournal() {
 
                                                 <div className="button-group">
                                                     <button
-                                                        onClick={() => handleSubmissionDownload(submission._id, 'pdf')}
-                                                        className="download-btn"
-                                                    >
-                                                        Download PDF
-                                                    </button>
-                                                    <button
                                                         onClick={() => handleSubmissionDownload(submission._id, 'docx')}
                                                         className="download-btn"
                                                     >

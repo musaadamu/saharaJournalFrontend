@@ -27,18 +27,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem; /* Reduced padding */
+  padding: 0 0.5rem; /* Further reduced padding */
   max-width: 1400px;
   margin: 0 auto;
   height: 64px;
-  width: 100%; /* Ensure full width */
+  width: 100%;
 }
 
 .nav-brand {
   display: flex;
   align-items: center;
   height: 100%;
-  padding-right: 1.5rem;
+  padding-right: 1rem; /* Reduced padding */
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -55,15 +55,9 @@
   align-items: center;
   flex: 1;
   height: 100%;
-  overflow-x: auto;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  width: 100%; /* Ensure full width */
-  justify-content: space-between; /* Better space distribution */
-}
-
-.nav-menu-container::-webkit-scrollbar {
-  display: none;
+  /* Removed overflow-x properties to prevent scrolling */
+  width: 100%;
+  justify-content: space-between;
 }
 
 /* Navigation Links */
@@ -78,23 +72,23 @@
 
 .main-links {
   flex: 1;
-  margin-left: 0.75rem;
-  margin-right: 0.5rem; /* Add right margin */
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  margin-left: 0.5rem; /* Reduced margin */
+  margin-right: 0.5rem;
+  /* Removed overflow-x property */
 }
 
 .user-links {
   justify-content: flex-end;
-  padding-left: 0.5rem; /* Reduced padding */
-  min-width: max-content; /* Ensure all items are visible */
-  flex-shrink: 0; /* Prevent shrinking */
+  padding-left: 0.25rem; /* Further reduced padding */
+  min-width: max-content;
+  flex-shrink: 0;
 }
 
 .nav-divider {
   height: 50%;
   width: 1px;
   background-color: rgba(255, 255, 255, 0.2);
-  margin: 0 0.5rem;
+  margin: 0 0.25rem; /* Reduced margins */
 }
 
 .nav-links li {
@@ -114,14 +108,14 @@
   text-decoration: none;
   color: #ffffff;
   font-weight: 500;
-  padding: 0 0.6rem; /* Reduced horizontal padding */
+  padding: 0 0.45rem; /* Further reduced horizontal padding */
   height: 100%;
   transition: background-color 0.2s ease, color 0.2s ease;
   position: relative;
-  font-size: 0.9rem; /* Slightly smaller font size */
-  white-space: nowrap; /* Prevent text from wrapping */
-  min-width: max-content; /* Ensure the full text is visible */
-  letter-spacing: -0.01em; /* Slightly reduce letter spacing */
+  font-size: 0.85rem; /* Smaller font size */
+  white-space: nowrap;
+  min-width: max-content;
+  letter-spacing: -0.02em; /* Reduced letter spacing */
 }
 
 .nav-links a:hover {
@@ -144,8 +138,8 @@
 
 /* Hamburger Menu */
 .hamburger {
-  display: none; /* Hide by default on larger screens */
-  background: rgba(255, 255, 255, 0.1); /* Slight background for better visibility */
+  display: none;
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   color: white;
   font-size: 1.5rem;
@@ -157,7 +151,7 @@
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
-  border-radius: 4px; /* Rounded corners */
+  border-radius: 4px;
 }
 
 .hamburger:hover {
@@ -201,20 +195,20 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    overflow: hidden; /* Prevent overflow */
+    overflow: hidden;
   }
 
   .nav-logo {
     width: 100%;
     text-align: center;
-    font-size: 1.1rem; /* Slightly smaller font size on mobile */
-    white-space: nowrap; /* Prevent wrapping */
-    overflow: hidden; /* Prevent overflow */
-    text-overflow: ellipsis; /* Add ellipsis if needed */
+    font-size: 1.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .hamburger {
-    display: flex; /* Show and use flex layout on mobile */
+    display: flex;
     width: 40px;
     height: 40px;
     margin: 0 4px;
@@ -234,11 +228,11 @@
   }
 
   .nav-menu-container {
-    position: fixed; /* Fixed position covers full screen */
-    top: 56px; /* Start below the navbar */
+    position: fixed;
+    top: 56px;
     left: 0;
     right: 0;
-    bottom: 0; /* Extend to bottom of screen */
+    bottom: 0;
     flex-direction: column;
     background-color: #1e3a8a;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -246,7 +240,7 @@
     overflow: hidden;
     transition: all 0.3s ease;
     align-items: flex-start;
-    z-index: 1001; /* Higher than the main navigation */
+    z-index: 1001;
     height: auto;
     opacity: 0;
     visibility: hidden;
@@ -254,13 +248,13 @@
   }
 
   .nav-menu-container.open {
-    max-height: calc(100vh - 56px); /* Full height minus navbar */
+    max-height: calc(100vh - 56px);
     overflow-y: auto;
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow for better visibility */
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   }
 
   .nav-links {
@@ -293,15 +287,16 @@
     height: auto;
     width: 100%;
     justify-content: flex-start;
-    white-space: normal; /* Allow text to wrap on mobile */
-    line-height: 1.3; /* Improve line spacing */
-    font-size: 1.05rem; /* Slightly larger font for better readability */
-    display: flex; /* Use flex for better alignment */
-    text-align: left; /* Left align text */
-    min-width: auto; /* Reset min-width for mobile */
-    border-radius: 4px; /* Rounded corners */
-    margin: 0 8px; /* Add some margin */
-    width: calc(100% - 16px); /* Account for margin */
+    white-space: normal;
+    line-height: 1.3;
+    font-size: 1.05rem;
+    display: flex;
+    text-align: left;
+    min-width: auto;
+    border-radius: 4px;
+    margin: 0 8px;
+    width: calc(100% - 16px);
+    letter-spacing: normal; /* Reset letter spacing for mobile */
   }
 
   .nav-links a.active::after {
@@ -320,23 +315,6 @@
     color: white;
   }
 
-  /* Add close button for mobile menu */
-  .mobile-menu-close {
-    display: block;
-    width: 100%;
-    text-align: right;
-    padding: 10px 15px;
-    color: white;
-    font-size: 0.9rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  /* Add some spacing between menu sections */
-  .nav-links + .nav-divider {
-    margin-top: 10px;
-  }
-
-  /* Make the navigation bar stick to top */
   .main-navigation {
     position: fixed;
     top: 0;
@@ -349,87 +327,78 @@
 /* Medium-sized devices */
 @media (min-width: 769px) and (max-width: 1024px) {
   .nav-links a {
-    padding: 0 0.5rem; /* Further reduced padding */
-    font-size: 0.85rem; /* Smaller font size */
-    white-space: nowrap; /* Ensure no wrapping on medium screens */
-    letter-spacing: -0.02em; /* Further reduce letter spacing */
+    padding: 0 0.35rem; /* Further reduced padding */
+    font-size: 0.8rem; /* Smaller font size */
+    letter-spacing: -0.025em; /* Further reduced letter spacing */
   }
 
   .nav-container {
-    padding: 0 0.75rem; /* Reduced container padding */
+    padding: 0 0.5rem; /* Reduced container padding */
   }
 
   .nav-brand {
-    padding-right: 0.75rem; /* Reduced padding */
+    padding-right: 0.5rem; /* Reduced padding */
   }
 
-  /* Hide hamburger on medium screens */
   .hamburger {
     display: none;
   }
 
-  /* Reduce margins to fit more items */
   .main-links {
-    margin-left: 0.5rem;
-    margin-right: 0.25rem;
+    margin-left: 0.25rem;
+    margin-right: 0.15rem;
   }
 
   .nav-divider {
-    margin: 0 0.2rem;
+    margin: 0 0.15rem;
   }
 
-  /* Ensure user links have enough space */
   .user-links {
     min-width: max-content;
-    padding-left: 0.25rem;
+    padding-left: 0.15rem;
   }
 }
 
 /* Large devices */
 @media (min-width: 1025px) {
   .nav-container {
-    padding: 0 2rem;
+    padding: 0 1.5rem; /* Reduced padding */
   }
 
   .nav-brand {
-    padding-right: 2rem;
+    padding-right: 1.5rem; /* Reduced padding */
   }
 
   .main-links {
-    margin-left: 1.5rem;
+    margin-left: 1rem; /* Reduced margin */
   }
 
   .nav-divider {
-    margin: 0 1rem;
+    margin: 0 0.5rem; /* Reduced margin */
   }
 
-  /* Explicitly hide hamburger on large screens */
   .hamburger {
     display: none;
   }
 
-  /* Ensure links don't wrap and have enough space */
   .nav-links a {
     white-space: nowrap;
-    font-size: 0.95rem;
-    padding: 0 0.8rem; /* Reduced padding */
+    font-size: 0.9rem;
+    padding: 0 0.5rem; /* Reduced padding */
     font-weight: 500;
-    letter-spacing: -0.01em; /* Slightly reduce letter spacing */
+    letter-spacing: -0.01em;
   }
 
-  /* Add more space between items */
   .nav-links li {
-    margin: 0 0.05rem; /* Reduced margin */
+    margin: 0 0.03rem; /* Reduced margin */
   }
 
-  /* Ensure user links have enough space */
   .user-links {
     min-width: max-content;
-    padding-left: 0.3rem;
+    padding-left: 0.2rem;
   }
 
-  /* Adjust main links to give more space to user links */
   .main-links {
-    margin-right: 0.3rem;
+    margin-right: 0.2rem;
   }
 }

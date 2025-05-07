@@ -439,7 +439,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../services/api';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { downloadJournalFile } from '../utils/fileDownload';
 import './JournalDetails.css';
@@ -659,27 +658,30 @@ const JournalDetail = () => {
                 <p className="text-justify"><strong>Abstract:</strong> {journal?.abstract || 'No abstract available'}</p>
                 <p><strong>Content:</strong> {journal?.content || 'Download PDF or WORD file'}</p>
 
-                {/* Always show the PDF download button, like in JournalList */}
-                <p>
-                    <strong>PDF:</strong> {' '}
+                {/* Download buttons section */}
+                <div className="flex flex-wrap gap-4 my-4">
+                    {/* PDF download button */}
                     <button
                         onClick={() => handleDownload('pdf')}
-                        className="text-blue-600 hover:underline ml-2"
+                        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition duration-300 ease-in-out flex items-center"
                     >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
                         Download PDF
                     </button>
-                </p>
 
-                {/* Always show the Word download button, like in JournalList */}
-                <p>
-                    <strong>Word Document:</strong> {' '}
+                    {/* DOCX download button */}
                     <button
                         onClick={() => handleDownload('docx')}
-                        className="text-blue-600 hover:underline ml-2"
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300 ease-in-out flex items-center"
                     >
-                        Download Word Document
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                        Download DOCX
                     </button>
-                </p>
+                </div>
 
                 <p><strong>Keywords:</strong> {journal?.keywords?.join(', ') || 'No keywords'}</p>
                 <p><strong>Status:</strong> {journal?.status || 'Unknown'}</p>

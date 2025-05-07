@@ -330,11 +330,16 @@ const JournalList = () => {
                                 >
                                     {journal.title || 'Untitled Journal'}
                                 </h3>
-                                <p className="text-gray-600 mt-2 text-justify">
-                                    {journal.abstract || 'No abstract available'}
-                                </p>
-                                <span className="status mt-2 px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
-                                    Published
+                                <div className="abstract-section text-center mt-4 mb-2">
+                                    <h4 className="abstract-heading text-lg font-semibold mb-2">Abstract</h4>
+                                    <p className="text-gray-700 text-justify mx-auto max-w-xl">
+                                        {journal.abstract ? (journal.abstract.length > 300 ? journal.abstract.substring(0, 300) + '...' : journal.abstract) : 'No abstract available'}
+                                    </p>
+                                </div>
+                                <span className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
+                                    journal.status === "Published" ? "bg-green-600 text-white" : "bg-gray-200 text-gray-800"
+                                }`}>
+                                    {journal.status || 'Draft'}
                                 </span>
                                 <div className="actions mt-4 flex flex-wrap gap-3">
                                     <button
@@ -358,7 +363,7 @@ const JournalList = () => {
                                     </button>
                                     <button
                                         onClick={() => handleDownload(journal._id, 'docx')}
-                                        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors shadow-sm flex items-center text-sm font-medium"
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors shadow-sm flex items-center text-sm font-medium"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                                             <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />

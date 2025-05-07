@@ -148,10 +148,11 @@ api.auth = {
 api.journals = {
   getAll: (params) => api.get('/journals', { params }),
   getById: (id) => api.get(`/journals/${id}`),
-  download: (id, fileType) => {
+  download: async (id, fileType) => {
     // Create headers without problematic CORS headers
     const headers = {
-      'Accept': '*/*'
+      'Accept': '*/*',
+      'Cache-Control': 'no-cache'
     };
 
     // Determine the correct base URL based on environment
@@ -161,21 +162,70 @@ api.journals = {
 
     console.log('Using base URL for download:', baseUrl);
 
-    // Use axios directly instead of the api instance to bypass baseURL
-    return axios({
-      method: 'GET',
-      url: `${baseUrl}/api/journals/${id}/download/${fileType}`,
-      responseType: 'blob',
-      headers,
-      timeout: 60000, // 60 seconds timeout for downloads
-      withCredentials: false // Disable cookies for cross-origin requests
-    });
-  },
-  upload: (formData) => {
-    return api.post('/journals', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    // Try multiple URLs in sequence
+    const urls = [
+      // Primary URL
+      `${baseUrl}/api/journals/${id}/download/${fileType}`,
+      // Diagnostic direct download URL
+      `${baseUrl}/api/diagnostic/test-direct-download/${id}/${fileType}`,
+      // Fallback URL for Google Drive files
+      `${baseUrl}/api/journals/${id}/download/${fileType}?source=drive`
+    ];
+
+    // Try each URL in sequence
+    for (let i = 0; i < urls.length; i++) {
+      const url = urls[i];
+      console.log(`Attempting download from URL (${i+1}/${urls.length}):`, url);
+
+      try {
+        // Use axios directly instead of the api instance to bypass baseURL
+        const response = await axios({
+          method: 'GET',
+          url: url,
+          responseType: 'blob',
+          headers,
+          timeout: 120000, // 120 seconds timeout for downloads
+          withCredentials: false, // Disable cookies for cross-origin requests
+          maxRedirects: 5, // Allow redirects
+          validateStatus: status => status < 400 // Accept any successful status
+        });
+
+        // If successful, return the response
+        console.log(`Download successful from URL: ${url}`);
+        return response;
+      } catch (error) {
+        console.error(`Download failed from URL ${url}:`, error);
+
+        // If this is the last URL, throw the error
+        if (i === urls.length - 1) {
+          throw error;
+        }
+        // Otherwise, continue to the next URL
       }
+    }
+
+    // This should never be reached due to the error handling above
+    throw new Error('All download attempts failed');
+  },
+  upload: async (formData) => {
+    // Determine the correct base URL based on environment
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? 'https://saharabackend-v190.onrender.com'
+      : 'http://localhost:5000';
+
+    console.log('Using base URL for upload:', baseUrl);
+
+    // Use axios directly instead of the api instance to ensure correct base URL
+    return axios({
+      method: 'POST',
+      url: `${baseUrl}/api/journals`,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      },
+      timeout: 60000, // 60 seconds timeout for uploads
+      withCredentials: false // Disable cookies for cross-origin requests
     });
   }
 };

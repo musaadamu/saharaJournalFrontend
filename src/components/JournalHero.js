@@ -9,9 +9,8 @@ export default function JournalHero() {
 
     // Array of background images
     const backgroundImages = [
-        "images/image1.jpg",
-        "images/image3.jpg",
-        "images/image4.jpg"
+        "images/image4.jpg",
+        "images/image5.jpg"
     ];
 
     // Rotate background images every 8 seconds

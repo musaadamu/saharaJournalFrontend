@@ -270,8 +270,8 @@ const Dashboard = () => {
                                     <p className="journal-abstract">
                                         {journal.abstract || 'No abstract available'}
                                     </p>
-                                    <span className={`journal-status ${
-                                        journal.status === "Published" ? "status-published" : "status-draft"
+                                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
+                                        journal.status === "Published" ? "bg-green-600 text-white" : "bg-gray-300 text-gray-700"
                                     }`}>
                                         {journal.status || 'Draft'}
                                     </span>
@@ -283,18 +283,19 @@ const Dashboard = () => {
                                         >
                                             View
                                         </button>
-                                        <button
-                                            onClick={() => handleDownload(journal._id, 'pdf')}
-                                            className="action-button pdf-button"
-                                        >
-                                            PDF
-                                        </button>
-                                        <button
-                                            onClick={() => handleDownload(journal._id, 'docx')}
-                                            className="action-button docx-button"
-                                        >
-                                            DOCX
-                                        </button>
+                                    <button
+                                        onClick={() => handleDownload(journal._id, 'pdf')}
+                                        className="action-button pdf-button"
+                                    >
+                                        PDF
+                                    </button>
+                                    {/* Removed DOCX download button as per requirement */}
+                                    {/* <button
+                                        onClick={() => handleDownload(journal._id, 'docx')}
+                                        className="action-button docx-button"
+                                    >
+                                        DOCX
+                                    </button> */}
                                     </div>
                                 </div>
                             ))}

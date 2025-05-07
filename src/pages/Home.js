@@ -54,80 +54,11 @@ export default function HomePage() {
         checkMobile();
         window.addEventListener('resize', checkMobile);
 
-        // Only apply horizontal scroll fixes on desktop
-        const handleScrollLayout = () => {
-            if (!isMobile) {
-                const fixedScrollbar = document.querySelector('.fixed-scrollbar');
-                if (fixedScrollbar) {
-                    fixedScrollbar.scrollLeft = 250;
-                }
-
-                // Fix for the sidebar gap issue and center carousel
-                const sidebar = document.querySelector('.site-sidebar');
-                const mainContainer = document.querySelector('.main-container');
-                const carouselContainer = document.querySelector('.carousel-container');
-
-                if (sidebar && mainContainer) {
-                    const sidebarWidth = sidebar.getBoundingClientRect().width;
-                    mainContainer.style.marginLeft = `${sidebarWidth}px`;
-                    mainContainer.style.width = `calc(100% - ${sidebarWidth + 50}px)`;
-                }
-
-                if (carouselContainer) {
-                    carouselContainer.style.margin = '0 auto';
-                    carouselContainer.style.display = 'flex';
-                    carouselContainer.style.justifyContent = 'center';
-                    carouselContainer.style.width = '100%';
-                    carouselContainer.style.maxWidth = '1200px';
-                }
-            } else {
-                // Reset styles for mobile
-                const mainContainer = document.querySelector('.main-container');
-                if (mainContainer) {
-                    mainContainer.style.marginLeft = '0';
-                    mainContainer.style.width = '100%';
-                }
-            }
-        };
-
-        handleScrollLayout();
-        window.addEventListener('resize', handleScrollLayout);
-
         // Cleanup
         return () => {
             window.removeEventListener('resize', checkMobile);
-            window.removeEventListener('resize', handleScrollLayout);
         };
-    }, [isMobile]);
-
-    // Function to handle scrollbar movement - only active on desktop
-    const handleScrollbarScroll = (e) => {
-        if (!isMobile) {
-            try {
-                const scrollableElements = [
-                    document.documentElement,
-                    document.body,
-                    document.querySelector('.min-h-screen'),
-                    document.querySelector('.main-container'),
-                    document.querySelector('.main-content')
-                ];
-
-                scrollableElements.forEach(element => {
-                    if (element) {
-                        element.scrollLeft = e.target.scrollLeft;
-                    }
-                });
-
-                window.scrollTo({
-                    left: e.target.scrollLeft,
-                    top: window.scrollY,
-                    behavior: 'auto'
-                });
-            } catch (error) {
-                console.error('Error in handleScrollbarScroll:', error);
-            }
-        }
-    };
+    }, []);
 
     return (
         <div className={`home-container ${isMobile ? 'mobile' : ''}`}>
@@ -143,11 +74,8 @@ export default function HomePage() {
                     </button>
                 )}
 
-                {/* Right margin container - only shown on desktop */}
-                {!isMobile && <div className="right-margin"></div>}
-
-                <div className="main-container">
-                    <main className="main-content">
+                <div className="main-container" style={{ marginLeft: 0, width: '100%' }}>
+                    <main className="main-content" style={{ marginLeft: 0, width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
                         {/* Carousel Section */}
                         <div className="home-carousel-wrapper">
                             <ImprovedCarousel
@@ -197,17 +125,6 @@ export default function HomePage() {
                     </main>
                 </div>
             </div>
-
-            {/* Fixed horizontal scrollbar - only shown on desktop */}
-            {!isMobile && (
-                <div className="fixed-scrollbar" onScroll={handleScrollbarScroll}>
-                    <div className="fixed-scrollbar-content">
-                        <div className="scrollbar-text">
-                            Scroll horizontally to see more content →
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
