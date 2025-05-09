@@ -18,18 +18,18 @@ const JournalList = () => {
         currentPage: 1,
         totalPages: 1,
         totalJournals: 0,
-        limit: 6 // Default page size
+        limit: 6 // Fixed page size - 6 journals per page
     });
 
     // Define fetchJournals with useCallback to avoid dependency issues
-    const fetchJournals = useCallback(async (page = 1, limit = pagination.limit) => {
+    const fetchJournals = useCallback(async (page = 1) => {
         setLoading(true);
         setError('');
         try {
             console.log('Fetching journals using API service');
             const response = await api.journals.getAll({
                 page,
-                limit,
+                limit: 6, // Fixed limit of 6 journals per page
                 sortBy: 'createdAt',
                 order: 'desc'
             });
@@ -45,11 +45,15 @@ const JournalList = () => {
                 response.data :
                 response.data.journals || [];
 
-            const paginationData = response.data.pagination || {
-                currentPage: page,
-                totalPages: 1,
-                totalJournals: journalsData.length
+            // Ensure we have valid pagination data with fallbacks for each property
+            const paginationData = {
+                currentPage: Number(response.data.pagination?.currentPage || page || 1),
+                totalPages: Number(response.data.pagination?.totalPages || Math.ceil(journalsData.length / 6) || 1),
+                totalJournals: Number(response.data.pagination?.totalJournals || journalsData.length || 0),
+                limit: 6 // Fixed limit
             };
+
+            console.log('Pagination data:', paginationData);
 
             setJournals(journalsData);
             setPagination(paginationData);
@@ -81,16 +85,6 @@ const JournalList = () => {
     useEffect(() => {
         fetchJournals();
     }, [fetchJournals]);
-
-    // Handle changing the page size
-    const handlePageSizeChange = (newLimit) => {
-        setPagination(prev => ({
-            ...prev,
-            limit: newLimit,
-            currentPage: 1 // Reset to first page when changing page size
-        }));
-        fetchJournals(1, newLimit);
-    };
 
     const handleDownload = async (id, fileType) => {
         console.log(`Downloading ${fileType} file for journal ID:`, id);
@@ -447,6 +441,16 @@ const JournalList = () => {
                                     <p className="text-gray-700 text-justify mx-auto max-w-xl">
                                         {journal.abstract ? journal.abstract : 'No abstract available'}
                                     </p>
+
+                                    {/* Authors section */}
+                                    <div className="authors-section mt-4">
+                                        <h5 className="text-sm font-medium text-gray-500 mb-1">Author{(journal.authors && journal.authors.length !== 1) ? 's' : ''}</h5>
+                                        <p className="text-gray-800 font-medium">
+                                            {journal.authors && journal.authors.length > 0
+                                                ? journal.authors.join(', ')
+                                                : 'Unknown author'}
+                                        </p>
+                                    </div>
                                 </div>
                                 <span className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
                                     journal.status === "Published" ? "bg-green-600 text-white" : "bg-gray-200 text-gray-800"
@@ -486,112 +490,137 @@ const JournalList = () => {
                             </div>
                         ))}
                     </div>
+                    {/* Pagination section */}
                     <div className="pagination-container mt-8 border-t border-gray-200 pt-6">
-                        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                            {/* Page size selector */}
-                            <div className="flex items-center">
-                                <span className="text-sm text-gray-600 mr-2">Show:</span>
-                                <select
-                                    value={pagination.limit}
-                                    onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-                                    className="border border-gray-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                >
-                                    <option value={3}>3</option>
-                                    <option value={6}>6</option>
-                                    <option value={9}>9</option>
-                                    <option value={12}>12</option>
-                                </select>
-                                <span className="text-sm text-gray-600 ml-2">per page</span>
-                            </div>
-
-                            {/* Journal count */}
-                            <div className="text-sm text-gray-600">
-                                Showing {journals.length > 0 ? (pagination.currentPage - 1) * pagination.limit + 1 : 0}
-                                - {Math.min(pagination.currentPage * pagination.limit, pagination.totalJournals)}
-                                of {pagination.totalJournals} journals
-                            </div>
+                        {/* Journal count */}
+                        <div className="text-sm text-gray-600 text-center mb-4">
+                            {journals.length > 0 ? (
+                                <>
+                                    Showing {journals.length > 0 ? (pagination.currentPage - 1) * 6 + 1 : 0}
+                                    {' - '}
+                                    {Math.min(pagination.currentPage * 6, pagination.totalJournals || 0)}
+                                    {' of '}
+                                    {pagination.totalJournals || 0} journals
+                                </>
+                            ) : (
+                                <>No journals to display</>
+                            )}
                         </div>
 
-                        {/* Pagination controls */}
+                        {/* Pagination controls - only show if we have more than 1 page */}
                         {pagination.totalPages > 1 && (
-                            <div className="pagination flex justify-center items-center mt-6">
-                                <button
-                                    onClick={() => fetchJournals(1)}
-                                    disabled={pagination.currentPage === 1}
-                                    className="pagination-button rounded-l-md"
-                                    title="First Page"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-                                    </svg>
-                                </button>
-                                <button
-                                    onClick={() => fetchJournals(pagination.currentPage - 1)}
-                                    disabled={pagination.currentPage === 1}
-                                    className="pagination-button"
-                                    title="Previous Page"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                </button>
+                            <div className="flex flex-col items-center">
+                                <div className="pagination flex justify-center items-center">
+                                    {/* Previous page button */}
+                                    <button
+                                        onClick={() => fetchJournals(pagination.currentPage - 1)}
+                                        disabled={pagination.currentPage === 1}
+                                        className="pagination-button rounded-l-md flex items-center justify-center"
+                                        aria-label="Previous page"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                                        </svg>
+                                    </button>
 
-                                {/* Page numbers */}
-                                <div className="flex">
-                                    {[...Array(Math.min(5, pagination.totalPages))].map((_, i) => {
-                                        // Calculate which page numbers to show
-                                        let pageNum;
-                                        if (pagination.totalPages <= 5) {
-                                            // If 5 or fewer pages, show all
-                                            pageNum = i + 1;
-                                        } else if (pagination.currentPage <= 3) {
-                                            // If near the start, show first 5 pages
-                                            pageNum = i + 1;
-                                        } else if (pagination.currentPage >= pagination.totalPages - 2) {
-                                            // If near the end, show last 5 pages
-                                            pageNum = pagination.totalPages - 4 + i;
-                                        } else {
-                                            // Otherwise show current page and 2 on each side
-                                            pageNum = pagination.currentPage - 2 + i;
-                                        }
+                                    {/* Page numbers */}
+                                    <div className="flex">
+                                        {(() => {
+                                            // Calculate which page numbers to show
+                                            const pageNumbers = [];
+                                            const totalPages = pagination.totalPages;
+                                            const currentPage = pagination.currentPage;
 
-                                        return (
-                                            <button
-                                                key={pageNum}
-                                                onClick={() => fetchJournals(pageNum)}
-                                                className={`pagination-button ${
-                                                    pagination.currentPage === pageNum
-                                                        ? 'bg-blue-600 text-white'
-                                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                                }`}
-                                            >
-                                                {pageNum}
-                                            </button>
-                                        );
-                                    })}
+                                            // Always show first page
+                                            if (totalPages > 3 && currentPage > 2) {
+                                                pageNumbers.push(
+                                                    <button
+                                                        key={1}
+                                                        onClick={() => fetchJournals(1)}
+                                                        className="pagination-button bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                                        aria-label={`Go to page 1`}
+                                                    >
+                                                        1
+                                                    </button>
+                                                );
+
+                                                // Add ellipsis if needed
+                                                if (currentPage > 3) {
+                                                    pageNumbers.push(
+                                                        <span key="ellipsis1" className="pagination-ellipsis">
+                                                            &hellip;
+                                                        </span>
+                                                    );
+                                                }
+                                            }
+
+                                            // Calculate range around current page
+                                            const startPage = Math.max(1, currentPage - 1);
+                                            const endPage = Math.min(totalPages, currentPage + 1);
+
+                                            // Add page numbers around current page
+                                            for (let i = startPage; i <= endPage; i++) {
+                                                pageNumbers.push(
+                                                    <button
+                                                        key={i}
+                                                        onClick={() => fetchJournals(i)}
+                                                        className={`pagination-button ${
+                                                            currentPage === i
+                                                                ? 'bg-blue-600 text-white font-bold'
+                                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                                        }`}
+                                                        aria-label={`Go to page ${i}`}
+                                                        aria-current={currentPage === i ? "page" : undefined}
+                                                    >
+                                                        {i}
+                                                    </button>
+                                                );
+                                            }
+
+                                            // Add ellipsis and last page if needed
+                                            if (totalPages > 3 && currentPage < totalPages - 1) {
+                                                if (currentPage < totalPages - 2) {
+                                                    pageNumbers.push(
+                                                        <span key="ellipsis2" className="pagination-ellipsis">
+                                                            &hellip;
+                                                        </span>
+                                                    );
+                                                }
+
+                                                // Always show last page
+                                                pageNumbers.push(
+                                                    <button
+                                                        key={totalPages}
+                                                        onClick={() => fetchJournals(totalPages)}
+                                                        className="pagination-button bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                                        aria-label={`Go to page ${totalPages}`}
+                                                    >
+                                                        {totalPages}
+                                                    </button>
+                                                );
+                                            }
+
+                                            return pageNumbers;
+                                        })()}
+                                    </div>
+
+                                    {/* Next page button */}
+                                    <button
+                                        onClick={() => fetchJournals(pagination.currentPage + 1)}
+                                        disabled={pagination.currentPage === pagination.totalPages}
+                                        className="pagination-button rounded-r-md flex items-center justify-center"
+                                        aria-label="Next page"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                        </svg>
+                                    </button>
                                 </div>
 
-                                <button
-                                    onClick={() => fetchJournals(pagination.currentPage + 1)}
-                                    disabled={pagination.currentPage === pagination.totalPages}
-                                    className="pagination-button"
-                                    title="Next Page"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                </button>
-                                <button
-                                    onClick={() => fetchJournals(pagination.totalPages)}
-                                    disabled={pagination.currentPage === pagination.totalPages}
-                                    className="pagination-button rounded-r-md"
-                                    title="Last Page"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                        <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                </button>
+                                {/* Page indicator text */}
+                                <div className="text-sm text-gray-600 mt-3">
+                                    Page {pagination.currentPage || 1} of {pagination.totalPages || 1}
+                                </div>
                             </div>
                         )}
                     </div>
