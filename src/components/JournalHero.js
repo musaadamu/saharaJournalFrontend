@@ -9,10 +9,21 @@ export default function JournalHero() {
     // State for background image rotation
     const [backgroundIndex, setBackgroundIndex] = useState(0);
 
-    // Array of background images using public URLs that will work on Vercel
+    // Define background images with multiple fallback options
+    const getImageUrl = (imageName) => {
+        // Try different URL formats to ensure at least one works
+        return [
+            `/images/${imageName}`,                                                  // Direct path
+            `${process.env.PUBLIC_URL}/images/${imageName}`,                         // With PUBLIC_URL
+            `https://sahara-journal-frontend.vercel.app/images/${imageName}`,        // Absolute URL
+            `https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop` // Fallback
+        ][0]; // Use the first option by default
+    };
+
+    // Array of background images
     const backgroundImages = [
-        `${process.env.PUBLIC_URL}/images/image4.JPG`,
-        `${process.env.PUBLIC_URL}/images/image5.JPG`
+        getImageUrl('image4.JPG'),
+        getImageUrl('image5.JPG')
     ];
 
     // Rotate background images every 8 seconds

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .image-container {
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .image-container h2 {
+            margin-top: 0;
+            color: #2563eb;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 15px;
+            border-radius: 4px;
+        }
+        .path {
+            background-color: #f0f0f0;
+            padding: 8px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+        .status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <h1>Direct Image Test</h1>
+    <p>This page tests if the images are directly accessible from different paths. If you see the images below, they are working correctly.</p>
+
+    <div class="image-container">
+        <h2>Image 3</h2>
+        <div class="path">/images/image3.JPG</div>
+        <img src="/images/image3.JPG" alt="Image 3" id="img1">
+        <div class="status" id="status1"></div>
+        <div class="buttons">
+            <button onclick="tryAlternative(1, '/images/image3.jpg')">Try Lowercase Extension</button>
+            <button onclick="tryAlternative(1, 'https://sahara-journal-frontend.vercel.app/images/image3.JPG')">Try Absolute URL</button>
+        </div>
+    </div>
+
+    <div class="image-container">
+        <h2>Image 4</h2>
+        <div class="path">/images/image4.JPG</div>
+        <img src="/images/image4.JPG" alt="Image 4" id="img2">
+        <div class="status" id="status2"></div>
+        <div class="buttons">
+            <button onclick="tryAlternative(2, '/images/image4.jpg')">Try Lowercase Extension</button>
+            <button onclick="tryAlternative(2, 'https://sahara-journal-frontend.vercel.app/images/image4.JPG')">Try Absolute URL</button>
+        </div>
+    </div>
+
+    <div class="image-container">
+        <h2>Image 5</h2>
+        <div class="path">/images/image5.JPG</div>
+        <img src="/images/image5.JPG" alt="Image 5" id="img3">
+        <div class="status" id="status3"></div>
+        <div class="buttons">
+            <button onclick="tryAlternative(3, '/images/image5.jpg')">Try Lowercase Extension</button>
+            <button onclick="tryAlternative(3, 'https://sahara-journal-frontend.vercel.app/images/image5.JPG')">Try Absolute URL</button>
+        </div>
+    </div>
+
+    <script>
+        // Check image loading status
+        function checkImageStatus(imgId, statusId) {
+            const img = document.getElementById(imgId);
+            const status = document.getElementById(statusId);
+            
+            img.onload = function() {
+                status.textContent = "✅ Image loaded successfully!";
+                status.className = "status success";
+                console.log(`Image ${imgId} loaded successfully from ${img.src}`);
+            };
+            
+            img.onerror = function() {
+                status.textContent = "❌ Failed to load image";
+                status.className = "status error";
+                console.error(`Failed to load image ${imgId} from ${img.src}`);
+            };
+        }
+        
+        // Try alternative URL
+        function tryAlternative(num, url) {
+            const img = document.getElementById(`img${num}`);
+            const status = document.getElementById(`status${num}`);
+            
+            status.textContent = "Loading...";
+            status.className = "status";
+            
+            img.src = url;
+            console.log(`Trying alternative URL for image ${num}: ${url}`);
+        }
+        
+        // Check all images
+        checkImageStatus("img1", "status1");
+        checkImageStatus("img2", "status2");
+        checkImageStatus("img3", "status3");
+    </script>
+</body>
+</html>
