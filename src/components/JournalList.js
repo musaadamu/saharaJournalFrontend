@@ -121,9 +121,110 @@ const JournalList = () => {
                     }
                     const checkData = await checkResponse.json();
                     console.log('File existence check response:', checkData);
-                    if (!checkData.exists) {
+
+                    // If the file exists (either on Cloudinary or local storage), proceed with download
+                    if (checkData.exists) {
+                        console.log(`${fileType.toUpperCase()} file exists:`, checkData.message || 'File found');
+
+                        // If we have a Cloudinary URL, we can use it directly
+                        if (checkData.cloudinaryUrl) {
+                            console.log('Using Cloudinary URL for download:', checkData.cloudinaryUrl);
+
+                            // For PDF files, try multiple download approaches
+                            if (fileType === 'pdf') {
+                                // Use the direct download endpoint
+                                try {
+                                    console.log('Using direct download endpoint for PDF');
+                                    // Make sure we're using the correct base URL
+                                    const baseUrl = api.defaults.baseURL || 'https://saharabackend-v190.onrender.com/api';
+
+                                    // Create the direct download URL
+                                    const downloadUrl = `${baseUrl}/journals/${id}/direct-download/pdf`;
+
+                                    console.log('Direct download URL:', downloadUrl);
+
+                                    // Open the URL in a new tab
+                                    window.open(downloadUrl, '_blank');
+                                    toast.dismiss(toastId);
+                                    toast.success(`Opening ${fileType.toUpperCase()} file in new tab`);
+                                    return;
+                                } catch (directDownloadError) {
+                                    console.error('Direct download failed:', directDownloadError);
+                                    // Continue with other methods
+                                }
+
+                                // Then try the Cloudinary download URL format
+                                if (checkData.downloadUrl2) {
+                                    console.log('Using Cloudinary download URL format:', checkData.downloadUrl2);
+
+                                    // Open in a new tab to trigger download
+                                    window.open(checkData.downloadUrl2, '_blank');
+                                    toast.dismiss(toastId);
+                                    toast.success(`Opening ${fileType.toUpperCase()} file in new tab`);
+                                    return;
+                                }
+
+                                // Then try the fl_attachment URL
+                                if (checkData.downloadUrl) {
+                                    console.log('Using Cloudinary fl_attachment URL:', checkData.downloadUrl);
+
+                                    // Open in a new tab to trigger download
+                                    window.open(checkData.downloadUrl, '_blank');
+                                    toast.dismiss(toastId);
+                                    toast.success(`Opening ${fileType.toUpperCase()} file in new tab`);
+                                    return;
+                                }
+                            }
+
+                            // For DOCX files, use direct download
+                            if (fileType === 'docx') {
+                                try {
+                                    console.log('Using direct download endpoint for DOCX');
+                                    // Make sure we're using the correct base URL
+                                    const baseUrl = api.defaults.baseURL || 'https://saharabackend-v190.onrender.com/api';
+
+                                    // Create the direct download URL
+                                    const downloadUrl = `${baseUrl}/journals/${id}/direct-download/docx`;
+
+                                    console.log('Direct download URL:', downloadUrl);
+
+                                    // Open the URL in a new tab
+                                    window.open(downloadUrl, '_blank');
+                                    toast.dismiss(toastId);
+                                    toast.success(`Opening ${fileType.toUpperCase()} file in new tab`);
+                                    return;
+                                } catch (directDownloadError) {
+                                    console.error('Direct download failed:', directDownloadError);
+                                    // Continue with other methods
+                                }
+                            }
+
+                            // For other files or as final fallback, use the regular URL
+                            let cloudinaryUrl = checkData.downloadUrl || checkData.cloudinaryUrl;
+                            console.log('Using URL for download:', cloudinaryUrl);
+
+                            // Try direct download from Cloudinary
+                            try {
+                                const success = await downloadJournalFile(
+                                    api.defaults.baseURL,
+                                    id,
+                                    fileType,
+                                    journal?.title || 'journal',
+                                    cloudinaryUrl
+                                );
+
+                                if (success) {
+                                    toast.dismiss(toastId);
+                                    return;
+                                }
+                            } catch (cloudinaryError) {
+                                console.error('Cloudinary direct download failed:', cloudinaryError);
+                                // Continue with normal download flow
+                            }
+                        }
+                    } else {
                         toast.dismiss(toastId);
-                        toast.error(`File not found on server: ${checkData.fileName || 'unknown'}`);
+                        toast.error(`File not found: ${checkData.message || 'File not available'}`);
                         return;
                     }
                 } catch (checkError) {

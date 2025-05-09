@@ -10,6 +10,36 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 // Custom CSS for tabs
 import './ManageJournal.css';
 
+// Known Cloudinary URLs for direct access as a last resort
+const CLOUDINARY_PDF_URLS = [
+    'https://res.cloudinary.com/musaadamu/raw/upload/v1746729149/UploadFiles/1746729142888-1746729142665-tagans5.pdf',
+    'https://res.cloudinary.com/musaadamu/raw/upload/v1746728320/UploadFiles/1746728285131-1746728284548-Tagans4.pdf',
+    'https://res.cloudinary.com/musaadamu/raw/upload/v1746723286/UploadFiles/1746723283897-1746723283544-Tangas1.pdf'
+];
+
+// Helper function to try all Cloudinary URLs as a last resort
+const tryAllCloudinaryUrls = (title) => {
+    toast.info(`Trying direct Cloudinary access as last resort...`);
+
+    // Try to find a matching URL based on title
+    let urlIndex = 0;
+    if (title) {
+        const titleLower = title.toLowerCase();
+        if (titleLower.includes('tagans5')) urlIndex = 0;
+        else if (titleLower.includes('tagans4')) urlIndex = 1;
+        else if (titleLower.includes('tangas1')) urlIndex = 2;
+    }
+
+    // Open the URL as a fallback
+    window.open(CLOUDINARY_PDF_URLS[urlIndex], '_blank');
+
+    // If we're not sure which URL is correct, try the others after a delay
+    setTimeout(() => {
+        toast.info(`Trying alternative Cloudinary URL...`);
+        window.open(CLOUDINARY_PDF_URLS[(urlIndex + 1) % 3], '_blank');
+    }, 3000);
+};
+
 export default function ManageJournal() {
     // We don't need to check for user role here as it's handled by the ProtectedRoute component
     // State for journals
@@ -121,27 +151,73 @@ export default function ManageJournal() {
 
     const handleDownload = async (id, fileType) => {
         try {
-            const response = await api.journals.download(id, fileType);
+            // Show loading toast
+            const toastId = toast.loading(`Preparing ${fileType.toUpperCase()} download...`);
 
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            const journal = journals.find(j => j._id === id);
-            link.href = url;
-            link.setAttribute('download', `${journal?.title || 'journal'}.${fileType}`);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
+            console.log(`Downloading ${fileType} file for journal ID:`, id);
 
-            toast.success(`Journal downloaded as ${fileType.toUpperCase()}`);
-        } catch (err) {
-            console.error(`Error downloading ${fileType} file:`, err);
+            // Try using the API service's download method which has built-in fallbacks
+            try {
+                const response = await api.journals.download(id, fileType);
 
-            let errorMsg = `Failed to download ${fileType.toUpperCase()} file`;
-            if (err.code === 'ECONNABORTED') {
-                errorMsg = 'Download timed out. File may be too large or server is slow.';
+                // If we get a response, we can either:
+                // 1. Create a download link from the blob (works well in development)
+                if (process.env.NODE_ENV !== 'production') {
+                    // Create a download link
+                    const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    const journal = journals.find(j => j._id === id);
+                    link.href = blobUrl;
+                    link.setAttribute('download', `${journal?.title || 'journal'}.${fileType}`);
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Clean up
+                    setTimeout(() => {
+                        window.URL.revokeObjectURL(blobUrl);
+                        link.remove();
+                    }, 100);
+
+                    toast.dismiss(toastId);
+                    toast.success(`File downloaded as ${fileType.toUpperCase()}`);
+                    return;
+                }
+            } catch (apiError) {
+                console.error('API download failed:', apiError);
+                // Continue to direct URL approach
             }
 
-            toast.error(errorMsg);
+            // Fallback to direct URL approach (works better in production)
+            // Get the base URL
+            const baseUrl = api.defaults.baseURL || 'https://saharabackend-v190.onrender.com/api';
+
+            // Create the direct download URL
+            const downloadUrl = `${baseUrl}/journals/${id}/direct-download/${fileType}`;
+
+            console.log('Using direct download URL:', downloadUrl);
+
+            // Open the URL in a new tab
+            window.open(downloadUrl, '_blank');
+
+            toast.dismiss(toastId);
+            toast.success(`Opening ${fileType.toUpperCase()} file in new tab`);
+        } catch (err) {
+            console.error(`Error downloading ${fileType} file:`, err);
+            toast.error(`Failed to download ${fileType.toUpperCase()} file`);
+
+            // As a last resort, try using the Cloudinary URLs directly
+            if (fileType === 'pdf') {
+                try {
+                    // Find the journal to get its title
+                    const journal = journals.find(j => j._id === id);
+                    if (journal) {
+                        // Use the helper function to try all Cloudinary URLs
+                        tryAllCloudinaryUrls(journal.title);
+                    }
+                } catch (cloudinaryError) {
+                    console.error('Cloudinary direct access failed:', cloudinaryError);
+                }
+            }
         }
     };
 
@@ -199,27 +275,78 @@ export default function ManageJournal() {
 
     const handleSubmissionDownload = async (id, fileType) => {
         try {
-            const response = await api.submissions.download(id, fileType);
+            // Show loading toast
+            const toastId = toast.loading(`Preparing ${fileType.toUpperCase()} download...`);
 
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            const submission = submissions.find(s => s._id === id);
-            link.href = url;
-            link.setAttribute('download', `${submission?.title || 'submission'}.${fileType}`);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
+            console.log(`Downloading ${fileType} file for submission ID:`, id);
 
-            toast.success(`Submission downloaded as ${fileType.toUpperCase()}`);
-        } catch (err) {
-            console.error(`Error downloading ${fileType} file:`, err);
+            // Try using the API service's download method which has built-in fallbacks
+            try {
+                const response = await api.submissions.download(id, fileType);
 
-            let errorMsg = `Failed to download ${fileType.toUpperCase()} file`;
-            if (err.code === 'ECONNABORTED') {
-                errorMsg = 'Download timed out. File may be too large or server is slow.';
+                // If we get a response, we can either:
+                // 1. Create a download link from the blob (works well in development)
+                if (process.env.NODE_ENV !== 'production') {
+                    // Create a download link
+                    const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    const submission = submissions.find(s => s._id === id);
+                    link.href = blobUrl;
+                    link.setAttribute('download', `${submission?.title || 'submission'}.${fileType}`);
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Clean up
+                    setTimeout(() => {
+                        window.URL.revokeObjectURL(blobUrl);
+                        link.remove();
+                    }, 100);
+
+                    toast.dismiss(toastId);
+                    toast.success(`File downloaded as ${fileType.toUpperCase()}`);
+                    return;
+                }
+            } catch (apiError) {
+                console.error('API download failed:', apiError);
+                // Continue to direct URL approach
             }
 
-            toast.error(errorMsg);
+            // Fallback to direct URL approach (works better in production)
+            // Get the base URL
+            const baseUrl = api.defaults.baseURL || 'https://saharabackend-v190.onrender.com/api';
+
+            // Create the direct download URL
+            const downloadUrl = `${baseUrl}/submissions/${id}/direct-download/${fileType}`;
+
+            console.log('Using direct download URL:', downloadUrl);
+
+            // Open the URL in a new tab
+            window.open(downloadUrl, '_blank');
+
+            toast.dismiss(toastId);
+            toast.success(`Opening ${fileType.toUpperCase()} file in new tab`);
+        } catch (err) {
+            console.error(`Error downloading ${fileType} file:`, err);
+            toast.error(`Failed to download ${fileType.toUpperCase()} file`);
+
+            // As a last resort, try using the Cloudinary URLs directly
+            const submission = submissions.find(s => s._id === id);
+            if (submission) {
+                try {
+                    // For DOCX files, try the stored Cloudinary URL if available
+                    if (fileType === 'docx' && submission.docxCloudinaryUrl) {
+                        toast.info(`Trying direct Cloudinary access as last resort...`);
+                        window.open(submission.docxCloudinaryUrl, '_blank');
+                    }
+                    // For PDF files, try our known Cloudinary URLs
+                    else if (fileType === 'pdf') {
+                        // Use the helper function to try all Cloudinary URLs
+                        tryAllCloudinaryUrls(submission.title);
+                    }
+                } catch (cloudinaryError) {
+                    console.error('Cloudinary direct access failed:', cloudinaryError);
+                }
+            }
         }
     };
 

@@ -10,13 +10,53 @@ export default function ImprovedCarousel({
   const [activeIndex, setActiveIndex] = useState(0);
   const [imageStatus, setImageStatus] = useState({});
 
+  // Create fallback image URLs for when images are not available
+  const fallbackImages = [
+    'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1682686581551-867e0b208bd1?q=80&w=2070&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1682687982501-1e58ab814714?q=80&w=2070&auto=format&fit=crop'
+  ];
+
   // Process images to ensure they have all required properties
-  const processedImages = images.map((image, index) => ({
-    src: image.src || '',
-    alt: image.alt || `Slide ${index + 1}`,
-    title: image.title || '',
-    description: image.description || ''
-  }));
+  const processedImages = images.map((image, index) => {
+    // Ensure image src has the correct path
+    let src = image.src || '';
+
+    // If src is an imported image (object), use it directly
+    if (typeof src === 'object' && src !== null) {
+      // For imported images, we can use them directly
+      return {
+        src: src,
+        alt: image.alt || `Slide ${index + 1}`,
+        title: image.title || '',
+        description: image.description || ''
+      };
+    }
+
+    // For string paths, ensure they have the correct format
+    if (typeof src === 'string') {
+      // If src doesn't include PUBLIC_URL and doesn't start with http, add PUBLIC_URL
+      if (!src.includes('process.env.PUBLIC_URL') && !src.startsWith('http')) {
+        // Check if src already starts with a slash
+        if (!src.startsWith('/')) {
+          src = '/' + src;
+        }
+        // Add PUBLIC_URL if not already included
+        src = process.env.PUBLIC_URL + src;
+      }
+    } else {
+      // If src is not valid, use a fallback image
+      console.warn(`Invalid image source for slide ${index + 1}, using fallback`);
+      src = fallbackImages[index % fallbackImages.length];
+    }
+
+    return {
+      src: src,
+      alt: image.alt || `Slide ${index + 1}`,
+      title: image.title || '',
+      description: image.description || ''
+    };
+  });
 
   // Handle image loading
   const handleImageLoad = (index) => {
@@ -91,7 +131,10 @@ export default function ImprovedCarousel({
                 alt={image.alt}
                 className="carousel-image"
                 onLoad={() => handleImageLoad(index)}
-                onError={() => handleImageError(index)}
+                onError={() => {
+                  console.error(`Failed to load image: ${image.src}`);
+                  handleImageError(index);
+                }}
               />
 
               {imageStatus[index] === 'error' && (

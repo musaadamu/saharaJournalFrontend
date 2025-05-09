@@ -7,27 +7,33 @@ import './Home.css';
 import ImprovedCarousel from "../components/Carousol";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Import images directly to ensure they're included in the build
+import image3 from "../assets/image3.JPG";
+import image4 from "../assets/image4.JPG";
+import image5 from "../assets/image5.JPG";
+
 export default function HomePage() {
     const [stats, setStats] = useState([]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
-    // Define carousel images
+    // Define carousel images using imported images
+    // This approach ensures the images are included in the build
     const carouselImages = [
         {
-            src: 'images/image4.jpg',
+            src: image4,
             alt: 'The Provost',
             title: 'The Sahara Desert, the Great Symbol of the Sahara Journal',
             description: 'The Desert'
         },
         {
-            src: 'images/image5.jpg',
+            src: image5,
             alt: 'The Sahara Journal',
             title: 'The Camel in the Sahara',
             description: 'The Great Sahara International Journal of Teacher Education'
         },
         {
-            src: 'images/image3.jpg',
+            src: image3,
             alt: 'The Sahara Journal',
             title: 'The Sahara International Journal of Teacher Education',
             description: 'The Sahara Journal'

@@ -164,12 +164,10 @@ api.journals = {
 
     // Try multiple URLs in sequence
     const urls = [
-      // Primary URL
-      `${baseUrl}/api/journals/${id}/download/${fileType}`,
-      // Diagnostic direct download URL
-      `${baseUrl}/api/diagnostic/test-direct-download/${id}/${fileType}`,
-      // Fallback URL for Google Drive files
-      `${baseUrl}/api/journals/${id}/download/${fileType}?source=drive`
+      // Direct download URL (most reliable)
+      `${baseUrl}/api/journals/${id}/direct-download/${fileType}`,
+      // Fallback to regular download URL
+      `${baseUrl}/api/journals/${id}/download/${fileType}`
     ];
 
     // Try each URL in sequence
@@ -234,9 +232,63 @@ api.journals = {
 api.submissions = {
   getAll: (params) => api.get('/submissions', { params }),
   getById: (id) => api.get(`/submissions/${id}`),
-  download: (id, fileType) => api.get(`/submissions/${id}/download/${fileType}`, {
-    responseType: 'blob'
-  }),
+  download: async (id, fileType) => {
+    // Create headers without problematic CORS headers
+    const headers = {
+      'Accept': '*/*',
+      'Cache-Control': 'no-cache'
+    };
+
+    // Determine the correct base URL based on environment
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? 'https://saharabackend-v190.onrender.com'
+      : 'http://localhost:5000';
+
+    console.log('Using base URL for submission download:', baseUrl);
+
+    // Try multiple URLs in sequence
+    const urls = [
+      // Direct download URL (most reliable)
+      `${baseUrl}/api/submissions/${id}/direct-download/${fileType}`,
+      // Fallback to regular download URL
+      `${baseUrl}/api/submissions/${id}/download/${fileType}`
+    ];
+
+    // Try each URL in sequence
+    for (let i = 0; i < urls.length; i++) {
+      const url = urls[i];
+      console.log(`Attempting submission download from URL (${i+1}/${urls.length}):`, url);
+
+      try {
+        // Use axios directly instead of the api instance to bypass baseURL
+        const response = await axios({
+          method: 'GET',
+          url: url,
+          responseType: 'blob',
+          headers,
+          timeout: 120000, // 120 seconds timeout for downloads
+          withCredentials: false, // Disable cookies for cross-origin requests
+          maxRedirects: 5, // Allow redirects
+          validateStatus: status => status < 400 // Accept any successful status
+        });
+
+        // If successful, return the response
+        console.log(`Submission download successful from URL: ${url}`);
+        return response;
+      } catch (error) {
+        console.error(`Submission download failed from URL ${url}:`, error);
+
+        // If this is the last URL, throw the error
+        if (i === urls.length - 1) {
+          throw error;
+        }
+        // Otherwise, continue to the next URL
+      }
+    }
+
+    // This should never be reached due to the error handling above
+    throw new Error('All submission download attempts failed');
+  },
   updateStatus: (id, status) => api.patch(`/submissions/${id}/status`, { status }),
   delete: (id) => api.delete(`/submissions/${id}`)
 };

@@ -84,11 +84,12 @@ const JournalSubmission = () => {
         // Otherwise, use /api/submissions
         const endpoint = API_BASE_URL.includes('/api') ? '/submissions' : '/api/submissions';
         console.log('Sending request to:', `${API_BASE_URL}${endpoint}`);
+        console.log('Files will be uploaded to Cloudinary for storage');
         const response = await axios.post(`${API_BASE_URL}${endpoint}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
-          timeout: 30000 // 30 seconds timeout
+          timeout: 60000 // 60 seconds timeout for Cloudinary upload
         });
 
         console.log('Response:', response);

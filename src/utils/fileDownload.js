@@ -38,6 +38,58 @@ export const downloadFile = async (url, filename, fileType) => {
             headers['Pragma'] = 'no-cache';
         }
 
+        // For Cloudinary URLs, use a direct approach
+        const isCloudinary = url.includes('cloudinary.com') || url.includes('res.cloudinary.com');
+
+        if (isCloudinary) {
+            console.log('Direct download from Cloudinary URL');
+
+            // For PDF files from Cloudinary, use a special approach to force download
+            if (fileType === 'pdf') {
+                console.log('Using special PDF download approach for Cloudinary');
+
+                // Try multiple approaches for PDF downloads from Cloudinary
+
+                // Approach 1: Use the download URL format
+                if (url.includes('/upload/')) {
+                    const downloadUrl = url.replace('/upload/', '/download/');
+                    console.log('Using Cloudinary download URL format:', downloadUrl);
+
+                    // Use the download URL
+                    window.open(downloadUrl, '_blank');
+                    return true;
+                }
+
+                // Approach 2: Use fl_attachment parameter
+                if (!url.includes('fl_attachment') && url.includes('/upload/')) {
+                    // Add the fl_attachment parameter to force download
+                    const attachmentUrl = url.replace('/upload/', '/upload/fl_attachment/');
+                    console.log('Using Cloudinary fl_attachment URL:', attachmentUrl);
+
+                    // Use the modified URL
+                    window.open(attachmentUrl, '_blank');
+                    return true;
+                }
+
+                // Fallback: Use the original URL
+                console.log('Using original Cloudinary URL for PDF download');
+                window.open(url, '_blank');
+            } else {
+                // For other file types, just open in a new tab
+                window.open(url, '_blank');
+            }
+
+            // Update toast
+            toast.update(toastId, {
+                render: `Opening ${fileType.toUpperCase()} file in new tab`,
+                type: 'success',
+                isLoading: false,
+                autoClose: 3000
+            });
+
+            return true;
+        }
+
         // For Render backend, ensure we're not sending credentials
         const isRenderBackend = url.includes('saharabackend-v190.onrender.com');
         const isDirectFileEndpoint = url.includes('/direct-file/');
@@ -147,15 +199,17 @@ export const downloadFile = async (url, filename, fileType) => {
  * @param {string} journalId - The ID of the journal
  * @param {string} fileType - The file type (e.g., 'pdf', 'docx')
  * @param {string} title - The title to use for the filename
+ * @param {string} cloudinaryUrl - Optional direct Cloudinary URL to use
  * @returns {Promise<boolean>} - True if download was successful, false otherwise
  */
-export const downloadJournalFile = async (baseUrl, journalId, fileType, title) => {
+export const downloadJournalFile = async (baseUrl, journalId, fileType, title, cloudinaryUrl = null) => {
     // Log the download attempt
     console.log('Attempting to download journal file:', {
         baseUrl,
         journalId,
         fileType,
-        title
+        title,
+        hasCloudinaryUrl: !!cloudinaryUrl
     });
 
     // Determine if we're in production
@@ -167,6 +221,12 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
 
     // Generate multiple URLs to try in order
     const urlsToTry = [];
+
+    // If we have a direct Cloudinary URL, use it first
+    if (cloudinaryUrl) {
+        console.log('Using provided Cloudinary URL:', cloudinaryUrl);
+        urlsToTry.push(cloudinaryUrl);
+    }
 
     // Clean the base URL to get the backend root
     const backendRoot = baseUrl.replace('/api', '');
@@ -184,18 +244,13 @@ export const downloadJournalFile = async (baseUrl, journalId, fileType, title) =
         hostname: window.location.hostname
     });
 
-    // Use only the known working path with different base URLs
+    // Add the API endpoint as a fallback
     if (!isLocalBackend) {
         // For production (Render backend)
         urlsToTry.push(
             // Primary API endpoint - this is the path that works locally
             `https://saharabackend-v190.onrender.com/api/journals/${journalId}/download/${fileType}`
         );
-
-        // Removed fallback without /api prefix to avoid 404 errors
-        // urlsToTry.push(
-        //     `https://saharabackend-v190.onrender.com/journals/${journalId}/download/${fileType}`
-        // );
     } else {
         // For local development - the known working path
         urlsToTry.push(
