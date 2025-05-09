@@ -253,8 +253,17 @@ const Dashboard = () => {
 
             {/* Dashboard Content */}
             <div className="dashboard-content">
-                <h2 className="dashboard-title">Welcome to Dashboard</h2>
-                <p className="dashboard-user">User: {user?.email}</p>
+                <div className="dashboard-header">
+                    <div>
+                        <h2 className="dashboard-title">Welcome to Dashboard</h2>
+                        <p className="dashboard-user">User: {user?.email}</p>
+                    </div>
+                    <div className="dashboard-actions">
+                        <Link to="/updateprofile" className="profile-button">
+                            Update Profile
+                        </Link>
+                    </div>
+                </div>
 
                 {journals.length > 0 ? (
                     <>

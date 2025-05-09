@@ -74,7 +74,7 @@ const LoginPage = () => {
                     </button>
                 </form>
                 <div className="text-center mt-4">
-                    <Link to="/forgot-password" className="text-blue-500 hover:underline">Forgot Password?</Link>
+                    <Link to="/forgotpassword" className="text-blue-500 hover:underline">Forgot Password?</Link>
                 </div>
             </div>
         </div>

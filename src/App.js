@@ -6,7 +6,7 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
-import UpdateProfile from "./pages/UpdateProfilePage";
+import UpdateProfilePage from "./pages/UpdateProfilePage";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -101,7 +101,7 @@ function App() {
                                 } />
                                 <Route path="/updateprofile" element={
                                     <ProtectedRoute allowedRoles={["admin", "author", "user"]}>
-                                        <UpdateProfile />
+                                        <UpdateProfilePage />
                                     </ProtectedRoute>
                                 } />
                                 <Route path="/submission" element={
