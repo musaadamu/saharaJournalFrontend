@@ -86,7 +86,7 @@ export default function HomePage() {
                 )}
 
                 <div className="main-container" style={{ marginLeft: 0, width: '100%' }}>
-                    <main className="main-content" style={{ marginLeft: 0, width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
+                    <main className="main-content" style={{ marginLeft: 0, width: '100%', maxWidth: '1280px', margin: '0 auto', padding: '0 2rem' }}>
                         {/* Carousel Section */}
                         <div className="home-carousel-wrapper">
                             <ImprovedCarousel
