@@ -14,22 +14,31 @@ export default function HomePage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
-    // Use reliable Unsplash images that will definitely work
+    // Use the real images from the public directory with fallbacks
+    const getImageUrl = (imageName) => {
+        // Try different paths to ensure the image loads
+        // Some servers might be case-sensitive with file extensions
+        return `/images/${imageName}`;
+    };
+
     const carouselImages = [
         {
-            src: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?auto=format&fit=crop&w=800&q=60",
-            alt: 'The Sahara Desert',
+            src: getImageUrl('image4.JPG'),
+            fallbackSrc: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?auto=format&fit=crop&w=800&q=60",
+            alt: 'The Provost',
             title: 'The Sahara Desert, the Great Symbol of the Sahara Journal',
             description: 'The Desert'
         },
         {
-            src: "https://images.unsplash.com/photo-1682687982501-1e58ab814714?auto=format&fit=crop&w=800&q=60",
+            src: getImageUrl('image5.JPG'),
+            fallbackSrc: "https://images.unsplash.com/photo-1682687982501-1e58ab814714?auto=format&fit=crop&w=800&q=60",
             alt: 'The Sahara Journal',
             title: 'The Camel in the Sahara',
             description: 'The Great Sahara International Journal of Teacher Education'
         },
         {
-            src: "https://images.unsplash.com/photo-1682687218147-9cac31a0c0f2?auto=format&fit=crop&w=800&q=60",
+            src: getImageUrl('image3.JPG'),
+            fallbackSrc: "https://images.unsplash.com/photo-1682687218147-9cac31a0c0f2?auto=format&fit=crop&w=800&q=60",
             alt: 'The Sahara Journal',
             title: 'The Sahara International Journal of Teacher Education',
             description: 'The Sahara Journal'

@@ -15,9 +15,10 @@ export default function ImprovedCarousel({
     // Ensure image src has the correct path
     let src = image.src || '';
 
-    // Simply use the src as is - we're now using direct URLs from CarouselImages
+    // Include the fallbackSrc if provided
     return {
       src: src,
+      fallbackSrc: image.fallbackSrc || '',
       alt: image.alt || `Slide ${index + 1}`,
       title: image.title || '',
       description: image.description || ''
@@ -99,9 +100,9 @@ export default function ImprovedCarousel({
                 onLoad={() => handleImageLoad(index)}
                 onError={(e) => {
                   console.error(`Failed to load image: ${image.src}`);
-                  // Use a simple fallback
+                  // Use the provided fallback or a default fallback
                   e.target.onerror = null; // Prevent infinite loop
-                  e.target.src = "https://images.unsplash.com/photo-1509023464722-18d996393ca8?auto=format&fit=crop&w=800&q=60";
+                  e.target.src = image.fallbackSrc || "https://images.unsplash.com/photo-1509023464722-18d996393ca8?auto=format&fit=crop&w=800&q=60";
                   handleImageError(index);
                 }}
               />
