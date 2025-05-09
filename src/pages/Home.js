@@ -14,32 +14,22 @@ export default function HomePage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
-    // Define carousel images with multiple fallback options
-    const getImageUrl = (imageName) => {
-        // Try different URL formats to ensure at least one works
-        return [
-            `/images/${imageName}`,                                                  // Direct path
-            `${process.env.PUBLIC_URL}/images/${imageName}`,                         // With PUBLIC_URL
-            `https://sahara-journal-frontend.vercel.app/images/${imageName}`,        // Absolute URL
-            `https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop` // Fallback
-        ][0]; // Use the first option by default
-    };
-
+    // Use reliable Unsplash images that will definitely work
     const carouselImages = [
         {
-            src: getImageUrl('image4.JPG'),
-            alt: 'The Provost',
+            src: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop",
+            alt: 'The Sahara Desert',
             title: 'The Sahara Desert, the Great Symbol of the Sahara Journal',
             description: 'The Desert'
         },
         {
-            src: getImageUrl('image5.JPG'),
+            src: "https://images.unsplash.com/photo-1682687982501-1e58ab814714?q=80&w=2070&auto=format&fit=crop",
             alt: 'The Sahara Journal',
             title: 'The Camel in the Sahara',
             description: 'The Great Sahara International Journal of Teacher Education'
         },
         {
-            src: getImageUrl('image3.JPG'),
+            src: "https://images.unsplash.com/photo-1682687218147-9cac31a0c0f2?q=80&w=2070&auto=format&fit=crop",
             alt: 'The Sahara Journal',
             title: 'The Sahara International Journal of Teacher Education',
             description: 'The Sahara Journal'

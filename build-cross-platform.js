@@ -6,10 +6,6 @@ process.env.CI = 'false';
 process.env.NODE_ENV = 'production';
 process.env.REACT_APP_API_URL = 'https://saharabackend-v190.onrender.com/api';
 
-// For Vercel deployment, we'll set PUBLIC_URL to empty string to use relative paths
-// This helps with routing and image loading
-process.env.PUBLIC_URL = '';
-
 console.log('Building React app with the following environment:');
 console.log(`CI: ${process.env.CI}`);
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`);

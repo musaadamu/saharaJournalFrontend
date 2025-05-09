@@ -9,21 +9,10 @@ export default function JournalHero() {
     // State for background image rotation
     const [backgroundIndex, setBackgroundIndex] = useState(0);
 
-    // Define background images with multiple fallback options
-    const getImageUrl = (imageName) => {
-        // Try different URL formats to ensure at least one works
-        return [
-            `/images/${imageName}`,                                                  // Direct path
-            `${process.env.PUBLIC_URL}/images/${imageName}`,                         // With PUBLIC_URL
-            `https://sahara-journal-frontend.vercel.app/images/${imageName}`,        // Absolute URL
-            `https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop` // Fallback
-        ][0]; // Use the first option by default
-    };
-
-    // Array of background images
+    // Use reliable Unsplash images that will definitely work
     const backgroundImages = [
-        getImageUrl('image4.JPG'),
-        getImageUrl('image5.JPG')
+        "https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1682687982501-1e58ab814714?q=80&w=2070&auto=format&fit=crop"
     ];
 
     // Rotate background images every 8 seconds
@@ -60,32 +49,17 @@ export default function JournalHero() {
     return (
         <section className="journal-hero">
             {/* Background Image with crossfade effect */}
-            {backgroundImages.map((image, index) => {
-                // Create fallback URLs in case the main one fails
-                const fallbackUrls = [
-                    image,
-                    // Try without PUBLIC_URL
-                    image.replace(`${process.env.PUBLIC_URL}`, ''),
-                    // Try with absolute URL to Vercel
-                    `https://sahara-journal-frontend.vercel.app${image.replace(process.env.PUBLIC_URL, '')}`,
-                    // Try lowercase extension
-                    image.replace('.JPG', '.jpg'),
-                    // Fallback to Unsplash image if all else fails
-                    "https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop"
-                ];
-
-                return (
-                    <div
-                        key={index}
-                        className="journal-hero__background"
-                        style={{
-                            backgroundImage: `url('${fallbackUrls[0]}'), url('${fallbackUrls[1]}'), url('${fallbackUrls[2]}'), url('${fallbackUrls[3]}'), url('${fallbackUrls[4]}')`,
-                            opacity: index === backgroundIndex ? 1 : 0,
-                            transition: "opacity 1.5s ease-in-out"
-                        }}
-                    />
-                );
-            })}
+            {backgroundImages.map((image, index) => (
+                <div
+                    key={index}
+                    className="journal-hero__background"
+                    style={{
+                        backgroundImage: `url('${image}')`,
+                        opacity: index === backgroundIndex ? 1 : 0,
+                        transition: "opacity 1.5s ease-in-out"
+                    }}
+                />
+            ))}
 
             {/* Overlay */}
             <div className="journal-hero__overlay"></div>

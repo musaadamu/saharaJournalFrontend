@@ -99,36 +99,9 @@ export default function ImprovedCarousel({
                 onLoad={() => handleImageLoad(index)}
                 onError={(e) => {
                   console.error(`Failed to load image: ${image.src}`);
-
-                  // Try different path formats as fallbacks
-                  const originalSrc = image.src;
-                  const fallbacks = [
-                    // Try without PUBLIC_URL
-                    originalSrc.replace(`${process.env.PUBLIC_URL}`, ''),
-                    // Try with absolute URL to Vercel
-                    `https://sahara-journal-frontend.vercel.app${originalSrc.replace(process.env.PUBLIC_URL, '')}`,
-                    // Try lowercase extension
-                    originalSrc.replace('.JPG', '.jpg'),
-                    // Try direct Unsplash fallback as last resort
-                    "https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop"
-                  ];
-
-                  // Use the first fallback
-                  e.target.onerror = (e2) => {
-                    console.log("First fallback failed, trying second...");
-                    e2.target.onerror = (e3) => {
-                      console.log("Second fallback failed, trying third...");
-                      e3.target.onerror = (e4) => {
-                        console.log("Third fallback failed, using final fallback");
-                        e4.target.onerror = null; // Prevent further loops
-                        e4.target.src = fallbacks[3];
-                      };
-                      e3.target.src = fallbacks[2];
-                    };
-                    e2.target.src = fallbacks[1];
-                  };
-                  e.target.src = fallbacks[0];
-
+                  // Use a simple fallback
+                  e.target.onerror = null; // Prevent infinite loop
+                  e.target.src = "https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop";
                   handleImageError(index);
                 }}
               />
