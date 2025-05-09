@@ -11,8 +11,8 @@ export default function JournalHero() {
 
     // Use reliable Unsplash images that will definitely work
     const backgroundImages = [
-        "https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1682687982501-1e58ab814714?q=80&w=2070&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1509023464722-18d996393ca8?auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1682687982501-1e58ab814714?auto=format&fit=crop&w=800&q=60"
     ];
 
     // Rotate background images every 8 seconds

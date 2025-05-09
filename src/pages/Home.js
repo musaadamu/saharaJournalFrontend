@@ -17,19 +17,19 @@ export default function HomePage() {
     // Use reliable Unsplash images that will definitely work
     const carouselImages = [
         {
-            src: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop",
+            src: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?auto=format&fit=crop&w=800&q=60",
             alt: 'The Sahara Desert',
             title: 'The Sahara Desert, the Great Symbol of the Sahara Journal',
             description: 'The Desert'
         },
         {
-            src: "https://images.unsplash.com/photo-1682687982501-1e58ab814714?q=80&w=2070&auto=format&fit=crop",
+            src: "https://images.unsplash.com/photo-1682687982501-1e58ab814714?auto=format&fit=crop&w=800&q=60",
             alt: 'The Sahara Journal',
             title: 'The Camel in the Sahara',
             description: 'The Great Sahara International Journal of Teacher Education'
         },
         {
-            src: "https://images.unsplash.com/photo-1682687218147-9cac31a0c0f2?q=80&w=2070&auto=format&fit=crop",
+            src: "https://images.unsplash.com/photo-1682687218147-9cac31a0c0f2?auto=format&fit=crop&w=800&q=60",
             alt: 'The Sahara Journal',
             title: 'The Sahara International Journal of Teacher Education',
             description: 'The Sahara Journal'

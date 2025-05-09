@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deployment Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .success-message {
+            background-color: #d1fae5;
+            border: 1px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .success-message h2 {
+            color: #10b981;
+            margin-top: 0;
+        }
+        .test-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .timestamp {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sahara Journal Deployment Test</h1>
+    
+    <div class="success-message">
+        <h2>Deployment Successful!</h2>
+        <p>If you can see this page, the basic deployment is working correctly.</p>
+    </div>
+    
+    <p>This is a test page to verify that the Vercel deployment is working properly. The main React application should also be accessible.</p>
+    
+    <h2>Test Image</h2>
+    <p>The image below is loaded from an external source (Unsplash) to verify that external resources can be loaded:</p>
+    
+    <img src="https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop" alt="Sahara Desert" class="test-image">
+    
+    <div class="timestamp">
+        <p>Deployment test created: <time datetime="2023-11-15">November 15, 2023</time></p>
+    </div>
+</body>
+</html>

@@ -101,7 +101,7 @@ export default function ImprovedCarousel({
                   console.error(`Failed to load image: ${image.src}`);
                   // Use a simple fallback
                   e.target.onerror = null; // Prevent infinite loop
-                  e.target.src = "https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop";
+                  e.target.src = "https://images.unsplash.com/photo-1509023464722-18d996393ca8?auto=format&fit=crop&w=800&q=60";
                   handleImageError(index);
                 }}
               />
