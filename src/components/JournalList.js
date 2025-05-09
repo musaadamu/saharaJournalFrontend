@@ -424,17 +424,17 @@ const JournalList = () => {
                 <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
                         {journals.map((journal) => (
-                            <div key={journal._id} className="journal-card border rounded-lg p-3 hover:shadow-md transition-shadow">
+                            <div key={journal._id} className="journal-card border rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col h-full">
                                 <h3
                                     className="text-lg font-semibold text-blue-600 cursor-pointer hover:underline"
                                     onClick={() => navigate(`/journals/${journal._id}`)}
                                 >
                                     {journal.title || 'Untitled Journal'}
                                 </h3>
-                                <div className="abstract-section text-center mt-4 mb-2">
+                                <div className="abstract-section text-center mt-4 mb-2 flex-grow">
                                     <h4 className="abstract-heading text-lg font-semibold mb-2">Abstract</h4>
                                     <p className="text-gray-700 text-justify mx-auto max-w-xl">
-                                        {journal.abstract ? (journal.abstract.length > 300 ? journal.abstract.substring(0, 300) + '...' : journal.abstract) : 'No abstract available'}
+                                        {journal.abstract ? journal.abstract : 'No abstract available'}
                                     </p>
                                 </div>
                                 <span className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
