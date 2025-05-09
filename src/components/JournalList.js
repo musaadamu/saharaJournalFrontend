@@ -17,18 +17,19 @@ const JournalList = () => {
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalPages: 1,
-        totalJournals: 0
+        totalJournals: 0,
+        limit: 6 // Default page size
     });
 
     // Define fetchJournals with useCallback to avoid dependency issues
-    const fetchJournals = useCallback(async (page = 1) => {
+    const fetchJournals = useCallback(async (page = 1, limit = pagination.limit) => {
         setLoading(true);
         setError('');
         try {
             console.log('Fetching journals using API service');
             const response = await api.journals.getAll({
                 page,
-                limit: 10,
+                limit,
                 sortBy: 'createdAt',
                 order: 'desc'
             });
@@ -80,6 +81,16 @@ const JournalList = () => {
     useEffect(() => {
         fetchJournals();
     }, [fetchJournals]);
+
+    // Handle changing the page size
+    const handlePageSizeChange = (newLimit) => {
+        setPagination(prev => ({
+            ...prev,
+            limit: newLimit,
+            currentPage: 1 // Reset to first page when changing page size
+        }));
+        fetchJournals(1, newLimit);
+    };
 
     const handleDownload = async (id, fileType) => {
         console.log(`Downloading ${fileType} file for journal ID:`, id);
@@ -475,27 +486,115 @@ const JournalList = () => {
                             </div>
                         ))}
                     </div>
-                    {pagination.totalPages > 1 && (
-                        <div className="pagination flex justify-between items-center mt-6">
-                            <button
-                                onClick={() => fetchJournals(pagination.currentPage - 1)}
-                                disabled={pagination.currentPage === 1}
-                                className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
-                            >
-                                Previous
-                            </button>
-                            <span className="text-sm text-gray-600">
-                                Page {pagination.currentPage} of {pagination.totalPages}
-                            </span>
-                            <button
-                                onClick={() => fetchJournals(pagination.currentPage + 1)}
-                                disabled={pagination.currentPage === pagination.totalPages}
-                                className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
-                            >
-                                Next
-                            </button>
+                    <div className="pagination-container mt-8 border-t border-gray-200 pt-6">
+                        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                            {/* Page size selector */}
+                            <div className="flex items-center">
+                                <span className="text-sm text-gray-600 mr-2">Show:</span>
+                                <select
+                                    value={pagination.limit}
+                                    onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                                    className="border border-gray-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value={3}>3</option>
+                                    <option value={6}>6</option>
+                                    <option value={9}>9</option>
+                                    <option value={12}>12</option>
+                                </select>
+                                <span className="text-sm text-gray-600 ml-2">per page</span>
+                            </div>
+
+                            {/* Journal count */}
+                            <div className="text-sm text-gray-600">
+                                Showing {journals.length > 0 ? (pagination.currentPage - 1) * pagination.limit + 1 : 0}
+                                - {Math.min(pagination.currentPage * pagination.limit, pagination.totalJournals)}
+                                of {pagination.totalJournals} journals
+                            </div>
                         </div>
-                    )}
+
+                        {/* Pagination controls */}
+                        {pagination.totalPages > 1 && (
+                            <div className="pagination flex justify-center items-center mt-6">
+                                <button
+                                    onClick={() => fetchJournals(1)}
+                                    disabled={pagination.currentPage === 1}
+                                    className="pagination-button rounded-l-md"
+                                    title="First Page"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button
+                                    onClick={() => fetchJournals(pagination.currentPage - 1)}
+                                    disabled={pagination.currentPage === 1}
+                                    className="pagination-button"
+                                    title="Previous Page"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+
+                                {/* Page numbers */}
+                                <div className="flex">
+                                    {[...Array(Math.min(5, pagination.totalPages))].map((_, i) => {
+                                        // Calculate which page numbers to show
+                                        let pageNum;
+                                        if (pagination.totalPages <= 5) {
+                                            // If 5 or fewer pages, show all
+                                            pageNum = i + 1;
+                                        } else if (pagination.currentPage <= 3) {
+                                            // If near the start, show first 5 pages
+                                            pageNum = i + 1;
+                                        } else if (pagination.currentPage >= pagination.totalPages - 2) {
+                                            // If near the end, show last 5 pages
+                                            pageNum = pagination.totalPages - 4 + i;
+                                        } else {
+                                            // Otherwise show current page and 2 on each side
+                                            pageNum = pagination.currentPage - 2 + i;
+                                        }
+
+                                        return (
+                                            <button
+                                                key={pageNum}
+                                                onClick={() => fetchJournals(pageNum)}
+                                                className={`pagination-button ${
+                                                    pagination.currentPage === pageNum
+                                                        ? 'bg-blue-600 text-white'
+                                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                                }`}
+                                            >
+                                                {pageNum}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                <button
+                                    onClick={() => fetchJournals(pagination.currentPage + 1)}
+                                    disabled={pagination.currentPage === pagination.totalPages}
+                                    className="pagination-button"
+                                    title="Next Page"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button
+                                    onClick={() => fetchJournals(pagination.totalPages)}
+                                    disabled={pagination.currentPage === pagination.totalPages}
+                                    className="pagination-button rounded-r-md"
+                                    title="Last Page"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                        <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </>
             )}
         </div>
