@@ -3,17 +3,16 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./JournalHero.css";
 
-// Import reliable image URLs
-import CarouselImages from "./CarouselImages";
+// No need to import CarouselImages anymore
 
 export default function JournalHero() {
     // State for background image rotation
     const [backgroundIndex, setBackgroundIndex] = useState(0);
 
-    // Array of background images using reliable URLs from CarouselImages
+    // Array of background images using public URLs that will work on Vercel
     const backgroundImages = [
-        CarouselImages.image1,
-        CarouselImages.image2
+        `${process.env.PUBLIC_URL}/images/image4.JPG`,
+        `${process.env.PUBLIC_URL}/images/image5.JPG`
     ];
 
     // Rotate background images every 8 seconds
@@ -50,17 +49,32 @@ export default function JournalHero() {
     return (
         <section className="journal-hero">
             {/* Background Image with crossfade effect */}
-            {backgroundImages.map((image, index) => (
-                <div
-                    key={index}
-                    className="journal-hero__background"
-                    style={{
-                        backgroundImage: `url('${image}')`,
-                        opacity: index === backgroundIndex ? 1 : 0,
-                        transition: "opacity 1.5s ease-in-out"
-                    }}
-                />
-            ))}
+            {backgroundImages.map((image, index) => {
+                // Create fallback URLs in case the main one fails
+                const fallbackUrls = [
+                    image,
+                    // Try without PUBLIC_URL
+                    image.replace(`${process.env.PUBLIC_URL}`, ''),
+                    // Try with absolute URL to Vercel
+                    `https://sahara-journal-frontend.vercel.app${image.replace(process.env.PUBLIC_URL, '')}`,
+                    // Try lowercase extension
+                    image.replace('.JPG', '.jpg'),
+                    // Fallback to Unsplash image if all else fails
+                    "https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2070&auto=format&fit=crop"
+                ];
+
+                return (
+                    <div
+                        key={index}
+                        className="journal-hero__background"
+                        style={{
+                            backgroundImage: `url('${fallbackUrls[0]}'), url('${fallbackUrls[1]}'), url('${fallbackUrls[2]}'), url('${fallbackUrls[3]}'), url('${fallbackUrls[4]}')`,
+                            opacity: index === backgroundIndex ? 1 : 0,
+                            transition: "opacity 1.5s ease-in-out"
+                        }}
+                    />
+                );
+            })}
 
             {/* Overlay */}
             <div className="journal-hero__overlay"></div>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .image-container {
+            margin-bottom: 30px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        .path {
+            font-family: monospace;
+            background-color: #f0f0f0;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Test Page</h1>
+    <p>This page tests if the images are accessible from different paths.</p>
+
+    <div class="image-container">
+        <h2>Image 3</h2>
+        <div class="path">/images/image3.JPG</div>
+        <img src="/images/image3.JPG" alt="Image 3" onerror="this.onerror=null; this.src='/images/image3.jpg'; this.alt='Fallback to lowercase';">
+    </div>
+
+    <div class="image-container">
+        <h2>Image 4</h2>
+        <div class="path">/images/image4.JPG</div>
+        <img src="/images/image4.JPG" alt="Image 4" onerror="this.onerror=null; this.src='/images/image4.jpg'; this.alt='Fallback to lowercase';">
+    </div>
+
+    <div class="image-container">
+        <h2>Image 5</h2>
+        <div class="path">/images/image5.JPG</div>
+        <img src="/images/image5.JPG" alt="Image 5" onerror="this.onerror=null; this.src='/images/image5.jpg'; this.alt='Fallback to lowercase';">
+    </div>
+
+    <script>
+        // Log image loading status
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('load', () => {
+                console.log(`Image loaded successfully: ${img.src}`);
+            });
+            img.addEventListener('error', () => {
+                console.error(`Failed to load image: ${img.src}`);
+            });
+        });
+    </script>
+</body>
+</html>

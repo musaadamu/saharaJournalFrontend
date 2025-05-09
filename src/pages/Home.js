@@ -7,30 +7,29 @@ import './Home.css';
 import ImprovedCarousel from "../components/Carousol";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// Import reliable image URLs
-import CarouselImages from "../components/CarouselImages";
+// No need to import CarouselImages anymore
 
 export default function HomePage() {
     const [stats, setStats] = useState([]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
-    // Define carousel images using reliable URLs from CarouselImages
+    // Define carousel images using public URLs that will work on Vercel
     const carouselImages = [
         {
-            src: CarouselImages.image4,
-            alt: 'The Sahara Desert',
+            src: `${process.env.PUBLIC_URL}/images/image4.JPG`,
+            alt: 'The Provost',
             title: 'The Sahara Desert, the Great Symbol of the Sahara Journal',
             description: 'The Desert'
         },
         {
-            src: CarouselImages.image5,
+            src: `${process.env.PUBLIC_URL}/images/image5.JPG`,
             alt: 'The Sahara Journal',
             title: 'The Camel in the Sahara',
             description: 'The Great Sahara International Journal of Teacher Education'
         },
         {
-            src: CarouselImages.image3,
+            src: `${process.env.PUBLIC_URL}/images/image3.JPG`,
             alt: 'The Sahara Journal',
             title: 'The Sahara International Journal of Teacher Education',
             description: 'The Sahara Journal'

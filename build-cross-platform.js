@@ -5,7 +5,12 @@ const { execSync } = require('child_process');
 process.env.CI = 'false';
 process.env.NODE_ENV = 'production';
 process.env.REACT_APP_API_URL = 'https://saharabackend-v190.onrender.com/api';
-process.env.PUBLIC_URL = 'https://sahara-journal-frontend.vercel.app';
+
+// For Vercel deployment, we don't need to set PUBLIC_URL as Vercel handles this automatically
+// But we'll set it for local builds
+if (!process.env.VERCEL) {
+  process.env.PUBLIC_URL = '';
+}
 
 console.log('Building React app with the following environment:');
 console.log(`CI: ${process.env.CI}`);
