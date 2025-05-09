@@ -3,20 +3,17 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./JournalHero.css";
 
-// Import images directly to ensure they're included in the build
-import image4 from "../assets/image4.JPG";
-import image5 from "../assets/image5.JPG";
+// Import reliable image URLs
+import CarouselImages from "./CarouselImages";
 
 export default function JournalHero() {
     // State for background image rotation
     const [backgroundIndex, setBackgroundIndex] = useState(0);
 
-    // Array of background images using imported images
-    // This approach ensures the images are included in the build
-    // Add fallback URLs in case the imported images fail
+    // Array of background images using reliable URLs from CarouselImages
     const backgroundImages = [
-        image4 || 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop',
-        image5 || 'https://images.unsplash.com/photo-1682686581551-867e0b208bd1?q=80&w=2070&auto=format&fit=crop'
+        CarouselImages.image1,
+        CarouselImages.image2
     ];
 
     // Rotate background images every 8 seconds
@@ -58,7 +55,7 @@ export default function JournalHero() {
                     key={index}
                     className="journal-hero__background"
                     style={{
-                        backgroundImage: `url('${typeof image === 'string' ? image : (image && typeof image === 'object' ? image.toString() : '')}')`,
+                        backgroundImage: `url('${image}')`,
                         opacity: index === backgroundIndex ? 1 : 0,
                         transition: "opacity 1.5s ease-in-out"
                     }}
