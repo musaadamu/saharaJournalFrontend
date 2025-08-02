@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Fix Test - Sahara Journal</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+        
+        .test-section h2 {
+            color: #1e3a8a;
+            margin-top: 0;
+        }
+        
+        .carousel-demo {
+            height: 500px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .carousel-title {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            padding: 1rem;
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .carousel-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .carousel-image-container {
+            flex: 0 0 70%;
+            position: relative;
+            background-color: #111827;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .carousel-content {
+            flex: 0 0 30%;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .carousel-caption {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+        
+        .carousel-caption-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1e3a8a;
+            line-height: 1.3;
+        }
+        
+        .carousel-caption-text {
+            font-size: 1.1rem;
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .carousel-cta-button {
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-demo {
+            height: 650px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-demo h3 {
+            color: #1e3a8a;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-demo p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+            color: #4b5563;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #1e3a8a;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1e3a8a;
+            border: 1px solid #1e3a8a;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .instructions {
+            background: #e6f4ff;
+            border-left: 4px solid #1e3a8a;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 30px 0;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #1e3a8a;
+        }
+        
+        .instructions ul {
+            margin-bottom: 0;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .carousel-demo {
+                height: 500px;
+            }
+            
+            .hero-demo {
+                height: 650px;
+            }
+            
+            .hero-demo h3 {
+                font-size: 2rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .carousel-demo {
+                height: 400px;
+            }
+            
+            .hero-demo {
+                height: 550px;
+            }
+            
+            .hero-demo h3 {
+                font-size: 1.75rem;
+            }
+            
+            .hero-demo p {
+                font-size: 1rem;
+            }
+            
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .carousel-caption-title {
+                font-size: 1.5rem;
+            }
+            
+            .carousel-caption-text {
+                font-size: 1rem;
+            }
+        }
+        
+        .resize-info {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fffbeb;
+            border-radius: 8px;
+            border: 1px solid #fbbf24;
+        }
+        
+        .fix-info {
+            background: #dcfce7;
+            border-left: 4px solid #16a34a;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Carousel Fix Test</h1>
+        
+        <div class="fix-info">
+            <h3>Fix Implemented:</h3>
+            <ul>
+                <li>Carousel content now appears below images on smaller devices (no longer blocking images)</li>
+                <li>Increased carousel height on smaller devices for better visibility</li>
+                <li>Increased hero section height on smaller devices</li>
+                <li>Improved content spacing and sizing for better mobile experience</li>
+            </ul>
+        </div>
+        
+        <div class="instructions">
+            <h3>Testing Instructions:</h3>
+            <ul>
+                <li>Resize your browser window to see responsive changes</li>
+                <li>Test on actual mobile devices for accurate results</li>
+                <li>Check both landscape and portrait orientations</li>
+                <li>Verify that carousel content no longer blocks images</li>
+            </ul>
+        </div>
+        
+        <div class="resize-info">
+            <p>Resize your browser window to see how the components adapt to different screen sizes</p>
+        </div>
+        
+        <div class="test-section">
+            <h2>Fixed Carousel Component</h2>
+            <p>This demonstrates the fixed carousel with content below images on smaller devices.</p>
+            <div class="carousel-demo">
+                <div class="carousel-title">Sahara International Journal of Teacher Education</div>
+                <div class="carousel-inner">
+                    <div class="carousel-image-container">
+                        <div>
+                            <p>Carousel Image Area</p>
+                            <p>(Content no longer blocks images)</p>
+                        </div>
+                    </div>
+                    <div class="carousel-content">
+                        <div class="carousel-caption">
+                            <h2 class="carousel-caption-title">The Camel in the Sahara</h2>
+                            <p class="carousel-caption-text">The Great Sahara International Journal of Teacher Education</p>
+                            <button class="carousel-cta-button">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Enhanced Hero Section ("Explore Cutting-Edge Research")</h2>
+            <p>This demonstrates the enhanced hero section with increased height on smaller devices.</p>
+            <div class="hero-demo">
+                <h3>Explore Cutting-Edge Research</h3>
+                <p>Stay informed with the latest academic breakthroughs and innovative discoveries that shape the future of education and research.</p>
+                <div class="buttons">
+                    <button class="btn btn-primary">Browse Journals</button>
+                    <button class="btn btn-secondary">Submit Your Research</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Testing on Mobile Devices</h2>
+            <p>To test on actual mobile devices:</p>
+            <ol>
+                <li>Access your website at www.sijtejournal.com.ng</li>
+                <li>Check the homepage carousel and hero section</li>
+                <li>Verify that the carousel content no longer blocks images</li>
+                <li>Confirm that components are larger and more visible on smaller screens</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
