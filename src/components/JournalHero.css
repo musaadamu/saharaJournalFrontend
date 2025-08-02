@@ -22,6 +22,18 @@
     }
 }
 
+@media (max-width: 768px) {
+    .journal-hero {
+        height: 600px;
+    }
+}
+
+@media (max-width: 576px) {
+    .journal-hero {
+        height: 500px;
+    }
+}
+
 /* Background Image with enhanced styling */
 .journal-hero__background {
     position: absolute;
