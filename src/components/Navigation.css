@@ -11,13 +11,12 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Apply margin for sidebar when sidebar is present */
+/* Sidebar margin for desktop */
 @media (min-width: 768px) {
   .main-navigation {
     margin-left: 256px;
-    transition: margin-left 0.3s ease;
   }
-
+  
   .sidebar-open .main-navigation {
     margin-left: 0;
   }
@@ -27,7 +26,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0.5rem; /* Further reduced padding */
+  padding: 0 0.5rem;
   max-width: 1400px;
   margin: 0 auto;
   height: 64px;
@@ -38,7 +37,7 @@
   display: flex;
   align-items: center;
   height: 100%;
-  padding-right: 1rem; /* Reduced padding */
+  padding-right: 1rem;
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -55,7 +54,6 @@
   align-items: center;
   flex: 1;
   height: 100%;
-  /* Removed overflow-x properties to prevent scrolling */
   width: 100%;
   justify-content: space-between;
 }
@@ -72,14 +70,12 @@
 
 .main-links {
   flex: 1;
-  margin-left: 0.5rem; /* Reduced margin */
-  margin-right: 0.5rem;
-  /* Removed overflow-x property */
+  margin: 0 0.5rem;
 }
 
 .user-links {
   justify-content: flex-end;
-  padding-left: 0.25rem; /* Further reduced padding */
+  padding-left: 0.25rem;
   min-width: max-content;
   flex-shrink: 0;
 }
@@ -88,7 +84,7 @@
   height: 50%;
   width: 1px;
   background-color: rgba(255, 255, 255, 0.2);
-  margin: 0 0.25rem; /* Reduced margins */
+  margin: 0 0.25rem;
 }
 
 .nav-links li {
@@ -97,7 +93,6 @@
   align-items: center;
 }
 
-/* Special class for user menu items to ensure they have enough space */
 .user-links li {
   min-width: max-content;
 }
@@ -108,14 +103,14 @@
   text-decoration: none;
   color: #ffffff;
   font-weight: 500;
-  padding: 0 0.45rem; /* Further reduced horizontal padding */
+  padding: 0 0.45rem;
   height: 100%;
   transition: background-color 0.2s ease, color 0.2s ease;
   position: relative;
-  font-size: 0.85rem; /* Smaller font size */
+  font-size: 0.85rem;
   white-space: nowrap;
   min-width: max-content;
-  letter-spacing: -0.02em; /* Reduced letter spacing */
+  letter-spacing: -0.02em;
 }
 
 .nav-links a:hover {
@@ -162,25 +157,15 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.main-menu-toggle {
-  order: 1;
-}
-
-.sidebar-toggle {
-  order: 3;
-}
-
-.menu-placeholder {
-  width: 48px;
-  display: none;
-}
-
 /* Mobile Navigation */
 @media (max-width: 768px) {
+  .main-navigation {
+    z-index: 1005;
+  }
+
   .nav-container {
     padding: 0;
     height: 56px;
-    position: relative;
     display: grid;
     grid-template-columns: 48px 1fr 48px;
     align-items: center;
@@ -191,18 +176,11 @@
     justify-content: center;
     border-right: none;
     padding-right: 0;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    overflow: hidden;
   }
 
   .nav-logo {
-    width: 100%;
-    text-align: center;
     font-size: 1.1rem;
-    white-space: nowrap;
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -212,7 +190,6 @@
     width: 40px;
     height: 40px;
     margin: 0 4px;
-    border-radius: 4px;
   }
 
   .main-menu-toggle {
@@ -221,10 +198,6 @@
 
   .sidebar-toggle {
     grid-column: 3;
-  }
-
-  .menu-placeholder {
-    display: none;
   }
 
   .nav-menu-container {
@@ -241,7 +214,6 @@
     transition: all 0.3s ease;
     align-items: flex-start;
     z-index: 1001;
-    height: auto;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
@@ -264,7 +236,8 @@
     padding: 10px 0;
   }
 
-  .main-links, .user-links {
+  .main-links, 
+  .user-links {
     margin: 0;
     padding: 0.5rem 0;
     width: 100%;
@@ -285,18 +258,16 @@
   .nav-links a {
     padding: 0.85rem 1.5rem;
     height: auto;
-    width: 100%;
+    width: calc(100% - 16px);
     justify-content: flex-start;
     white-space: normal;
     line-height: 1.3;
     font-size: 1.05rem;
-    display: flex;
     text-align: left;
     min-width: auto;
     border-radius: 4px;
     margin: 0 8px;
-    width: calc(100% - 16px);
-    letter-spacing: normal; /* Reset letter spacing for mobile */
+    letter-spacing: normal;
   }
 
   .nav-links a.active::after {
@@ -305,7 +276,6 @@
 
   .nav-links a.active {
     background-color: #2563eb;
-    position: relative;
   }
 
   .nav-links a.active::before {
@@ -314,39 +284,26 @@
     left: 0.5rem;
     color: white;
   }
-
-  .main-navigation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1005;
-  }
 }
 
-/* Medium-sized devices */
+/* Tablet and Desktop Adjustments */
 @media (min-width: 769px) and (max-width: 1024px) {
   .nav-links a {
-    padding: 0 0.35rem; /* Further reduced padding */
-    font-size: 0.8rem; /* Smaller font size */
-    letter-spacing: -0.025em; /* Further reduced letter spacing */
+    padding: 0 0.35rem;
+    font-size: 0.8rem;
+    letter-spacing: -0.025em;
   }
 
   .nav-container {
-    padding: 0 0.5rem; /* Reduced container padding */
+    padding: 0 0.5rem;
   }
 
   .nav-brand {
-    padding-right: 0.5rem; /* Reduced padding */
-  }
-
-  .hamburger {
-    display: none;
+    padding-right: 0.5rem;
   }
 
   .main-links {
-    margin-left: 0.25rem;
-    margin-right: 0.15rem;
+    margin: 0 0.25rem 0 0.25rem;
   }
 
   .nav-divider {
@@ -354,51 +311,38 @@
   }
 
   .user-links {
-    min-width: max-content;
     padding-left: 0.15rem;
   }
 }
 
-/* Large devices */
 @media (min-width: 1025px) {
   .nav-container {
-    padding: 0 1.5rem; /* Reduced padding */
+    padding: 0 1.5rem;
   }
 
   .nav-brand {
-    padding-right: 1.5rem; /* Reduced padding */
+    padding-right: 1.5rem;
   }
 
   .main-links {
-    margin-left: 1rem; /* Reduced margin */
+    margin: 0 0.2rem 0 1rem;
   }
 
   .nav-divider {
-    margin: 0 0.5rem; /* Reduced margin */
-  }
-
-  .hamburger {
-    display: none;
+    margin: 0 0.5rem;
   }
 
   .nav-links a {
-    white-space: nowrap;
     font-size: 0.9rem;
-    padding: 0 0.5rem; /* Reduced padding */
-    font-weight: 500;
+    padding: 0 0.5rem;
     letter-spacing: -0.01em;
   }
 
   .nav-links li {
-    margin: 0 0.03rem; /* Reduced margin */
+    margin: 0 0.03rem;
   }
 
   .user-links {
-    min-width: max-content;
     padding-left: 0.2rem;
-  }
-
-  .main-links {
-    margin-right: 0.2rem;
   }
 }
