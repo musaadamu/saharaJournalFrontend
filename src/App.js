@@ -22,6 +22,7 @@ import Navigation from "./components/Navigation";
 import About from "./components/About";
 import Guide from "./components/Guide";
 import Contact from "./components/Contact";
+import EditorialBoard from "./components/EditorialBoard";
 import Footer from "./components/Footer";
 import Sidebar from "./components/Sidebar";
 
@@ -88,6 +89,7 @@ function App() {
                                 <Route path="/about" element={<About />} />
                                 <Route path="/guide" element={<Guide />} />
                                 <Route path="/contact" element={<Contact />} />
+                                <Route path="/editorial-board" element={<EditorialBoard />} />
                                 <Route path="/journals" element={<JournalList />} />
                                 <Route path="/journals/:id" element={<JournalDetail />} />
                                 <Route path="/archive" element={<JournalArchive />} />

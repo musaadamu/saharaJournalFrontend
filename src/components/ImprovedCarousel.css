@@ -124,7 +124,7 @@
   font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #1e3a8a;
+  color: white;
   line-height: 1.3;
   border-bottom: 2px solid #3b82f6;
   padding-bottom: 0.5rem;
@@ -132,7 +132,7 @@
 
 .carousel-caption-text {
   font-size: 1.1rem;
-  color: #4b5563;
+  color: white;
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }

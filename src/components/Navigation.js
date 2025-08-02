@@ -43,7 +43,8 @@ const Navigation = ({ user, toggleSidebar }) => {
     { to: "/archive", label: "Archive" },
     { to: "/guide", label: "Guide" },
     { to: "/submission", label: "Submit" },
-    { to: "/contact", label: "Contact" }
+    { to: "/contact", label: "Contact" },
+    { to: "/editorial-board", label: "Editorial Board" }
   ];
 
   const userNavLinks = user ? [
