@@ -1,0 +1,22 @@
+/* TEAM */
+Lead Developer: John Doe
+Contact: john [at] sijtejournal.com.ng
+Twitter: @sijtejournal
+Location: Lagos, Nigeria
+
+Designer: Jane Smith
+Contact: jane [at] sijtejournal.com.ng
+Location: Abuja, Nigeria
+
+Content Editor: Michael Johnson
+Contact: michael [at] sijtejournal.com.ng
+Location: Port Harcourt, Nigeria
+
+/* THANKS */
+Special thanks to all our contributors and the open source community
+
+/* SITE */
+Last update: 2025/08/02
+Standards: HTML5, CSS3, JavaScript
+Components: React, Bootstrap
+Software: Visual Studio Code, Git

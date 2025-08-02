@@ -1,0 +1,15 @@
+# Security.txt for Sahara International Journal of Teacher Education
+# Contact information for security issues
+
+Contact: mailto:security@sijtejournal.com.ng
+Contact: https://www.sijtejournal.com.ng/contact
+
+Preferred-Languages: en
+
+Canonical: https://www.sijtejournal.com.ng/security.txt
+
+Policy: https://www.sijtejournal.com.ng/terms
+
+Hiring: https://www.sijtejournal.com.ng/careers
+
+Expires: 2026-12-31T23:59:59z

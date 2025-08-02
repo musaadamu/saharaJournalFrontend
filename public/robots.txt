@@ -1,3 +1,32 @@
-# https://www.robotstxt.org/robotstxt.html
+# www.sijtejournal.com.ng robots.txt
 User-agent: *
-Disallow:
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /test/
+Disallow: /tmp/
+Disallow: /login
+Disallow: /register
+Disallow: /dashboard
+
+# Sitemap
+Sitemap: https://www.sijtejournal.com.ng/sitemap.xml
+
+# Specific bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
