@@ -41,13 +41,13 @@
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.nav-logo {
-  font-size: 1.25rem;
-  font-weight: bold;
-  white-space: nowrap;
-  flex-shrink: 0;
-  letter-spacing: 0.5px;
-}
+  .nav-logo {
+    height: 80%;
+    width: auto;
+    max-height: 90%;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
 
 .nav-menu-container {
   display: flex;
@@ -229,10 +229,11 @@
   }
 
   .nav-logo {
-    font-size: 1.1rem;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    height: 80%;
+    width: auto;
+    max-height: 90%;
+    padding: 0.25rem;
+    border-radius: 4px;
   }
 
   .hamburger {

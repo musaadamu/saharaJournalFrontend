@@ -95,7 +95,7 @@ const Navigation = ({ user, toggleSidebar }) => {
         </button>
 
         <div className="nav-brand">
-          <div className="nav-logo">Sahara Journal</div>
+          <img src="/images/logo.jpg" alt="Sahara Journal Logo" className="nav-logo" />
         </div>
 
         <button
