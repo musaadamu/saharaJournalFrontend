@@ -42,7 +42,7 @@ const Sidebar = ({ className, onClose }) => {
     <div className={`sidebar ${className || ''}`}>
       <div className="sidebar-header">
         <Link to="/" className="sidebar-logo">
-          <img src="/images/logo.png" alt="Sahara Journal Logo" className="sidebar-logo-img" />
+          <img src="/images/logo.jpg" alt="Sahara Journal Logo" className="sidebar-logo-img" />
           <h2 className="sidebar-title">Sahara Journal</h2>
         </Link>
         {mobile && (

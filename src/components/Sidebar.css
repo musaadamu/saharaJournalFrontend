@@ -164,6 +164,11 @@
     cursor: pointer;
     padding: 0.5rem;
   }
+
+  /* Hide logo on smaller devices */
+  .sidebar-logo-img {
+    display: none;
+  }
 }
 
 /* Ensure the sidebar fills the entire height */
