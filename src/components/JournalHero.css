@@ -24,13 +24,13 @@
 
 @media (max-width: 768px) {
     .journal-hero {
-        height: 600px;
+        height: 650px;
     }
 }
 
 @media (max-width: 576px) {
     .journal-hero {
-        height: 500px;
+        height: 550px;
     }
 }
 
