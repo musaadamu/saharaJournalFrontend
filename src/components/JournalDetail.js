@@ -66,6 +66,9 @@ const JournalDetail = () => {
     const journalKeywords = journal?.keywords?.join(', ') || 'academic journal, research, education';
     const journalPublishedDate = journal?.publishedDate ? new Date(journal.publishedDate).toISOString() : new Date().toISOString();
     
+    // Define base URL for SEO metadata
+    const baseUrl = api.defaults.baseURL || 'https://saharabackend-v190.onrender.com/api';
+    
     // Use centralized URL utility
     const { getJournalCanonicalUrl } = require('../utils/urlUtils');
     const journalUrl = getJournalCanonicalUrl(id);
