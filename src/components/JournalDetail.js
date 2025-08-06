@@ -65,8 +65,10 @@ const JournalDetail = () => {
     const journalAuthors = journal?.authors?.join(', ') || 'Unknown author';
     const journalKeywords = journal?.keywords?.join(', ') || 'academic journal, research, education';
     const journalPublishedDate = journal?.publishedDate ? new Date(journal.publishedDate).toISOString() : new Date().toISOString();
-    const baseUrl = 'https://www.sijtejournal.com.ng';
-    const journalUrl = `${baseUrl}/journals/${id}`;
+    
+    // Use centralized URL utility
+    const { getJournalCanonicalUrl } = require('../utils/urlUtils');
+    const journalUrl = getJournalCanonicalUrl(id);
 
     return (
         <>
