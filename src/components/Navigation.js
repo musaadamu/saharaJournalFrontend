@@ -49,7 +49,12 @@ const Navigation = ({ user, toggleSidebar }) => {
 
   const userNavLinks = user ? [
     { to: "/dashboard", label: "Dashboard" },
-    ...(user.role === "admin" ? [{ to: "/manage-journals", label: "Manage Journals" }] : []),
+    ...(user.role === "admin"
+      ? [
+          { to: "/manage-journals", label: "Manage Journals" },
+          { to: "/create-admin", label: "Create Admin" }
+        ]
+      : []),
     { to: "/updateprofile", label: "Profile" },
     { to: "/logout", label: "Logout" }
   ] : [

@@ -19,6 +19,7 @@ import LogoutPage from "./pages/LogoutPage";
 import JournalArchive from "./pages/JournalArchive";
 import JournalSubmission from "./components/JournalSubmission";
 import Navigation from "./components/Navigation";
+import CreateAdmin from "./pages/CreateAdmin";
 import About from "./components/About";
 import Guide from "./components/Guide";
 import Contact from "./components/Contact";
@@ -118,9 +119,17 @@ function App() {
                                         <JournalUpload />
                                     </ProtectedRoute>
                                 } />
+
                                 <Route path="/manage-journals" element={
                                     <ProtectedRoute allowedRoles={["admin"]}>
                                         <ManageJournal />
+                                    </ProtectedRoute>
+                                } />
+
+                                {/* Admin-only: Create Admin */}
+                                <Route path="/create-admin" element={
+                                    <ProtectedRoute allowedRoles={["admin"]}>
+                                        <CreateAdmin />
                                     </ProtectedRoute>
                                 } />
 
