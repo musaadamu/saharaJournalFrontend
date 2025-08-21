@@ -17,10 +17,12 @@ const CreateAdmin = () => {
     setSuccess('');
     setError('');
     try {
-      // You may need to add auth headers if required by your backend
+      // Send JWT token in Authorization header
+      const token = localStorage.getItem('authToken') || localStorage.getItem('token');
       const res = await axios.post(
         'https://saharabackend-v190.onrender.com/api/auth/create-admin',
-        { ...form, role: 'admin' }
+        { ...form, role: 'admin' },
+        token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
       );
       setSuccess('Admin created successfully!');
       setForm({ name: '', email: '', password: '' });
